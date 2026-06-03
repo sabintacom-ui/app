@@ -239,10 +239,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // ==================== SUPABASE SETUP ====================
-        const SUPABASE_URL = 'https://tfnwifktbjfpbbxkumik.supabase.co/rest/v1/';
+        // ==================== KONFIGURASI SUPABASE ====================
+        // Ganti URL ini dengan Project URL Anda (HAPUS /rest/v1/ di belakang)
+        const SUPABASE_URL = 'https://tfnwifktbjfpbbxkumik.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRmbndpZmt0YmpmcGJieGt1bWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MjY5NjksImV4cCI6MjA5NjAwMjk2OX0.EvPtd7Y2S9PwhV4eq1B-b7-_IlsAwHSChjhUReHFQ1M';
-       const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Inisialisasi Supabase yang BENAR
+        const { createClient } = supabase;
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // ==================== UTILITY ====================
         function formatRupiah(angka) { return 'Rp' + angka.toLocaleString('id-ID'); }
@@ -251,6 +255,32 @@
 
         // Warna untuk kartu buku kas
         const warnaBuku = ['#10b981','#3b82f6','#8b5cf6','#f59e0b','#ef4444','#ec4899','#14b8a6','#f97316'];
+
+        // ==================== NAVIGASI ====================
+        function showPage(pageId) {
+            document.querySelectorAll('.hidden-page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-dashboard').style.display = 'none';
+            if (pageId === 'dashboard') {
+                document.getElementById('page-dashboard').style.display = 'block';
+                document.getElementById('pageTitle').textContent = 'Dashboard';
+                renderDashboard();
+            } else if (pageId === 'buku-kas') {
+                document.getElementById('page-buku-kas').classList.add('active');
+                document.getElementById('pageTitle').textContent = 'Buku Kas';
+                renderBukuKasList();
+                renderTransaksiTable();
+            } else if (pageId === 'utang-piutang') {
+                document.getElementById('page-utang-piutang').classList.add('active');
+                document.getElementById('pageTitle').textContent = 'Utang & Piutang';
+                renderUtangPiutang();
+            } else if (pageId === 'laporan') {
+                document.getElementById('page-laporan').classList.add('active');
+                document.getElementById('pageTitle').textContent = 'Laporan';
+                renderLaporan();
+            }
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            event.target.closest('.menu-item').classList.add('active');
+        }
 
         // ==================== RENDER ====================
         async function renderDashboard() {
@@ -453,32 +483,6 @@
                     </tr>
                 `;
             }).join('');
-        }
-
-        // ==================== NAVIGASI ====================
-        function showPage(pageId) {
-            document.querySelectorAll('.hidden-page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-dashboard').style.display = 'none';
-            if (pageId === 'dashboard') {
-                document.getElementById('page-dashboard').style.display = 'block';
-                document.getElementById('pageTitle').textContent = 'Dashboard';
-                renderDashboard();
-            } else if (pageId === 'buku-kas') {
-                document.getElementById('page-buku-kas').classList.add('active');
-                document.getElementById('pageTitle').textContent = 'Buku Kas';
-                renderBukuKasList();
-                renderTransaksiTable();
-            } else if (pageId === 'utang-piutang') {
-                document.getElementById('page-utang-piutang').classList.add('active');
-                document.getElementById('pageTitle').textContent = 'Utang & Piutang';
-                renderUtangPiutang();
-            } else if (pageId === 'laporan') {
-                document.getElementById('page-laporan').classList.add('active');
-                document.getElementById('pageTitle').textContent = 'Laporan';
-                renderLaporan();
-            }
-            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-            event.target.closest('.menu-item').classList.add('active');
         }
 
         // ==================== FILTER TRANSAKSI ====================
@@ -713,14 +717,16 @@
             const { data: utang } = await supabase.from('utang_piutang').select('*').eq('id', id);
             if (!utang || !utang[0] || utang[0].lunas) return;
             if (!confirm(`Bayar utang ${utang[0].nama} sebesar ${formatRupiah(utang[0].nominal)}?`)) return;
-            const { data: buku } = await supabase.from('buku_kas').select('*').eq('id', '5a861172-c95b-4fab-987d-fc1b853ee39f'); // Cash
+            // ID Cash (Ganti dengan ID Cash yang benar dari tabel Anda)
+            const cashId = '5a861172-c95b-4fab-987d-fc1b853ee39f'; 
+            const { data: buku } = await supabase.from('buku_kas').select('*').eq('id', cashId);
             if (!buku || !buku[0]) { alert('Buku kas Cash tidak ditemukan!'); return; }
             if (buku[0].saldo < utang[0].nominal) { alert('Saldo Cash tidak mencukupi!'); return; }
-            await supabase.from('buku_kas').update({ saldo: buku[0].saldo - utang[0].nominal }).eq('id', '5a861172-c95b-4fab-987d-fc1b853ee39f');
+            await supabase.from('buku_kas').update({ saldo: buku[0].saldo - utang[0].nominal }).eq('id', cashId);
             await supabase.from('utang_piutang').update({ lunas: true }).eq('id', id);
             await supabase.from('transaksi').insert({
                 tanggal: new Date().toISOString(),
-                buku_id: '5a861172-c95b-4fab-987d-fc1b853ee39f',
+                buku_id: cashId,
                 tipe: 'keluar',
                 nominal: utang[0].nominal,
                 kategori: 'Bayar Utang',
@@ -733,12 +739,13 @@
             const { data: utang } = await supabase.from('utang_piutang').select('*').eq('id', id);
             if (!utang || !utang[0] || !utang[0].lunas) return;
             if (!confirm(`Batalkan pembayaran utang ${utang[0].nama}?`)) return;
-            const { data: buku } = await supabase.from('buku_kas').select('*').eq('id', '5a861172-c95b-4fab-987d-fc1b853ee39f');
+            const cashId = '5a861172-c95b-4fab-987d-fc1b853ee39f';
+            const { data: buku } = await supabase.from('buku_kas').select('*').eq('id', cashId);
             if (!buku || !buku[0]) return;
-            await supabase.from('buku_kas').update({ saldo: buku[0].saldo + utang[0].nominal }).eq('id', '5a861172-c95b-4fab-987d-fc1b853ee39f');
+            await supabase.from('buku_kas').update({ saldo: buku[0].saldo + utang[0].nominal }).eq('id', cashId);
             await supabase.from('utang_piutang').update({ lunas: false }).eq('id', id);
             // Hapus transaksi bayar terakhir
-            const { data: tx } = await supabase.from('transaksi').select('*').eq('buku_id', '5a861172-c95b-4fab-987d-fc1b853ee39f').eq('tipe', 'keluar').eq('kategori', 'Bayar Utang').order('tanggal', { ascending: false }).limit(1);
+            const { data: tx } = await supabase.from('transaksi').select('*').eq('buku_id', cashId).eq('tipe', 'keluar').eq('kategori', 'Bayar Utang').order('tanggal', { ascending: false }).limit(1);
             if (tx && tx[0]) await supabase.from('transaksi').delete().eq('id', tx[0].id);
             refreshCurrentPage(); alert('Status utang dikembalikan!');
         }
@@ -747,13 +754,15 @@
             const { data: piutang } = await supabase.from('utang_piutang').select('*').eq('id', id);
             if (!piutang || !piutang[0] || piutang[0].lunas) return;
             if (!confirm(`Terima pembayaran piutang dari ${piutang[0].nama} sebesar ${formatRupiah(piutang[0].nominal)}?`)) return;
-            const { data: buku } = await supabase.from('buku_kas').select('*').eq('id', '534b0c29-6b7f-43ec-9d99-6f72a30e9eac'); // BRI
+            // ID BRI (Ganti dengan ID BRI yang benar dari tabel Anda)
+            const briId = '534b0c29-6b7f-43ec-9d99-6f72a30e9eac';
+            const { data: buku } = await supabase.from('buku_kas').select('*').eq('id', briId);
             if (!buku || !buku[0]) { alert('Buku kas BRI tidak ditemukan!'); return; }
-            await supabase.from('buku_kas').update({ saldo: buku[0].saldo + piutang[0].nominal }).eq('id', '534b0c29-6b7f-43ec-9d99-6f72a30e9eac');
+            await supabase.from('buku_kas').update({ saldo: buku[0].saldo + piutang[0].nominal }).eq('id', briId);
             await supabase.from('utang_piutang').update({ lunas: true }).eq('id', id);
             await supabase.from('transaksi').insert({
                 tanggal: new Date().toISOString(),
-                buku_id: '534b0c29-6b7f-43ec-9d99-6f72a30e9eac',
+                buku_id: briId,
                 tipe: 'masuk',
                 nominal: piutang[0].nominal,
                 kategori: 'Terima Piutang',
@@ -766,11 +775,12 @@
             const { data: piutang } = await supabase.from('utang_piutang').select('*').eq('id', id);
             if (!piutang || !piutang[0] || !piutang[0].lunas) return;
             if (!confirm(`Batalkan penerimaan piutang ${piutang[0].nama}?`)) return;
-            const { data: buku } = await supabase.from('buku_kas').select('*').eq('id', '534b0c29-6b7f-43ec-9d99-6f72a30e9eac');
+            const briId = '534b0c29-6b7f-43ec-9d99-6f72a30e9eac';
+            const { data: buku } = await supabase.from('buku_kas').select('*').eq('id', briId);
             if (!buku || !buku[0]) return;
-            await supabase.from('buku_kas').update({ saldo: buku[0].saldo - piutang[0].nominal }).eq('id', '534b0c29-6b7f-43ec-9d99-6f72a30e9eac');
+            await supabase.from('buku_kas').update({ saldo: buku[0].saldo - piutang[0].nominal }).eq('id', briId);
             await supabase.from('utang_piutang').update({ lunas: false }).eq('id', id);
-            const { data: tx } = await supabase.from('transaksi').select('*').eq('buku_id', '534b0c29-6b7f-43ec-9d99-6f72a30e9eac').eq('tipe', 'masuk').eq('kategori', 'Terima Piutang').order('tanggal', { ascending: false }).limit(1);
+            const { data: tx } = await supabase.from('transaksi').select('*').eq('buku_id', briId).eq('tipe', 'masuk').eq('kategori', 'Terima Piutang').order('tanggal', { ascending: false }).limit(1);
             if (tx && tx[0]) await supabase.from('transaksi').delete().eq('id', tx[0].id);
             refreshCurrentPage(); alert('Status piutang dikembalikan!');
         }
