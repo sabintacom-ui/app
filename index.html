@@ -325,17 +325,17 @@
         </div>
     </div>
 
-    <!-- SUPABASE CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    // ==================== SUPABASE CDN ====================
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script>
-        // ==================== KONFIGURASI SUPABASE ====================
-        const SUPABASE_URL = 'https://tfnwifktbjfpbbxkumik.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRmbndpZmt0YmpmcGJieGt1bWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MjY5NjksImV4cCI6MjA5NjAwMjk2OX0.EvPtd7Y2S9PwhV4eq1B-b7-_IlsAwHSChjhUReHFQ1M';
-        
-        // Inisialisasi Supabase yang BENAR
-        const { createClient } = supabase;
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+<script>
+    // ==================== KONFIGURASI SUPABASE ====================
+    const SUPABASE_URL = 'https://tfnwifktbjfpbbxkumik.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRmbndpZmt0YmpmcGJieGt1bWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MjY5NjksImV4cCI6MjA5NjAwMjk2OX0.EvPtd7Y2S9PwhV4eq1B-b7-_IlsAwHSChjhUReHFQ1M';
+    
+    // ==================== INISIALISASI YANG BENAR (HANYA SEKALI) ====================
+    const { createClient } = supabase;
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // ==================== UTILITY ====================
         function formatRupiah(angka) { return 'Rp' + angka.toLocaleString('id-ID'); }
