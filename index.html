@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RIZQUNA - Full Colour Premium</title>
+    <title>RIZQUNA - Full Premium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- RESET --- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', Roboto, sans-serif; }
         body { background: #f0f4f8; display: flex; min-height: 100vh; color: #1a202c; }
         :root { 
@@ -18,7 +17,6 @@
             --primary: #3b82f6;
         }
 
-        /* --- SIDEBAR --- */
         .sidebar {
             width: 260px;
             background: #0f172a;
@@ -40,13 +38,11 @@
         .menu-item.active { background: rgba(59,130,246,0.15); color: #60a5fa; }
         .menu-header { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; margin: 24px 0 8px 16px; letter-spacing: 1px; }
 
-        /* --- MAIN CONTENT --- */
         .main-content { flex: 1; padding: 24px 32px; overflow-x: hidden; background: #f8fafc; }
         .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
         .page-title { font-size: 22px; font-weight: 700; color: #0f172a; }
         .date-badge { background: white; padding: 8px 20px; border-radius: 30px; font-size: 13px; color: #475569; border: 1px solid #e2e8f0; box-shadow: var(--shadow-sm); }
 
-        /* --- BANNER --- */
         .banner {
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             color: white; padding: 32px 40px; border-radius: var(--radius); margin-bottom: 28px;
@@ -56,7 +52,6 @@
         .banner p { opacity: 0.9; font-size: 14px; }
         .banner i { position: absolute; right: 30px; bottom: -30px; font-size: 140px; opacity: 0.12; transform: rotate(15deg); }
 
-        /* --- STATS --- */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 28px; }
         .stat-card {
             padding: 22px 24px; border-radius: var(--radius); box-shadow: var(--shadow-md);
@@ -71,7 +66,6 @@
         .stat-value { font-size: 24px; font-weight: 700; margin: 6px 0; }
         .stat-change { font-size: 11px; padding: 2px 10px; border-radius: 20px; font-weight: 600; background: rgba(255,255,255,0.2); }
 
-        /* --- WIDGET --- */
         .bottom-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
         .widget-box { background: white; padding: 24px; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
         .widget-title { font-weight: 600; font-size: 16px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: #0f172a; }
@@ -80,18 +74,13 @@
         .bar { flex: 1; background: linear-gradient(180deg, #3b82f6, #2563eb); border-radius: 6px 6px 0 0; min-height: 10px; }
         .bar:nth-child(even) { background: linear-gradient(180deg, #8b5cf6, #7c3aed); }
 
-        /* --- ACTIVITY --- */
         .activity-item { display: flex; align-items: center; padding: 14px 0; border-bottom: 1px solid #f1f5f9; }
-        .icon-circle {
-            width: 40px; height: 40px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; margin-right: 14px; color: white; flex-shrink: 0;
-        }
+        .icon-circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 14px; color: white; flex-shrink: 0; }
         .act-info { flex: 1; min-width: 0; }
         .act-title { font-size: 14px; font-weight: 500; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .act-date { font-size: 11px; color: #94a3b8; }
         .act-amount { font-weight: 600; font-size: 14px; white-space: nowrap; }
 
-        /* --- BUKU KAS --- */
         .hidden-page { display: none; }
         .hidden-page.active { display: block; }
 
@@ -140,7 +129,6 @@
         }
         .buku-card .actions button:hover { background: rgba(255,255,255,0.4); }
 
-        /* --- KARTU TAMBAH BUKU KAS --- */
         .buku-card-add {
             background: white !important;
             border: 2px dashed #3b82f6 !important;
@@ -161,7 +149,7 @@
             border-color: #2563eb !important;
         }
 
-        /* --- FLOATING ACTION BUTTON (TAMBAH TRANSAKSI) --- */
+        /* --- FLOATING ACTION BUTTON --- */
         .fab {
             position: fixed;
             bottom: 30px;
@@ -189,10 +177,7 @@
             transform: scale(0.95);
         }
 
-        /* --- TABEL TRANSAKSI PER BULAN --- */
-        .month-group {
-            margin-bottom: 24px;
-        }
+        .month-group { margin-bottom: 24px; }
         .month-label {
             font-size: 16px;
             font-weight: 600;
@@ -224,6 +209,8 @@
         .btn-warning { background: #f59e0b; }
         .btn-danger { background: #ef4444; }
         .btn-sm { padding: 4px 12px; font-size: 11px; }
+        .btn-success { background: #10b981; }
+        .btn-primary { background: var(--primary); }
 
         /* --- MODAL --- */
         .modal {
@@ -248,12 +235,12 @@
         .btn-cancel { background: #e2e8f0; color: #475569; }
         .btn-primary { background: var(--primary); color: white; }
 
-        /* --- TAG STATUS --- */
         .tag-status { font-size: 10px; padding: 4px 12px; border-radius: 20px; font-weight: 600; display: inline-block; }
         .tag-lunas { background: #d1fae5; color: #059669; }
         .tag-bayar { background: #fee2e2; color: #dc2626; }
+        .tag-success { background: #d1fae5; color: #059669; }
+        .tag-pending { background: #fef3c7; color: #d97706; }
 
-        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .main-content { padding: 16px; }
@@ -275,6 +262,7 @@
         <div class="menu-header">Menu</div>
         <a href="#" class="menu-item active" onclick="showPage('dashboard')"><i class="fas fa-th-large"></i> Dashboard</a>
         <a href="#" class="menu-item" onclick="showPage('buku-kas')"><i class="fas fa-book"></i> Buku Kas</a>
+        <a href="#" class="menu-item" onclick="showPage('invoice')"><i class="fas fa-file-invoice"></i> Invoice</a>
         <a href="#" class="menu-item" onclick="showPage('utang-piutang')"><i class="fas fa-handshake"></i> Utang & Piutang</a>
         <a href="#" class="menu-item" onclick="showPage('laporan')"><i class="fas fa-chart-pie"></i> Laporan</a>
         <div class="menu-header">Akun</div>
@@ -313,16 +301,23 @@
         <div id="page-buku-kas" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
                 <h2 style="font-size:20px; font-weight:700; color:#0f172a;"><i class="fas fa-wallet" style="color:#3b82f6;"></i> Buku Kas</h2>
-                <!-- TOMBOL TAMBAH BUKU KAS DI HAPUS (SUDAH ADA DI KARTU) -->
             </div>
             <div class="buku-list-grid" id="bukuListGrid"></div>
-
             <h4 style="font-size:15px; color:#334155; margin-top:16px;">Daftar Transaksi</h4>
             <div id="transaksiTableContainer">
                 <div class="table-container">
                     <div id="transaksiGrouped"></div>
                 </div>
             </div>
+        </div>
+
+        <!-- ===== INVOICE ===== -->
+        <div id="page-invoice" class="hidden-page">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
+                <h2 style="font-size:20px; font-weight:700; color:#0f172a;"><i class="fas fa-file-invoice" style="color:#3b82f6;"></i> Invoice</h2>
+                <button class="btn btn-primary" onclick="openModal('invoice')"><i class="fas fa-plus"></i> Tambah Invoice</button>
+            </div>
+            <div id="invoiceList"></div>
         </div>
 
         <!-- ===== UTANG & PIUTANG ===== -->
@@ -358,7 +353,7 @@
         </div>
     </div>
 
-    <!-- ===== FLOATING ACTION BUTTON (TAMBAH TRANSAKSI) ===== -->
+    <!-- ===== FLOATING ACTION BUTTON ===== -->
     <button class="fab" onclick="openModal('transaksi')" title="Tambah Transaksi">
         <i class="fas fa-plus"></i>
     </button>
@@ -389,13 +384,14 @@
             ],
             transaksi: [],
             utang: [],
-            piutang: []
+            piutang: [],
+            invoice: []
         };
 
         // Load dari localStorage
-        if (localStorage.getItem('rizqunaFullColourData')) {
+        if (localStorage.getItem('rizqunaPremiumData')) {
             try {
-                const saved = JSON.parse(localStorage.getItem('rizqunaFullColourData'));
+                const saved = JSON.parse(localStorage.getItem('rizqunaPremiumData'));
                 appData = saved;
             } catch(e) {}
         } else {
@@ -405,9 +401,7 @@
                 { id: 't2', tanggal: '2026-06-01T10:30', bukuId: 'gopay', tipe: 'keluar', nominal: 50000, kategori: 'Makan', desc: 'Lunch' },
                 { id: 't3', tanggal: '2026-06-02T08:00', bukuId: 'bri', tipe: 'masuk', nominal: 2000000, kategori: 'Transfer', desc: 'Bayar piutang' },
                 { id: 't4', tanggal: '2026-06-02T12:15', bukuId: 'jenius', tipe: 'keluar', nominal: 75000, kategori: 'Pulsa', desc: 'Isi ulang' },
-                { id: 't5', tanggal: '2026-06-03T07:20', bukuId: 'qris', tipe: 'masuk', nominal: 450000, kategori: 'QRIS', desc: 'Pembayaran QRIS' },
-                { id: 't6', tanggal: '2026-05-28T10:00', bukuId: 'bri', tipe: 'masuk', nominal: 1500000, kategori: 'Transfer', desc: 'Pembayaran proyek' },
-                { id: 't7', tanggal: '2026-05-15T14:00', bukuId: 'cash', tipe: 'keluar', nominal: 200000, kategori: 'Operasional', desc: 'Beli ATK' }
+                { id: 't5', tanggal: '2026-06-03T07:20', bukuId: 'qris', tipe: 'masuk', nominal: 450000, kategori: 'QRIS', desc: 'Pembayaran QRIS' }
             ];
             appData.utang = [
                 { id: 'u1', nama: 'Toko Maju', nominal: 500000, jatuhTempo: '2026-07-01', lunas: false },
@@ -416,11 +410,15 @@
             appData.piutang = [
                 { id: 'p1', nama: 'Andi Customer', nominal: 750000, jatuhTempo: '2026-06-15', lunas: false }
             ];
+            appData.invoice = [
+                { id: 'inv1', nomor: 'INV-2026-001', customer: 'PT Maju Jaya', nominal: 3500000, jatuhTempo: '2026-06-30', status: 'unpaid', metode: '' },
+                { id: 'inv2', nomor: 'INV-2026-002', customer: 'CV Sejahtera', nominal: 1500000, jatuhTempo: '2026-06-15', status: 'paid', metode: 'BRI' }
+            ];
             saveData();
         }
 
         function saveData() {
-            localStorage.setItem('rizqunaFullColourData', JSON.stringify(appData));
+            localStorage.setItem('rizqunaPremiumData', JSON.stringify(appData));
         }
 
         // =============================================
@@ -443,44 +441,28 @@
             return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
         }
 
-        // Warna untuk kartu buku kas
-        const warnaBuku = [
-            '#10b981', // Cash - Hijau
-            '#3b82f6', // BRI - Biru
-            '#8b5cf6', // Jenius - Ungu
-            '#f59e0b', // GoPay - Kuning
-            '#ef4444', // QRIS - Merah
-            '#ec4899', // Tambahan - Pink
-            '#14b8a6', // Tambahan - Teal
-            '#f97316'  // Tambahan - Oranye
-        ];
+        const warnaBuku = ['#10b981','#3b82f6','#8b5cf6','#f59e0b','#ef4444','#ec4899','#14b8a6','#f97316'];
 
         function getWarnaBuku(index) {
             return warnaBuku[index % warnaBuku.length];
         }
 
         // =============================================
-        // RENDER FUNCTIONS
+        // RENDER DASHBOARD
         // =============================================
         function renderDashboard() {
             const totalSaldo = hitungTotalSaldo();
             const totalPemasukan = appData.transaksi.filter(t => t.tipe === 'masuk').reduce((s, t) => s + t.nominal, 0);
             const totalPengeluaran = appData.transaksi.filter(t => t.tipe === 'keluar').reduce((s, t) => s + t.nominal, 0);
             const totalUtang = appData.utang.filter(u => !u.lunas).reduce((s, u) => s + u.nominal, 0);
+            const totalInvoiceUnpaid = appData.invoice.filter(i => i.status === 'unpaid').reduce((s, i) => s + i.nominal, 0);
 
-            const stats = [
-                { label: 'Total Saldo', value: totalSaldo, change: '+12.5%' },
-                { label: 'Pemasukan', value: totalPemasukan, change: '+8.3%' },
-                { label: 'Pengeluaran', value: totalPengeluaran, change: '-2.1%' },
-                { label: 'Utang Aktif', value: totalUtang, change: '0%' }
-            ];
-            document.getElementById('statsGrid').innerHTML = stats.map(s => `
-                <div class="stat-card">
-                    <div class="stat-label">${s.label}</div>
-                    <div class="stat-value">${formatRupiah(s.value)}</div>
-                    <span class="stat-change">${s.change}</span>
-                </div>
-            `).join('');
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="stat-label">Total Saldo</div><div class="stat-value">${formatRupiah(totalSaldo)}</div><span class="stat-change">+12%</span></div>
+                <div class="stat-card"><div class="stat-label">Pemasukan</div><div class="stat-value">${formatRupiah(totalPemasukan)}</div><span class="stat-change">+8%</span></div>
+                <div class="stat-card"><div class="stat-label">Pengeluaran</div><div class="stat-value">${formatRupiah(totalPengeluaran)}</div><span class="stat-change">-2%</span></div>
+                <div class="stat-card"><div class="stat-label">Invoice Unpaid</div><div class="stat-value">${formatRupiah(totalInvoiceUnpaid)}</div><span class="stat-change">0%</span></div>
+            `;
 
             const heights = [30,60,45,80,90,50,70,40];
             document.getElementById('chartArea').innerHTML = heights.map(h => `<div class="bar" style="height:${h}%;"></div>`).join('');
@@ -488,7 +470,7 @@
             const sorted = [...appData.transaksi].sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal)).slice(0,6);
             const container = document.getElementById('recentActivityList');
             if (sorted.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:20px;">Belum ada aktivitas</div>';
+                container.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:20px;">Belum ada transaksi</div>';
             } else {
                 container.innerHTML = sorted.map(t => {
                     const isIncome = t.tipe === 'masuk';
@@ -510,6 +492,9 @@
             }
         }
 
+        // =============================================
+        // RENDER BUKU KAS
+        // =============================================
         function renderBukuKasList() {
             const grid = document.getElementById('bukuListGrid');
             grid.innerHTML = '';
@@ -532,7 +517,6 @@
                 grid.appendChild(card);
             });
 
-            // Kartu "Tambah Buku Kas"
             const addCard = document.createElement('div');
             addCard.className = 'buku-card buku-card-add';
             addCard.style.background = 'white';
@@ -566,7 +550,6 @@
                 return;
             }
 
-            // Kelompokkan per bulan
             const groups = {};
             data.forEach(t => {
                 const date = new Date(t.tanggal);
@@ -578,7 +561,6 @@
                 groups[monthKey].items.push(t);
             });
 
-            // Render per grup bulan
             let html = '';
             for (const key in groups) {
                 const group = groups[key];
@@ -621,6 +603,50 @@
             container.innerHTML = html;
         }
 
+        // =============================================
+        // RENDER INVOICE
+        // =============================================
+        function renderInvoice() {
+            const container = document.getElementById('invoiceList');
+            if (appData.invoice.length === 0) {
+                container.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:20px;">Belum ada invoice</div>';
+                return;
+            }
+            container.innerHTML = appData.invoice.map(inv => `
+                <div class="widget-box" style="margin-bottom:12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <div>
+                            <div style="font-weight:700; font-size:16px;">${inv.nomor}</div>
+                            <div style="font-size:14px; color:#475569;">${inv.customer}</div>
+                            <div style="font-size:13px; color:#64748b;">Jatuh tempo: ${new Date(inv.jatuhTempo).toLocaleDateString('id-ID')}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-weight:700; font-size:18px;">${formatRupiah(inv.nominal)}</div>
+                            <span class="tag-status ${inv.status === 'paid' ? 'tag-lunas' : 'tag-pending'}">
+                                ${inv.status === 'paid' ? '✅ Lunas' : '⏳ Belum Bayar'}
+                            </span>
+                            ${inv.status === 'paid' ? `<div style="font-size:12px; color:#64748b;">Via: ${inv.metode}</div>` : ''}
+                        </div>
+                    </div>
+                    ${inv.status === 'unpaid' ? `
+                        <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                            <button class="btn btn-success btn-sm" onclick="bayarInvoice('${inv.id}')"><i class="fas fa-credit-card"></i> Bayar</button>
+                            <button class="btn btn-warning btn-sm" onclick="editInvoice('${inv.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-danger btn-sm" onclick="hapusInvoice('${inv.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    ` : `
+                        <div style="margin-top:10px; display:flex; gap:8px;">
+                            <button class="btn btn-warning btn-sm" onclick="unpaidInvoice('${inv.id}')"><i class="fas fa-undo"></i> Kembalikan ke Unpaid</button>
+                            <button class="btn btn-danger btn-sm" onclick="hapusInvoice('${inv.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `}
+                </div>
+            `).join('');
+        }
+
+        // =============================================
+        // RENDER UTANG PIUTANG
+        // =============================================
         function renderUtangPiutang() {
             const listUtang = document.getElementById('listUtang');
             if (appData.utang.length === 0) {
@@ -669,10 +695,14 @@
             }
         }
 
+        // =============================================
+        // RENDER LAPORAN
+        // =============================================
         function renderLaporan() {
             const totalPemasukan = appData.transaksi.filter(t => t.tipe === 'masuk').reduce((s, t) => s + t.nominal, 0);
             const totalPengeluaran = appData.transaksi.filter(t => t.tipe === 'keluar').reduce((s, t) => s + t.nominal, 0);
             const saldoAkhir = hitungTotalSaldo();
+            const totalInvoice = appData.invoice.reduce((s, i) => s + i.nominal, 0);
 
             document.getElementById('totalPemasukan').textContent = formatRupiah(totalPemasukan);
             document.getElementById('totalPengeluaran').textContent = formatRupiah(totalPengeluaran);
@@ -701,7 +731,7 @@
         }
 
         // =============================================
-        // NAVIGASI & INTERAKSI
+        // NAVIGASI
         // =============================================
         function showPage(pageId) {
             document.querySelectorAll('.hidden-page').forEach(p => p.classList.remove('active'));
@@ -716,6 +746,10 @@
                 document.getElementById('pageTitle').textContent = 'Buku Kas';
                 renderBukuKasList();
                 renderTransaksiTable();
+            } else if (pageId === 'invoice') {
+                document.getElementById('page-invoice').classList.add('active');
+                document.getElementById('pageTitle').textContent = 'Invoice';
+                renderInvoice();
             } else if (pageId === 'utang-piutang') {
                 document.getElementById('page-utang-piutang').classList.add('active');
                 document.getElementById('pageTitle').textContent = 'Utang & Piutang';
@@ -799,6 +833,20 @@
                     <input type="text" id="f_nama" value="${data ? data.nama : ''}" placeholder="Nama customer">
                     <label>Nominal Piutang (Rp)</label>
                     <input type="number" id="f_nominal" value="${data ? data.nominal : ''}" placeholder="750000">
+                    <label>Jatuh Tempo</label>
+                    <input type="date" id="f_jatuhTempo" value="${data ? data.jatuhTempo : ''}">
+                `;
+                saveBtn.style.display = 'block';
+            } else if (mode === 'invoice') {
+                title.textContent = editId ? '✏️ Edit Invoice' : '📝 Tambah Invoice';
+                const data = editId ? appData.invoice.find(inv => inv.id === editId) : null;
+                body.innerHTML = `
+                    <label>Nomor Invoice</label>
+                    <input type="text" id="f_nomor" value="${data ? data.nomor : ''}" placeholder="INV-2026-001">
+                    <label>Customer</label>
+                    <input type="text" id="f_customer" value="${data ? data.customer : ''}" placeholder="Nama customer">
+                    <label>Nominal (Rp)</label>
+                    <input type="number" id="f_nominal" value="${data ? data.nominal : ''}" placeholder="5000000">
                     <label>Jatuh Tempo</label>
                     <input type="date" id="f_jatuhTempo" value="${data ? data.jatuhTempo : ''}">
                 `;
@@ -933,6 +981,35 @@
                 closeModal();
                 refreshCurrentPage();
                 alert('Piutang berhasil disimpan!');
+            } else if (modalMode === 'invoice') {
+                const nomor = document.getElementById('f_nomor').value.trim();
+                const customer = document.getElementById('f_customer').value.trim();
+                const nominal = parseInt(document.getElementById('f_nominal').value);
+                const jatuhTempo = document.getElementById('f_jatuhTempo').value;
+                if (!nomor || !customer || !nominal || !jatuhTempo) { alert('Lengkapi data!'); return; }
+                if (editId) {
+                    const inv = appData.invoice.find(i => i.id === editId);
+                    if (inv) {
+                        inv.nomor = nomor;
+                        inv.customer = customer;
+                        inv.nominal = nominal;
+                        inv.jatuhTempo = jatuhTempo;
+                    }
+                } else {
+                    appData.invoice.push({
+                        id: 'inv' + generateId(),
+                        nomor: nomor,
+                        customer: customer,
+                        nominal: nominal,
+                        jatuhTempo: jatuhTempo,
+                        status: 'unpaid',
+                        metode: ''
+                    });
+                }
+                saveData();
+                closeModal();
+                refreshCurrentPage();
+                alert('Invoice berhasil disimpan!');
             }
         }
 
@@ -980,7 +1057,6 @@
             const utang = appData.utang.find(u => u.id === id);
             if (!utang || utang.lunas) return;
             if (!confirm(`Bayar utang ${utang.nama} sebesar ${formatRupiah(utang.nominal)}? (Uang akan diambil dari buku kas: Cash)`)) return;
-
             const buku = appData.bukuKas.find(b => b.id === 'cash');
             if (buku.saldo < utang.nominal) {
                 alert('Saldo Cash tidak mencukupi!');
@@ -988,7 +1064,6 @@
             }
             buku.saldo -= utang.nominal;
             utang.lunas = true;
-
             appData.transaksi.push({
                 id: 't' + generateId(),
                 tanggal: new Date().toISOString(),
@@ -998,7 +1073,6 @@
                 kategori: 'Bayar Utang',
                 desc: `Bayar utang ke ${utang.nama}`
             });
-
             saveData();
             refreshCurrentPage();
             alert('Utang berhasil dibayar!');
@@ -1008,16 +1082,13 @@
             const utang = appData.utang.find(u => u.id === id);
             if (!utang || !utang.lunas) return;
             if (!confirm(`Batalkan pembayaran utang ${utang.nama}? Saldo Cash akan dikembalikan.`)) return;
-
             const buku = appData.bukuKas.find(b => b.id === 'cash');
             buku.saldo += utang.nominal;
             utang.lunas = false;
-
             const lastPayment = appData.transaksi.filter(t => t.desc && t.desc.includes(utang.nama)).pop();
             if (lastPayment) {
                 appData.transaksi = appData.transaksi.filter(t => t.id !== lastPayment.id);
             }
-
             saveData();
             refreshCurrentPage();
             alert('Status utang dikembalikan ke belum lunas!');
@@ -1027,11 +1098,9 @@
             const piutang = appData.piutang.find(p => p.id === id);
             if (!piutang || piutang.lunas) return;
             if (!confirm(`Terima pembayaran piutang dari ${piutang.nama} sebesar ${formatRupiah(piutang.nominal)}? (Uang akan masuk ke buku kas: BRI)`)) return;
-
             const buku = appData.bukuKas.find(b => b.id === 'bri');
             buku.saldo += piutang.nominal;
             piutang.lunas = true;
-
             appData.transaksi.push({
                 id: 't' + generateId(),
                 tanggal: new Date().toISOString(),
@@ -1041,7 +1110,6 @@
                 kategori: 'Terima Piutang',
                 desc: `Terima piutang dari ${piutang.nama}`
             });
-
             saveData();
             refreshCurrentPage();
             alert('Piutang berhasil diterima!');
@@ -1051,16 +1119,13 @@
             const piutang = appData.piutang.find(p => p.id === id);
             if (!piutang || !piutang.lunas) return;
             if (!confirm(`Batalkan penerimaan piutang ${piutang.nama}? Saldo BRI akan dikurangi.`)) return;
-
             const buku = appData.bukuKas.find(b => b.id === 'bri');
             buku.saldo -= piutang.nominal;
             piutang.lunas = false;
-
             const lastPayment = appData.transaksi.filter(t => t.desc && t.desc.includes(piutang.nama)).pop();
             if (lastPayment) {
                 appData.transaksi = appData.transaksi.filter(t => t.id !== lastPayment.id);
             }
-
             saveData();
             refreshCurrentPage();
             alert('Status piutang dikembalikan ke belum lunas!');
@@ -1088,10 +1153,86 @@
             refreshCurrentPage();
         }
 
+        // =============================================
+        // CRUD - INVOICE
+        // =============================================
+        function editInvoice(id) {
+            openModal('invoice', id);
+        }
+
+        function hapusInvoice(id) {
+            if (!confirm('Hapus invoice ini?')) return;
+            appData.invoice = appData.invoice.filter(i => i.id !== id);
+            saveData();
+            refreshCurrentPage();
+        }
+
+        function bayarInvoice(id) {
+            const inv = appData.invoice.find(i => i.id === id);
+            if (!inv || inv.status === 'paid') return;
+            
+            // Tampilkan pilihan metode pembayaran
+            const metode = prompt(
+                'Pilih metode pembayaran:\n1. ATM (BRI)\n2. Cash\n3. E-Wallet (GoPay)\n4. QRIS Dana\n\nKetik nomor metode:',
+                '1'
+            );
+            
+            let bukuId = '';
+            let metodeNama = '';
+            if (metode === '1') { bukuId = 'bri'; metodeNama = 'BRI'; }
+            else if (metode === '2') { bukuId = 'cash'; metodeNama = 'Cash'; }
+            else if (metode === '3') { bukuId = 'gopay'; metodeNama = 'GoPay'; }
+            else if (metode === '4') { bukuId = 'qris'; metodeNama = 'QRIS Dana'; }
+            else { alert('Metode tidak valid!'); return; }
+            
+            const buku = appData.bukuKas.find(b => b.id === bukuId);
+            buku.saldo += inv.nominal;
+            inv.status = 'paid';
+            inv.metode = metodeNama;
+            
+            appData.transaksi.push({
+                id: 't' + generateId(),
+                tanggal: new Date().toISOString(),
+                bukuId: bukuId,
+                tipe: 'masuk',
+                nominal: inv.nominal,
+                kategori: 'Pembayaran Invoice',
+                desc: `Pembayaran invoice ${inv.nomor} dari ${inv.customer} via ${metodeNama}`
+            });
+            
+            saveData();
+            refreshCurrentPage();
+            alert(`Invoice ${inv.nomor} berhasil dibayar via ${metodeNama}!`);
+        }
+
+        function unpaidInvoice(id) {
+            const inv = appData.invoice.find(i => i.id === id);
+            if (!inv || inv.status === 'unpaid') return;
+            if (!confirm(`Kembalikan invoice ${inv.nomor} ke status Unpaid?`)) return;
+            
+            const buku = appData.bukuKas.find(b => b.id === inv.metode === 'BRI' ? 'bri' : 'cash');
+            if (buku) {
+                buku.saldo -= inv.nominal;
+            }
+            inv.status = 'unpaid';
+            inv.metode = '';
+            
+            // Hapus transaksi terkait
+            const lastPayment = appData.transaksi.filter(t => t.desc && t.desc.includes(inv.nomor)).pop();
+            if (lastPayment) {
+                appData.transaksi = appData.transaksi.filter(t => t.id !== lastPayment.id);
+            }
+            
+            saveData();
+            refreshCurrentPage();
+            alert(`Invoice ${inv.nomor} dikembalikan ke Unpaid!`);
+        }
+
         function refreshCurrentPage() {
             const active = document.querySelector('.page.active') || document.getElementById('page-dashboard');
             if (active.id === 'page-dashboard') renderDashboard();
             else if (active.id === 'page-buku-kas') { renderBukuKasList(); renderTransaksiTable(); }
+            else if (active.id === 'page-invoice') renderInvoice();
             else if (active.id === 'page-utang-piutang') renderUtangPiutang();
             else if (active.id === 'page-laporan') renderLaporan();
         }
