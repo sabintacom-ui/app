@@ -825,27 +825,48 @@
         }
 
         function renderBukuKasList() {
-            const grid = document.getElementById('bukuListGrid');
-            grid.innerHTML = '';
-            appData.bukuKas.forEach((b, index) => {
-                const card = document.createElement('div');
-                card.className = 'buku-card';
-                card.style.background = getWarnaBuku(index);
-                card.innerHTML = `
-                    <div class="actions">
-                        <button onclick="event.stopPropagation(); editBuku('${b.id}')" title="Edit"><i class="fas fa-edit"></i></button>
-                        <button onclick="event.stopPropagation(); hapusBuku('${b.id}')" title="Hapus"><i class="fas fa-trash"></i></button>
-                    </div>
-                    <div class="icon"><i class="fas ${b.icon}"></i></div>
-                    <div class="info">
-                        <div class="nama">${b.nama}</div>
-                        <div class="saldo">${formatRupiah(b.saldo)}</div>
-                    </div>
-                `;
-                card.onclick = () => filterTransaksiByBuku(b.id);
-                grid.appendChild(card);
-            });
-        }
+    const grid = document.getElementById('bukuListGrid');
+    grid.innerHTML = '';
+    // Loop kartu buku kas yang sudah ada
+    appData.bukuKas.forEach((b, index) => {
+        const card = document.createElement('div');
+        card.className = 'buku-card';
+        card.style.background = getWarnaBuku(index);
+        card.innerHTML = `
+            <div class="actions">
+                <button onclick="event.stopPropagation(); editBuku('${b.id}')" title="Edit"><i class="fas fa-edit"></i></button>
+                <button onclick="event.stopPropagation(); hapusBuku('${b.id}')" title="Hapus"><i class="fas fa-trash"></i></button>
+            </div>
+            <div class="icon"><i class="fas ${b.icon}"></i></div>
+            <div class="info">
+                <div class="nama">${b.nama}</div>
+                <div class="saldo">${formatRupiah(b.saldo)}</div>
+            </div>
+        `;
+        card.onclick = () => filterTransaksiByBuku(b.id);
+        grid.appendChild(card);
+    });
+
+    // ===== TAMBAHAN: Kartu "Tambah Buku Kas" di akhir grid =====
+    const addCard = document.createElement('div');
+    addCard.className = 'buku-card buku-card-add';
+    addCard.style.background = 'white';
+    addCard.style.border = '2px dashed #3b82f6';
+    addCard.style.boxShadow = 'none';
+    addCard.style.cursor = 'pointer';
+    addCard.style.display = 'flex';
+    addCard.style.alignItems = 'center';
+    addCard.style.justifyContent = 'center';
+    addCard.style.gap = '10px';
+    addCard.style.padding = '16px';
+    addCard.style.minHeight = '80px'; // Agar tidak terlalu kecil
+    addCard.innerHTML = `
+        <div style="font-size:24px; color:#3b82f6;"><i class="fas fa-plus-circle"></i></div>
+        <div style="font-size:13px; font-weight:600; color:#3b82f6;">Tambah Buku Kas</div>
+    `;
+    addCard.onclick = () => openModal('buku');
+    grid.appendChild(addCard);
+}
 
         function renderTransaksiTable(bukuIdFilter = null) {
             const tbody = document.getElementById('transaksiTableBody');
