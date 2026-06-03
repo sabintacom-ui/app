@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RIZQUNA - Full Premium</title>
+    <title>RIZQUNA - Premium</title>
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', Roboto, sans-serif; }
@@ -15,6 +20,10 @@
             --radius: 16px;
             --radius-sm: 10px;
             --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
         }
 
         .sidebar {
@@ -86,7 +95,7 @@
 
         .buku-list-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 14px;
             margin-bottom: 28px;
         }
@@ -107,6 +116,7 @@
         .buku-card .info { display: flex; flex-direction: column; overflow: hidden; }
         .buku-card .nama { font-weight: 600; font-size: 14px; opacity: 0.95; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .buku-card .saldo { font-size: 17px; font-weight: 700; margin-top: 2px; }
+        .buku-card .norek { font-size: 11px; opacity: 0.8; margin-top: 2px; }
         .buku-card .actions {
             position: absolute;
             top: 10px;
@@ -149,34 +159,6 @@
             border-color: #2563eb !important;
         }
 
-        /* --- FLOATING ACTION BUTTON --- */
-        .fab {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 20px rgba(59,130,246,0.4);
-            font-size: 28px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 300;
-            transition: 0.3s;
-        }
-        .fab:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(59,130,246,0.5);
-        }
-        .fab:active {
-            transform: scale(0.95);
-        }
-
         .month-group { margin-bottom: 24px; }
         .month-label {
             font-size: 16px;
@@ -211,6 +193,34 @@
         .btn-sm { padding: 4px 12px; font-size: 11px; }
         .btn-success { background: #10b981; }
         .btn-primary { background: var(--primary); }
+        .btn-primary:hover { background: var(--primary-dark); }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 20px rgba(59,130,246,0.4);
+            font-size: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            transition: 0.3s;
+        }
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(59,130,246,0.5);
+        }
+        .fab:active {
+            transform: scale(0.95);
+        }
 
         /* --- MODAL --- */
         .modal {
@@ -220,7 +230,7 @@
         }
         .modal.open { display: flex; }
         .modal-box {
-            background: white; width: 90%; max-width: 440px; border-radius: var(--radius);
+            background: white; width: 90%; max-width: 480px; border-radius: var(--radius);
             padding: 28px 32px; box-shadow: var(--shadow-lg); max-height: 90vh; overflow-y: auto;
         }
         .modal-box h3 { text-align: center; font-size: 20px; color: #0f172a; font-weight: 700; margin-bottom: 20px; }
@@ -238,8 +248,42 @@
         .tag-status { font-size: 10px; padding: 4px 12px; border-radius: 20px; font-weight: 600; display: inline-block; }
         .tag-lunas { background: #d1fae5; color: #059669; }
         .tag-bayar { background: #fee2e2; color: #dc2626; }
-        .tag-success { background: #d1fae5; color: #059669; }
         .tag-pending { background: #fef3c7; color: #d97706; }
+        .tag-success { background: #d1fae5; color: #059669; }
+
+        /* --- INVOICE FORM --- */
+        .invoice-form-card {
+            background: #f8fafc;
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .invoice-item-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        .invoice-item-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 8px;
+        }
+        .invoice-item-header span { font-weight: 600; font-size: 13px; color: #475569; }
+        .invoice-row {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+        }
+        .invoice-row .full { grid-column: 1 / -1; }
+        .invoice-grand-total {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 12px;
+        }
+        .invoice-grand-total .label { font-size: 14px; font-weight: 600; }
+        .invoice-grand-total .value { font-size: 22px; font-weight: 700; }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
@@ -251,6 +295,7 @@
             .banner { padding: 24px; }
             .modal-box { padding: 20px; }
             .fab { bottom: 20px; right: 20px; width: 56px; height: 56px; font-size: 24px; }
+            .invoice-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -276,7 +321,7 @@
             <div class="date-badge"><i class="far fa-calendar-alt"></i> <span id="tanggalHariIni"></span></div>
         </div>
 
-        <!-- ===== DASHBOARD ===== -->
+        <!-- DASHBOARD -->
         <div id="page-dashboard">
             <div class="banner">
                 <div><h2>Selamat Datang, Rizquna!</h2><p>Pantau kesehatan finansial Anda dengan tampilan cerdas.</p></div>
@@ -297,7 +342,7 @@
             </div>
         </div>
 
-        <!-- ===== BUKU KAS ===== -->
+        <!-- BUKU KAS -->
         <div id="page-buku-kas" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
                 <h2 style="font-size:20px; font-weight:700; color:#0f172a;"><i class="fas fa-wallet" style="color:#3b82f6;"></i> Buku Kas</h2>
@@ -311,16 +356,16 @@
             </div>
         </div>
 
-        <!-- ===== INVOICE ===== -->
+        <!-- INVOICE -->
         <div id="page-invoice" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
                 <h2 style="font-size:20px; font-weight:700; color:#0f172a;"><i class="fas fa-file-invoice" style="color:#3b82f6;"></i> Invoice</h2>
-                <button class="btn btn-primary" onclick="openModal('invoice')"><i class="fas fa-plus"></i> Tambah Invoice</button>
+                <button class="btn btn-primary" onclick="openModal('invoice')"><i class="fas fa-plus"></i> Buat Invoice</button>
             </div>
             <div id="invoiceList"></div>
         </div>
 
-        <!-- ===== UTANG & PIUTANG ===== -->
+        <!-- UTANG & PIUTANG -->
         <div id="page-utang-piutang" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
                 <h2 style="font-size:20px; font-weight:700; color:#0f172a;"><i class="fas fa-handshake" style="color:#8b5cf6;"></i> Utang & Piutang</h2>
@@ -335,7 +380,7 @@
             </div>
         </div>
 
-        <!-- ===== LAPORAN ===== -->
+        <!-- LAPORAN -->
         <div id="page-laporan" class="hidden-page">
             <h2 style="font-size:20px; font-weight:700; color:#0f172a; margin-bottom:16px;"><i class="fas fa-chart-pie" style="color:#3b82f6;"></i> Laporan Keuangan</h2>
             <div class="stats-grid" id="laporanStats" style="margin-bottom:16px;">
@@ -353,16 +398,16 @@
         </div>
     </div>
 
-    <!-- ===== FLOATING ACTION BUTTON ===== -->
+    <!-- FLOATING ACTION BUTTON -->
     <button class="fab" onclick="openModal('transaksi')" title="Tambah Transaksi">
         <i class="fas fa-plus"></i>
     </button>
 
-    <!-- ===== MODAL ===== -->
+    <!-- MODAL -->
     <div class="modal" id="modalTransaksi">
         <div class="modal-box">
             <h3 id="modalTitle">Form</h3>
-            <form id="formTransaksi"><div id="modalBody"></div></form>
+            <div id="modalBody"></div>
             <div class="modal-actions">
                 <button class="btn btn-cancel" onclick="closeModal()">Batal</button>
                 <button class="btn btn-primary" id="modalSaveBtn" onclick="saveModal()">Simpan</button>
@@ -376,11 +421,11 @@
         // =============================================
         let appData = {
             bukuKas: [
-                { id: 'cash', nama: 'Cash', icon: 'fa-money-bill-wave', saldo: 2300000 },
-                { id: 'bri', nama: 'BRI', icon: 'fa-university', saldo: 5000000 },
-                { id: 'jenius', nama: 'Jenius', icon: 'fa-mobile-alt', saldo: 2500000 },
-                { id: 'gopay', nama: 'GoPay - Buku', icon: 'fa-shopping-bag', saldo: 1500000 },
-                { id: 'qris', nama: 'QRIS Dana', icon: 'fa-qrcode', saldo: 800000 }
+                { id: 'cash', nama: 'Cash', icon: 'fa-money-bill-wave', saldo: 2300000, norek: '-' },
+                { id: 'bri', nama: 'BRI', icon: 'fa-university', saldo: 5000000, norek: '1234-5678-9012-3456' },
+                { id: 'jenius', nama: 'Jenius', icon: 'fa-mobile-alt', saldo: 2500000, norek: '9876-5432-1098-7654' },
+                { id: 'gopay', nama: 'GoPay', icon: 'fa-shopping-bag', saldo: 1500000, norek: '0812-3456-7890' },
+                { id: 'qris', nama: 'QRIS Dana', icon: 'fa-qrcode', saldo: 800000, norek: 'DANA-123456' }
             ],
             transaksi: [],
             utang: [],
@@ -395,7 +440,6 @@
                 appData = saved;
             } catch(e) {}
         } else {
-            // Data dummy awal
             appData.transaksi = [
                 { id: 't1', tanggal: '2026-06-01T09:00', bukuId: 'cash', tipe: 'masuk', nominal: 1000000, kategori: 'Penjualan Buku', desc: 'Buku Laskar Pelangi' },
                 { id: 't2', tanggal: '2026-06-01T10:30', bukuId: 'gopay', tipe: 'keluar', nominal: 50000, kategori: 'Makan', desc: 'Lunch' },
@@ -411,8 +455,8 @@
                 { id: 'p1', nama: 'Andi Customer', nominal: 750000, jatuhTempo: '2026-06-15', lunas: false }
             ];
             appData.invoice = [
-                { id: 'inv1', nomor: 'INV-2026-001', customer: 'PT Maju Jaya', nominal: 3500000, jatuhTempo: '2026-06-30', status: 'unpaid', metode: '' },
-                { id: 'inv2', nomor: 'INV-2026-002', customer: 'CV Sejahtera', nominal: 1500000, jatuhTempo: '2026-06-15', status: 'paid', metode: 'BRI' }
+                { id: 'inv1', nomor: 'INV-2026-001', customer: 'PT Maju Jaya', items: [{ nama: 'Jasa Desain', qty: 1, harga: 3000000, diskon: 0 }], jatuhTempo: '2026-06-30', status: 'unpaid', metode: '', catatan: '' },
+                { id: 'inv2', nomor: 'INV-2026-002', customer: 'CV Sejahtera', items: [{ nama: 'Pengadaan Barang', qty: 5, harga: 300000, diskon: 0 }], jatuhTempo: '2026-06-15', status: 'paid', metode: 'BRI', catatan: '' }
             ];
             saveData();
         }
@@ -447,15 +491,22 @@
             return warnaBuku[index % warnaBuku.length];
         }
 
+        function hitungTotalInvoice(items) {
+            return items.reduce((total, item) => {
+                const sub = (item.qty * item.harga) - item.diskon;
+                return total + sub;
+            }, 0);
+        }
+
         // =============================================
-        // RENDER DASHBOARD
+        // RENDER
         // =============================================
         function renderDashboard() {
             const totalSaldo = hitungTotalSaldo();
             const totalPemasukan = appData.transaksi.filter(t => t.tipe === 'masuk').reduce((s, t) => s + t.nominal, 0);
             const totalPengeluaran = appData.transaksi.filter(t => t.tipe === 'keluar').reduce((s, t) => s + t.nominal, 0);
             const totalUtang = appData.utang.filter(u => !u.lunas).reduce((s, u) => s + u.nominal, 0);
-            const totalInvoiceUnpaid = appData.invoice.filter(i => i.status === 'unpaid').reduce((s, i) => s + i.nominal, 0);
+            const totalInvoiceUnpaid = appData.invoice.filter(i => i.status === 'unpaid').reduce((s, i) => s + hitungTotalInvoice(i.items), 0);
 
             document.getElementById('statsGrid').innerHTML = `
                 <div class="stat-card"><div class="stat-label">Total Saldo</div><div class="stat-value">${formatRupiah(totalSaldo)}</div><span class="stat-change">+12%</span></div>
@@ -492,9 +543,6 @@
             }
         }
 
-        // =============================================
-        // RENDER BUKU KAS
-        // =============================================
         function renderBukuKasList() {
             const grid = document.getElementById('bukuListGrid');
             grid.innerHTML = '';
@@ -511,6 +559,7 @@
                     <div class="info">
                         <div class="nama">${b.nama}</div>
                         <div class="saldo">${formatRupiah(b.saldo)}</div>
+                        <div class="norek">${b.norek ? '🏦 ' + b.norek : ''}</div>
                     </div>
                 `;
                 card.onclick = () => filterTransaksiByBuku(b.id);
@@ -603,50 +652,52 @@
             container.innerHTML = html;
         }
 
-        // =============================================
-        // RENDER INVOICE
-        // =============================================
         function renderInvoice() {
             const container = document.getElementById('invoiceList');
             if (appData.invoice.length === 0) {
                 container.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:20px;">Belum ada invoice</div>';
                 return;
             }
-            container.innerHTML = appData.invoice.map(inv => `
-                <div class="widget-box" style="margin-bottom:12px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                        <div>
-                            <div style="font-weight:700; font-size:16px;">${inv.nomor}</div>
-                            <div style="font-size:14px; color:#475569;">${inv.customer}</div>
-                            <div style="font-size:13px; color:#64748b;">Jatuh tempo: ${new Date(inv.jatuhTempo).toLocaleDateString('id-ID')}</div>
+            container.innerHTML = appData.invoice.map(inv => {
+                const total = hitungTotalInvoice(inv.items);
+                return `
+                    <div class="widget-box" style="margin-bottom:12px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                            <div>
+                                <div style="font-weight:700; font-size:16px;">${inv.nomor}</div>
+                                <div style="font-size:14px; color:#475569;">${inv.customer}</div>
+                                <div style="font-size:13px; color:#64748b;">Jatuh tempo: ${new Date(inv.jatuhTempo).toLocaleDateString('id-ID')}</div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-weight:700; font-size:18px;">${formatRupiah(total)}</div>
+                                <span class="tag-status ${inv.status === 'paid' ? 'tag-lunas' : 'tag-pending'}">
+                                    ${inv.status === 'paid' ? '✅ Lunas' : '⏳ Belum Bayar'}
+                                </span>
+                                ${inv.status === 'paid' ? `<div style="font-size:12px; color:#64748b;">Via: ${inv.metode}</div>` : ''}
+                            </div>
                         </div>
-                        <div style="text-align:right;">
-                            <div style="font-weight:700; font-size:18px;">${formatRupiah(inv.nominal)}</div>
-                            <span class="tag-status ${inv.status === 'paid' ? 'tag-lunas' : 'tag-pending'}">
-                                ${inv.status === 'paid' ? '✅ Lunas' : '⏳ Belum Bayar'}
-                            </span>
-                            ${inv.status === 'paid' ? `<div style="font-size:12px; color:#64748b;">Via: ${inv.metode}</div>` : ''}
-                        </div>
+                        ${inv.items.length > 0 ? `
+                            <div style="margin-top:8px; font-size:12px; color:#64748b;">
+                                ${inv.items.map(item => `${item.nama} (${item.qty}x @${formatRupiah(item.harga)})`).join(', ')}
+                            </div>
+                        ` : ''}
+                        ${inv.status === 'unpaid' ? `
+                            <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                                <button class="btn btn-success btn-sm" onclick="bayarInvoice('${inv.id}')"><i class="fas fa-credit-card"></i> Bayar</button>
+                                <button class="btn btn-warning btn-sm" onclick="editInvoice('${inv.id}')"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger btn-sm" onclick="hapusInvoice('${inv.id}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        ` : `
+                            <div style="margin-top:10px; display:flex; gap:8px;">
+                                <button class="btn btn-warning btn-sm" onclick="unpaidInvoice('${inv.id}')"><i class="fas fa-undo"></i> Kembalikan ke Unpaid</button>
+                                <button class="btn btn-danger btn-sm" onclick="hapusInvoice('${inv.id}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `}
                     </div>
-                    ${inv.status === 'unpaid' ? `
-                        <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-                            <button class="btn btn-success btn-sm" onclick="bayarInvoice('${inv.id}')"><i class="fas fa-credit-card"></i> Bayar</button>
-                            <button class="btn btn-warning btn-sm" onclick="editInvoice('${inv.id}')"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-danger btn-sm" onclick="hapusInvoice('${inv.id}')"><i class="fas fa-trash"></i></button>
-                        </div>
-                    ` : `
-                        <div style="margin-top:10px; display:flex; gap:8px;">
-                            <button class="btn btn-warning btn-sm" onclick="unpaidInvoice('${inv.id}')"><i class="fas fa-undo"></i> Kembalikan ke Unpaid</button>
-                            <button class="btn btn-danger btn-sm" onclick="hapusInvoice('${inv.id}')"><i class="fas fa-trash"></i></button>
-                        </div>
-                    `}
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        // =============================================
-        // RENDER UTANG PIUTANG
-        // =============================================
         function renderUtangPiutang() {
             const listUtang = document.getElementById('listUtang');
             if (appData.utang.length === 0) {
@@ -695,14 +746,10 @@
             }
         }
 
-        // =============================================
-        // RENDER LAPORAN
-        // =============================================
         function renderLaporan() {
             const totalPemasukan = appData.transaksi.filter(t => t.tipe === 'masuk').reduce((s, t) => s + t.nominal, 0);
             const totalPengeluaran = appData.transaksi.filter(t => t.tipe === 'keluar').reduce((s, t) => s + t.nominal, 0);
             const saldoAkhir = hitungTotalSaldo();
-            const totalInvoice = appData.invoice.reduce((s, i) => s + i.nominal, 0);
 
             document.getElementById('totalPemasukan').textContent = formatRupiah(totalPemasukan);
             document.getElementById('totalPengeluaran').textContent = formatRupiah(totalPengeluaran);
@@ -790,6 +837,8 @@
                     <input type="text" id="f_nama_buku" value="${data ? data.nama : ''}" placeholder="Contoh: Bank Mandiri">
                     <label>Saldo Awal (Rp)</label>
                     <input type="number" id="f_saldo_buku" value="${data ? data.saldo : 0}" placeholder="0">
+                    <label>No Rekening (Opsional)</label>
+                    <input type="text" id="f_norek" value="${data ? data.norek : ''}" placeholder="Contoh: 1234-5678-9012-3456">
                 `;
                 saveBtn.style.display = 'block';
             } else if (mode === 'transaksi') {
@@ -838,19 +887,80 @@
                 `;
                 saveBtn.style.display = 'block';
             } else if (mode === 'invoice') {
-                title.textContent = editId ? '✏️ Edit Invoice' : '📝 Tambah Invoice';
                 const data = editId ? appData.invoice.find(inv => inv.id === editId) : null;
+                title.textContent = editId ? '✏️ Edit Invoice' : '📝 Buat Invoice Baru';
+                const itemsHtml = (data && data.items ? data.items : [{ nama: '', qty: 1, harga: 0, diskon: 0 }]).map((item, idx) => `
+                    <div class="invoice-item-card" data-index="${idx}">
+                        <div class="invoice-item-header">
+                            <span>Item #${idx + 1}</span>
+                            <button type="button" onclick="removeInvoiceItem(this)" class="btn btn-danger btn-sm" ${idx === 0 && (!data || data.items.length === 1) ? 'style="display:none;"' : ''}><i class="fas fa-trash"></i></button>
+                        </div>
+                        <div class="invoice-row">
+                            <div class="full">
+                                <label>Nama Produk / Jasa</label>
+                                <input type="text" class="f_item_nama" value="${item.nama || ''}" placeholder="Nama produk / jasa...">
+                            </div>
+                            <div>
+                                <label>Jumlah</label>
+                                <input type="number" class="f_item_qty" value="${item.qty || 1}" min="1">
+                            </div>
+                            <div>
+                                <label>Harga @</label>
+                                <input type="number" class="f_item_harga" value="${item.harga || 0}" placeholder="0">
+                            </div>
+                            <div>
+                                <label>Diskon</label>
+                                <input type="number" class="f_item_diskon" value="${item.diskon || 0}" placeholder="0">
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
                 body.innerHTML = `
-                    <label>Nomor Invoice</label>
-                    <input type="text" id="f_nomor" value="${data ? data.nomor : ''}" placeholder="INV-2026-001">
-                    <label>Customer</label>
-                    <input type="text" id="f_customer" value="${data ? data.customer : ''}" placeholder="Nama customer">
-                    <label>Nominal (Rp)</label>
-                    <input type="number" id="f_nominal" value="${data ? data.nominal : ''}" placeholder="5000000">
-                    <label>Jatuh Tempo</label>
-                    <input type="date" id="f_jatuhTempo" value="${data ? data.jatuhTempo : ''}">
+                    <div class="invoice-form-card">
+                        <div>
+                            <label><i class="fas fa-user"></i> Nama Pelanggan</label>
+                            <input type="text" id="f_customer" value="${data ? data.customer : ''}" placeholder="Ketik atau pilih pelanggan...">
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px;">
+                            <div>
+                                <label><i class="far fa-calendar"></i> Tgl. Order</label>
+                                <input type="date" id="f_tanggal" value="${data ? data.tanggal || new Date().toISOString().slice(0,10) : new Date().toISOString().slice(0,10)}">
+                            </div>
+                            <div>
+                                <label><i class="far fa-clock"></i> Jatuh Tempo</label>
+                                <input type="date" id="f_jatuhTempo" value="${data ? data.jatuhTempo : ''}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin:16px 0;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <span style="font-weight:600; font-size:14px; color:#475569;">DETAIL PESANAN</span>
+                            <button type="button" class="btn btn-success btn-sm" onclick="addInvoiceItem()"><i class="fas fa-plus"></i> Tambah Item</button>
+                        </div>
+                        <div id="invoiceItemsContainer">
+                            ${itemsHtml}
+                        </div>
+                        <div class="invoice-grand-total" id="invoiceGrandTotal">
+                            <span class="label">GRAND TOTAL</span>
+                            <span class="value">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label><i class="far fa-file-alt"></i> Catatan (opsional)</label>
+                        <input type="text" id="f_catatan" value="${data ? data.catatan : ''}" placeholder="Catatan internal...">
+                    </div>
                 `;
                 saveBtn.style.display = 'block';
+                // Event listener untuk update total
+                setTimeout(() => {
+                    document.querySelectorAll('.f_item_qty, .f_item_harga, .f_item_diskon').forEach(el => {
+                        el.addEventListener('input', updateInvoiceTotal);
+                    });
+                    updateInvoiceTotal();
+                }, 100);
             }
             modal.classList.add('open');
         }
@@ -860,23 +970,89 @@
             editId = null;
         }
 
+        // =============================================
+        // INVOICE HELPERS
+        // =============================================
+        function addInvoiceItem() {
+            const container = document.getElementById('invoiceItemsContainer');
+            const idx = container.children.length;
+            const div = document.createElement('div');
+            div.className = 'invoice-item-card';
+            div.dataset.index = idx;
+            div.innerHTML = `
+                <div class="invoice-item-header">
+                    <span>Item #${idx + 1}</span>
+                    <button type="button" onclick="removeInvoiceItem(this)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                </div>
+                <div class="invoice-row">
+                    <div class="full">
+                        <label>Nama Produk / Jasa</label>
+                        <input type="text" class="f_item_nama" placeholder="Nama produk / jasa...">
+                    </div>
+                    <div>
+                        <label>Jumlah</label>
+                        <input type="number" class="f_item_qty" value="1" min="1">
+                    </div>
+                    <div>
+                        <label>Harga @</label>
+                        <input type="number" class="f_item_harga" value="0" placeholder="0">
+                    </div>
+                    <div>
+                        <label>Diskon</label>
+                        <input type="number" class="f_item_diskon" value="0" placeholder="0">
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+            div.querySelectorAll('.f_item_qty, .f_item_harga, .f_item_diskon').forEach(el => {
+                el.addEventListener('input', updateInvoiceTotal);
+            });
+            updateInvoiceTotal();
+        }
+
+        function removeInvoiceItem(btn) {
+            const card = btn.closest('.invoice-item-card');
+            if (document.getElementById('invoiceItemsContainer').children.length > 1) {
+                card.remove();
+                updateInvoiceTotal();
+            }
+        }
+
+        function updateInvoiceTotal() {
+            const items = document.querySelectorAll('.invoice-item-card');
+            let total = 0;
+            items.forEach(item => {
+                const qty = parseInt(item.querySelector('.f_item_qty').value) || 0;
+                const harga = parseInt(item.querySelector('.f_item_harga').value) || 0;
+                const diskon = parseInt(item.querySelector('.f_item_diskon').value) || 0;
+                total += (qty * harga) - diskon;
+            });
+            document.querySelector('#invoiceGrandTotal .value').textContent = formatRupiah(total);
+        }
+
+        // =============================================
+        // SAVE MODAL
+        // =============================================
         function saveModal() {
             if (modalMode === 'buku') {
                 const nama = document.getElementById('f_nama_buku').value.trim();
                 const saldo = parseInt(document.getElementById('f_saldo_buku').value) || 0;
+                const norek = document.getElementById('f_norek').value.trim() || '-';
                 if (!nama) { alert('Nama buku kas wajib diisi!'); return; }
                 if (editId) {
                     const buku = appData.bukuKas.find(b => b.id === editId);
                     if (buku) {
                         buku.nama = nama;
                         buku.saldo = saldo;
+                        buku.norek = norek;
                     }
                 } else {
                     appData.bukuKas.push({
                         id: 'bk' + generateId(),
                         nama: nama,
                         icon: 'fa-university',
-                        saldo: saldo
+                        saldo: saldo,
+                        norek: norek
                     });
                 }
                 saveData();
@@ -982,28 +1158,43 @@
                 refreshCurrentPage();
                 alert('Piutang berhasil disimpan!');
             } else if (modalMode === 'invoice') {
-                const nomor = document.getElementById('f_nomor').value.trim();
                 const customer = document.getElementById('f_customer').value.trim();
-                const nominal = parseInt(document.getElementById('f_nominal').value);
+                const tanggal = document.getElementById('f_tanggal').value;
                 const jatuhTempo = document.getElementById('f_jatuhTempo').value;
-                if (!nomor || !customer || !nominal || !jatuhTempo) { alert('Lengkapi data!'); return; }
+                const catatan = document.getElementById('f_catatan').value.trim();
+                const itemCards = document.querySelectorAll('.invoice-item-card');
+                const items = [];
+                itemCards.forEach(card => {
+                    const nama = card.querySelector('.f_item_nama').value.trim();
+                    const qty = parseInt(card.querySelector('.f_item_qty').value) || 0;
+                    const harga = parseInt(card.querySelector('.f_item_harga').value) || 0;
+                    const diskon = parseInt(card.querySelector('.f_item_diskon').value) || 0;
+                    if (nama && qty > 0) {
+                        items.push({ nama, qty, harga, diskon });
+                    }
+                });
+                if (!customer || items.length === 0) { alert('Lengkapi data pelanggan dan minimal 1 item!'); return; }
                 if (editId) {
                     const inv = appData.invoice.find(i => i.id === editId);
                     if (inv) {
-                        inv.nomor = nomor;
                         inv.customer = customer;
-                        inv.nominal = nominal;
+                        inv.tanggal = tanggal;
                         inv.jatuhTempo = jatuhTempo;
+                        inv.items = items;
+                        inv.catatan = catatan;
                     }
                 } else {
+                    const nomor = 'INV-' + new Date().getFullYear() + '-' + String(appData.invoice.length + 1).padStart(3, '0');
                     appData.invoice.push({
                         id: 'inv' + generateId(),
                         nomor: nomor,
                         customer: customer,
-                        nominal: nominal,
+                        items: items,
+                        tanggal: tanggal,
                         jatuhTempo: jatuhTempo,
                         status: 'unpaid',
-                        metode: ''
+                        metode: '',
+                        catatan: catatan
                     });
                 }
                 saveData();
@@ -1170,13 +1361,11 @@
         function bayarInvoice(id) {
             const inv = appData.invoice.find(i => i.id === id);
             if (!inv || inv.status === 'paid') return;
-            
-            // Tampilkan pilihan metode pembayaran
+            const total = hitungTotalInvoice(inv.items);
             const metode = prompt(
                 'Pilih metode pembayaran:\n1. ATM (BRI)\n2. Cash\n3. E-Wallet (GoPay)\n4. QRIS Dana\n\nKetik nomor metode:',
                 '1'
             );
-            
             let bukuId = '';
             let metodeNama = '';
             if (metode === '1') { bukuId = 'bri'; metodeNama = 'BRI'; }
@@ -1184,22 +1373,19 @@
             else if (metode === '3') { bukuId = 'gopay'; metodeNama = 'GoPay'; }
             else if (metode === '4') { bukuId = 'qris'; metodeNama = 'QRIS Dana'; }
             else { alert('Metode tidak valid!'); return; }
-            
             const buku = appData.bukuKas.find(b => b.id === bukuId);
-            buku.saldo += inv.nominal;
+            buku.saldo += total;
             inv.status = 'paid';
             inv.metode = metodeNama;
-            
             appData.transaksi.push({
                 id: 't' + generateId(),
                 tanggal: new Date().toISOString(),
                 bukuId: bukuId,
                 tipe: 'masuk',
-                nominal: inv.nominal,
+                nominal: total,
                 kategori: 'Pembayaran Invoice',
                 desc: `Pembayaran invoice ${inv.nomor} dari ${inv.customer} via ${metodeNama}`
             });
-            
             saveData();
             refreshCurrentPage();
             alert(`Invoice ${inv.nomor} berhasil dibayar via ${metodeNama}!`);
@@ -1209,20 +1395,17 @@
             const inv = appData.invoice.find(i => i.id === id);
             if (!inv || inv.status === 'unpaid') return;
             if (!confirm(`Kembalikan invoice ${inv.nomor} ke status Unpaid?`)) return;
-            
+            const total = hitungTotalInvoice(inv.items);
             const buku = appData.bukuKas.find(b => b.id === inv.metode === 'BRI' ? 'bri' : 'cash');
             if (buku) {
-                buku.saldo -= inv.nominal;
+                buku.saldo -= total;
             }
             inv.status = 'unpaid';
             inv.metode = '';
-            
-            // Hapus transaksi terkait
             const lastPayment = appData.transaksi.filter(t => t.desc && t.desc.includes(inv.nomor)).pop();
             if (lastPayment) {
                 appData.transaksi = appData.transaksi.filter(t => t.id !== lastPayment.id);
             }
-            
             saveData();
             refreshCurrentPage();
             alert(`Invoice ${inv.nomor} dikembalikan ke Unpaid!`);
@@ -1235,6 +1418,15 @@
             else if (active.id === 'page-invoice') renderInvoice();
             else if (active.id === 'page-utang-piutang') renderUtangPiutang();
             else if (active.id === 'page-laporan') renderLaporan();
+        }
+
+        // =============================================
+        // PWA - SERVICE WORKER REGISTRATION
+        // =============================================
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker not registered', err));
         }
 
         // =============================================
