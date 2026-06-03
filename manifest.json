@@ -1,7 +1,7 @@
 {
   "name": "RIZQUNA",
   "short_name": "RIZQUNA",
-  "description": "Aplikasi keuangan Rizquna",
+  "description": "Sistem Keuangan Rizquna",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
