@@ -15,6 +15,12 @@
     
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Export Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body { background: #f0f4f8; display: flex; min-height: 100vh; color: #1a202c; overflow-x: hidden; }
@@ -403,6 +409,31 @@
         .invoice-grand-total .label { font-size: 13px; font-weight: 600; }
         .invoice-grand-total .value { font-size: 20px; font-weight: 700; }
 
+        /* --- EXPORT BUTTONS --- */
+        .export-group {
+            display: flex;
+            gap: 8px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .btn-export {
+            background: #0f172a;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+            min-height: 36px;
+        }
+        .btn-export:hover { background: #1e293b; }
+        .btn-export:active { transform: scale(0.96); }
+
         /* --- RESPONSIVE DESKTOP --- */
         @media (min-width: 769px) {
             .sidebar { left: 0 !important; position: sticky; }
@@ -414,6 +445,7 @@
             .bottom-grid { grid-template-columns: 2fr 1fr; }
             .buku-list-grid { grid-template-columns: repeat(3, 1fr); }
             .invoice-row { grid-template-columns: 1fr 1fr; }
+            .export-group { justify-content: flex-start; }
         }
 
         /* --- SCROLLBAR --- */
@@ -434,7 +466,8 @@
         <a href="#" class="menu-item active" onclick="showPage('dashboard')"><i class="fas fa-th-large"></i> Dashboard</a>
         <a href="#" class="menu-item" onclick="showPage('buku-kas')"><i class="fas fa-book"></i> Buku Kas</a>
         <a href="#" class="menu-item" onclick="showPage('invoice')"><i class="fas fa-file-invoice"></i> Invoice</a>
-        <a href="#" class="menu-item" onclick="showPage('utang-piutang')"><i class="fas fa-handshake"></i> Utang & Piutang</a>
+        <a href="#" class="menu-item" onclick="showPage('utang')"><i class="fas fa-hand-holding-usd"></i> Utang</a>
+        <a href="#" class="menu-item" onclick="showPage('piutang')"><i class="fas fa-hand-holding-dollar"></i> Piutang</a>
         <a href="#" class="menu-item" onclick="showPage('laporan')"><i class="fas fa-chart-pie"></i> Laporan</a>
         <div class="menu-header">Akun</div>
         <a href="#" class="menu-item"><i class="fas fa-user-cog"></i> Pengaturan</a>
@@ -478,12 +511,8 @@
                 <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-wallet" style="color:#3b82f6;"></i> Buku Kas</h2>
             </div>
             <div class="buku-list-grid" id="bukuListGrid"></div>
-            <h4 style="font-size:14px; color:#334155; margin-top:14px;">Daftar Transaksi</h4>
-            <div id="transaksiTableContainer">
-                <div class="table-container">
-                    <div id="transaksiGrouped"></div>
-                </div>
-            </div>
+            <h4 style="font-size:14px; color:#334155; margin-top:14px;">Rincian per Rekening</h4>
+            <div id="rincianPerRekening"></div>
         </div>
 
         <!-- INVOICE -->
@@ -495,24 +524,31 @@
             <div id="invoiceList"></div>
         </div>
 
-        <!-- UTANG & PIUTANG -->
-        <div id="page-utang-piutang" class="hidden-page">
+        <!-- UTANG -->
+        <div id="page-utang" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-handshake" style="color:#8b5cf6;"></i> Utang & Piutang</h2>
-                <div style="display:flex; gap:6px;">
-                    <button class="btn btn-success" onclick="openModal('utang')"><i class="fas fa-plus"></i> Utang</button>
-                    <button class="btn btn-primary" onclick="openModal('piutang')"><i class="fas fa-plus"></i> Piutang</button>
-                </div>
+                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-hand-holding-usd" style="color:#f59e0b;"></i> Utang</h2>
+                <button class="btn btn-success" onclick="openModal('utang')"><i class="fas fa-plus"></i> Tambah Utang</button>
             </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
-                <div class="widget-box"><div class="widget-title">📋 Daftar Utang</div><div id="listUtang"></div></div>
-                <div class="widget-box"><div class="widget-title">📋 Daftar Piutang</div><div id="listPiutang"></div></div>
+            <div id="listUtang"></div>
+        </div>
+
+        <!-- PIUTANG -->
+        <div id="page-piutang" class="hidden-page">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-hand-holding-dollar" style="color:#10b981;"></i> Piutang</h2>
+                <button class="btn btn-primary" onclick="openModal('piutang')"><i class="fas fa-plus"></i> Tambah Piutang</button>
             </div>
+            <div id="listPiutang"></div>
         </div>
 
         <!-- LAPORAN -->
         <div id="page-laporan" class="hidden-page">
             <h2 style="font-size:18px; font-weight:700; color:#0f172a; margin-bottom:14px;"><i class="fas fa-chart-pie" style="color:#3b82f6;"></i> Laporan Keuangan</h2>
+            <div class="export-group">
+                <button class="btn-export" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> Export PDF</button>
+                <button class="btn-export" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Export Excel</button>
+            </div>
             <div class="stats-grid" id="laporanStats" style="margin-bottom:14px;">
                 <div class="stat-card"><div class="stat-label">Total Pemasukan</div><div class="stat-value" id="totalPemasukan">Rp0</div></div>
                 <div class="stat-card"><div class="stat-label">Total Pengeluaran</div><div class="stat-value" id="totalPengeluaran">Rp0</div></div>
@@ -702,7 +738,7 @@
                         <div class="norek">${b.norek ? '🏦 ' + b.norek : ''}</div>
                     </div>
                 `;
-                card.onclick = () => filterTransaksiByBuku(b.id);
+                card.onclick = () => showDetailRekening(b.id);
                 grid.appendChild(card);
             });
 
@@ -726,11 +762,11 @@
             grid.appendChild(addCard);
         }
 
-        function renderTransaksiTable(bukuIdFilter = null) {
-            const container = document.getElementById('transaksiGrouped');
+        function renderRincianPerRekening(bukuId = null) {
+            const container = document.getElementById('rincianPerRekening');
             let data = [...appData.transaksi];
-            if (bukuIdFilter) {
-                data = data.filter(t => t.bukuId === bukuIdFilter);
+            if (bukuId) {
+                data = data.filter(t => t.bukuId === bukuId);
             }
             data.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
 
@@ -739,52 +775,96 @@
                 return;
             }
 
+            // Kelompokkan per buku kas
             const groups = {};
             data.forEach(t => {
-                const date = new Date(t.tanggal);
-                const monthKey = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0');
-                const monthName = date.toLocaleString('id-ID', { month: 'long', year: 'numeric' });
-                if (!groups[monthKey]) {
-                    groups[monthKey] = { name: monthName, items: [] };
+                if (!groups[t.bukuId]) {
+                    groups[t.bukuId] = {
+                        nama: getBukuName(t.bukuId),
+                        pemasukan: 0,
+                        pengeluaran: 0,
+                        transfer: 0,
+                        items: []
+                    };
                 }
-                groups[monthKey].items.push(t);
+                if (t.tipe === 'masuk') groups[t.bukuId].pemasukan += t.nominal;
+                else if (t.tipe === 'keluar') groups[t.bukuId].pengeluaran += t.nominal;
+                groups[t.bukuId].items.push(t);
             });
 
             let html = '';
             for (const key in groups) {
-                const group = groups[key];
+                const g = groups[key];
                 html += `
-                    <div class="month-group">
-                        <div class="month-label">
-                            ${group.name} <span>${group.items.length} transaksi</span>
+                    <div class="widget-box" style="margin-bottom:12px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                            <div style="font-weight:600; font-size:16px; color:#0f172a;">${g.nama}</div>
+                            <div style="display:flex; gap:12px; font-size:12px; flex-wrap:wrap;">
+                                <span style="color:#059669;">Pemasukan: ${formatRupiah(g.pemasukan)}</span>
+                                <span style="color:#dc2626;">Pengeluaran: ${formatRupiah(g.pengeluaran)}</span>
+                            </div>
                         </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Tanggal</th>
-                                    <th>Buku</th>
-                                    <th>Kategori</th>
-                                    <th>Nominal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div style="margin-top:8px; font-size:12px; color:#64748b;">
+                            Total transaksi: ${g.items.length} | Saldo: ${formatRupiah(g.pemasukan - g.pengeluaran)}
+                        </div>
+                    </div>
                 `;
-                group.items.forEach(t => {
-                    const isIncome = t.tipe === 'masuk';
-                    html += `
-                        <tr style="cursor:pointer;" onclick="editTransaksi('${t.id}')">
-                            <td>${new Date(t.tanggal).toLocaleString('id-ID')}</td>
-                            <td>${getBukuName(t.bukuId)}</td>
-                            <td>${t.kategori}</td>
-                            <td class="${isIncome ? 'text-green' : 'text-red'}">
-                                ${isIncome ? '+' : '-'} ${formatRupiah(t.nominal)}
-                            </td>
-                        </tr>
-                    `;
-                });
-                html += `</tbody></table></div>`;
             }
             container.innerHTML = html;
+        }
+
+        function showDetailRekening(bukuId) {
+            renderRincianPerRekening(bukuId);
+        }
+
+        function renderUtang() {
+            const listUtang = document.getElementById('listUtang');
+            if (appData.utang.length === 0) {
+                listUtang.innerHTML = '<div style="color:#94a3b8;text-align:center;padding:10px;">Belum ada utang</div>';
+            } else {
+                listUtang.innerHTML = appData.utang.map(u => `
+                    <div class="activity-item">
+                        <div class="act-info">
+                            <div class="act-title">${u.nama}</div>
+                            <div class="act-date">Jatuh tempo: ${new Date(u.jatuhTempo).toLocaleDateString('id-ID')}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-weight:bold;">${formatRupiah(u.nominal)}</div>
+                            <span class="tag-status ${u.lunas ? 'tag-lunas' : 'tag-bayar'}">${u.lunas ? 'Lunas' : 'Belum Lunas'}</span>
+                            <div style="margin-top:4px; display:flex; gap:4px; justify-content:flex-end;">
+                                ${!u.lunas ? `<button onclick="bayarUtang('${u.id}')" class="btn btn-success btn-sm">Bayar</button>` : `<button onclick="unbayarUtang('${u.id}')" class="btn btn-warning btn-sm">Batal Lunas</button>`}
+                                <button onclick="editUtang('${u.id}')" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                                <button onclick="hapusUtang('${u.id}')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function renderPiutang() {
+            const listPiutang = document.getElementById('listPiutang');
+            if (appData.piutang.length === 0) {
+                listPiutang.innerHTML = '<div style="color:#94a3b8;text-align:center;padding:10px;">Belum ada piutang</div>';
+            } else {
+                listPiutang.innerHTML = appData.piutang.map(p => `
+                    <div class="activity-item">
+                        <div class="act-info">
+                            <div class="act-title">${p.nama}</div>
+                            <div class="act-date">Jatuh tempo: ${new Date(p.jatuhTempo).toLocaleDateString('id-ID')}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-weight:bold;">${formatRupiah(p.nominal)}</div>
+                            <span class="tag-status ${p.lunas ? 'tag-lunas' : 'tag-bayar'}">${p.lunas ? 'Lunas' : 'Belum Lunas'}</span>
+                            <div style="margin-top:4px; display:flex; gap:4px; justify-content:flex-end;">
+                                ${!p.lunas ? `<button onclick="terimaPiutang('${p.id}')" class="btn btn-success btn-sm">Terima</button>` : `<button onclick="unbayarPiutang('${p.id}')" class="btn btn-warning btn-sm">Batal Lunas</button>`}
+                                <button onclick="editPiutang('${p.id}')" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                                <button onclick="hapusPiutang('${p.id}')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
         }
 
         function renderInvoice() {
@@ -833,54 +913,6 @@
             }).join('');
         }
 
-        function renderUtangPiutang() {
-            const listUtang = document.getElementById('listUtang');
-            if (appData.utang.length === 0) {
-                listUtang.innerHTML = '<div style="color:#94a3b8;text-align:center;padding:10px;">Belum ada utang</div>';
-            } else {
-                listUtang.innerHTML = appData.utang.map(u => `
-                    <div class="activity-item">
-                        <div class="act-info">
-                            <div class="act-title">${u.nama}</div>
-                            <div class="act-date">Jatuh tempo: ${new Date(u.jatuhTempo).toLocaleDateString('id-ID')}</div>
-                        </div>
-                        <div style="text-align:right;">
-                            <div style="font-weight:bold;">${formatRupiah(u.nominal)}</div>
-                            <span class="tag-status ${u.lunas ? 'tag-lunas' : 'tag-bayar'}">${u.lunas ? 'Lunas' : 'Belum Lunas'}</span>
-                            <div style="margin-top:4px; display:flex; gap:4px; justify-content:flex-end;">
-                                ${!u.lunas ? `<button onclick="bayarUtang('${u.id}')" class="btn btn-success btn-sm">Bayar</button>` : `<button onclick="unbayarUtang('${u.id}')" class="btn btn-warning btn-sm">Batal Lunas</button>`}
-                                <button onclick="editUtang('${u.id}')" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                <button onclick="hapusUtang('${u.id}')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            const listPiutang = document.getElementById('listPiutang');
-            if (appData.piutang.length === 0) {
-                listPiutang.innerHTML = '<div style="color:#94a3b8;text-align:center;padding:10px;">Belum ada piutang</div>';
-            } else {
-                listPiutang.innerHTML = appData.piutang.map(p => `
-                    <div class="activity-item">
-                        <div class="act-info">
-                            <div class="act-title">${p.nama}</div>
-                            <div class="act-date">Jatuh tempo: ${new Date(p.jatuhTempo).toLocaleDateString('id-ID')}</div>
-                        </div>
-                        <div style="text-align:right;">
-                            <div style="font-weight:bold;">${formatRupiah(p.nominal)}</div>
-                            <span class="tag-status ${p.lunas ? 'tag-lunas' : 'tag-bayar'}">${p.lunas ? 'Lunas' : 'Belum Lunas'}</span>
-                            <div style="margin-top:4px; display:flex; gap:4px; justify-content:flex-end;">
-                                ${!p.lunas ? `<button onclick="terimaPiutang('${p.id}')" class="btn btn-success btn-sm">Terima</button>` : `<button onclick="unbayarPiutang('${p.id}')" class="btn btn-warning btn-sm">Batal Lunas</button>`}
-                                <button onclick="editPiutang('${p.id}')" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                <button onclick="hapusPiutang('${p.id}')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
         function renderLaporan() {
             const totalPemasukan = appData.transaksi.filter(t => t.tipe === 'masuk').reduce((s, t) => s + t.nominal, 0);
             const totalPengeluaran = appData.transaksi.filter(t => t.tipe === 'keluar').reduce((s, t) => s + t.nominal, 0);
@@ -913,6 +945,48 @@
         }
 
         // =============================================
+        // EXPORT FUNCTIONS
+        // =============================================
+        function exportPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const sorted = [...appData.transaksi].sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+            
+            doc.text('Laporan Keuangan RIZQUNA', 14, 20);
+            doc.text('Tanggal: ' + new Date().toLocaleDateString('id-ID'), 14, 30);
+            
+            const data = sorted.map(t => [
+                new Date(t.tanggal).toLocaleString('id-ID'),
+                getBukuName(t.bukuId),
+                t.kategori,
+                (t.tipe === 'masuk' ? '+' : '-') + formatRupiah(t.nominal)
+            ]);
+            
+            doc.autoTable({
+                head: [['Tanggal', 'Buku Kas', 'Kategori', 'Nominal']],
+                body: data,
+                startY: 40
+            });
+            
+            doc.save('laporan-keuangan-rizquna.pdf');
+        }
+
+        function exportExcel() {
+            const sorted = [...appData.transaksi].sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+            const data = sorted.map(t => ({
+                Tanggal: new Date(t.tanggal).toLocaleString('id-ID'),
+                'Buku Kas': getBukuName(t.bukuId),
+                Kategori: t.kategori,
+                Nominal: (t.tipe === 'masuk' ? '+' : '-') + formatRupiah(t.nominal)
+            }));
+            
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Laporan');
+            XLSX.writeFile(wb, 'laporan-keuangan-rizquna.xlsx');
+        }
+
+        // =============================================
         // NAVIGASI
         // =============================================
         function showPage(pageId) {
@@ -928,17 +1002,22 @@
                 document.getElementById('page-buku-kas').classList.add('active');
                 document.getElementById('pageTitle').textContent = 'Buku Kas';
                 renderBukuKasList();
-                renderTransaksiTable();
+                renderRincianPerRekening();
                 if (window.innerWidth <= 768) toggleSidebar();
             } else if (pageId === 'invoice') {
                 document.getElementById('page-invoice').classList.add('active');
                 document.getElementById('pageTitle').textContent = 'Invoice';
                 renderInvoice();
                 if (window.innerWidth <= 768) toggleSidebar();
-            } else if (pageId === 'utang-piutang') {
-                document.getElementById('page-utang-piutang').classList.add('active');
-                document.getElementById('pageTitle').textContent = 'Utang & Piutang';
-                renderUtangPiutang();
+            } else if (pageId === 'utang') {
+                document.getElementById('page-utang').classList.add('active');
+                document.getElementById('pageTitle').textContent = 'Utang';
+                renderUtang();
+                if (window.innerWidth <= 768) toggleSidebar();
+            } else if (pageId === 'piutang') {
+                document.getElementById('page-piutang').classList.add('active');
+                document.getElementById('pageTitle').textContent = 'Piutang';
+                renderPiutang();
                 if (window.innerWidth <= 768) toggleSidebar();
             } else if (pageId === 'laporan') {
                 document.getElementById('page-laporan').classList.add('active');
@@ -951,12 +1030,8 @@
             event.target.closest('.menu-item').classList.add('active');
         }
 
-        function filterTransaksiByBuku(bukuId) {
-            renderTransaksiTable(bukuId);
-        }
-
         // =============================================
-        // MODAL SYSTEM (UPDATED - TAMBAH TOMBOL HAPUS)
+        // MODAL SYSTEM
         // =============================================
         let modalMode = '';
         let editId = null;
@@ -1001,7 +1076,6 @@
                     <label>Kategori / Deskripsi</label>
                     <input type="text" id="f_desc" value="${data ? data.desc || data.kategori : ''}" placeholder="Makan, Gaji, dll">
                 `;
-                // Tambahkan tombol hapus jika mode edit
                 if (editId) {
                     body.innerHTML += `
                         <div style="margin-top:10px; text-align:center;">
@@ -1035,7 +1109,79 @@
                 `;
                 saveBtn.style.display = 'block';
             } else if (mode === 'invoice') {
-                // ... (kode invoice tetap sama)
+                const data = editId ? appData.invoice.find(inv => inv.id === editId) : null;
+                title.textContent = editId ? '✏️ Edit Invoice' : '📝 Buat Invoice Baru';
+                const itemsHtml = (data && data.items ? data.items : [{ nama: '', qty: 1, harga: 0, diskon: 0 }]).map((item, idx) => `
+                    <div class="invoice-item-card" data-index="${idx}">
+                        <div class="invoice-item-header">
+                            <span>Item #${idx + 1}</span>
+                            <button type="button" onclick="removeInvoiceItem(this)" class="btn btn-danger btn-sm" ${idx === 0 && (!data || data.items.length === 1) ? 'style="display:none;"' : ''}><i class="fas fa-trash"></i></button>
+                        </div>
+                        <div class="invoice-row">
+                            <div class="full">
+                                <label>Nama Produk / Jasa</label>
+                                <input type="text" class="f_item_nama" value="${item.nama || ''}" placeholder="Nama produk / jasa...">
+                            </div>
+                            <div>
+                                <label>Jumlah</label>
+                                <input type="number" class="f_item_qty" value="${item.qty || 1}" min="1">
+                            </div>
+                            <div>
+                                <label>Harga @</label>
+                                <input type="number" class="f_item_harga" value="${item.harga || 0}" placeholder="0">
+                            </div>
+                            <div>
+                                <label>Diskon</label>
+                                <input type="number" class="f_item_diskon" value="${item.diskon || 0}" placeholder="0">
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                body.innerHTML = `
+                    <div class="invoice-form-card">
+                        <div>
+                            <label><i class="fas fa-user"></i> Nama Pelanggan</label>
+                            <input type="text" id="f_customer" value="${data ? data.customer : ''}" placeholder="Ketik atau pilih pelanggan...">
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+                            <div>
+                                <label><i class="far fa-calendar"></i> Tgl. Order</label>
+                                <input type="date" id="f_tanggal" value="${data ? data.tanggal || new Date().toISOString().slice(0,10) : new Date().toISOString().slice(0,10)}">
+                            </div>
+                            <div>
+                                <label><i class="far fa-clock"></i> Jatuh Tempo</label>
+                                <input type="date" id="f_jatuhTempo" value="${data ? data.jatuhTempo : ''}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin:14px 0;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                            <span style="font-weight:600; font-size:13px; color:#475569;">DETAIL PESANAN</span>
+                            <button type="button" class="btn btn-success btn-sm" onclick="addInvoiceItem()"><i class="fas fa-plus"></i> Tambah Item</button>
+                        </div>
+                        <div id="invoiceItemsContainer">
+                            ${itemsHtml}
+                        </div>
+                        <div class="invoice-grand-total" id="invoiceGrandTotal">
+                            <span class="label">GRAND TOTAL</span>
+                            <span class="value">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label><i class="far fa-file-alt"></i> Catatan (opsional)</label>
+                        <input type="text" id="f_catatan" value="${data ? data.catatan : ''}" placeholder="Catatan internal...">
+                    </div>
+                `;
+                saveBtn.style.display = 'block';
+                setTimeout(() => {
+                    document.querySelectorAll('.f_item_qty, .f_item_harga, .f_item_diskon').forEach(el => {
+                        el.addEventListener('input', updateInvoiceTotal);
+                    });
+                    updateInvoiceTotal();
+                }, 100);
             }
             modal.classList.add('open');
         }
@@ -1045,11 +1191,259 @@
             editId = null;
         }
 
-        // ... (sisa fungsi saveModal, CRUD, dll tetap sama) ...
+        function addInvoiceItem() {
+            const container = document.getElementById('invoiceItemsContainer');
+            const idx = container.children.length;
+            const div = document.createElement('div');
+            div.className = 'invoice-item-card';
+            div.dataset.index = idx;
+            div.innerHTML = `
+                <div class="invoice-item-header">
+                    <span>Item #${idx + 1}</span>
+                    <button type="button" onclick="removeInvoiceItem(this)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                </div>
+                <div class="invoice-row">
+                    <div class="full">
+                        <label>Nama Produk / Jasa</label>
+                        <input type="text" class="f_item_nama" placeholder="Nama produk / jasa...">
+                    </div>
+                    <div>
+                        <label>Jumlah</label>
+                        <input type="number" class="f_item_qty" value="1" min="1">
+                    </div>
+                    <div>
+                        <label>Harga @</label>
+                        <input type="number" class="f_item_harga" value="0" placeholder="0">
+                    </div>
+                    <div>
+                        <label>Diskon</label>
+                        <input type="number" class="f_item_diskon" value="0" placeholder="0">
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+            div.querySelectorAll('.f_item_qty, .f_item_harga, .f_item_diskon').forEach(el => {
+                el.addEventListener('input', updateInvoiceTotal);
+            });
+            updateInvoiceTotal();
+        }
+
+        function removeInvoiceItem(btn) {
+            const card = btn.closest('.invoice-item-card');
+            if (document.getElementById('invoiceItemsContainer').children.length > 1) {
+                card.remove();
+                updateInvoiceTotal();
+            }
+        }
+
+        function updateInvoiceTotal() {
+            const items = document.querySelectorAll('.invoice-item-card');
+            let total = 0;
+            items.forEach(item => {
+                const qty = parseInt(item.querySelector('.f_item_qty').value) || 0;
+                const harga = parseInt(item.querySelector('.f_item_harga').value) || 0;
+                const diskon = parseInt(item.querySelector('.f_item_diskon').value) || 0;
+                total += (qty * harga) - diskon;
+            });
+            document.querySelector('#invoiceGrandTotal .value').textContent = formatRupiah(total);
+        }
 
         // =============================================
-        // HAPUS TRANSAKSI (dipanggil dari modal)
+        // SAVE MODAL
         // =============================================
+        function saveModal() {
+            if (modalMode === 'buku') {
+                const nama = document.getElementById('f_nama_buku').value.trim();
+                const saldo = parseInt(document.getElementById('f_saldo_buku').value) || 0;
+                const norek = document.getElementById('f_norek').value.trim() || '-';
+                if (!nama) { alert('Nama buku kas wajib diisi!'); return; }
+                if (editId) {
+                    const buku = appData.bukuKas.find(b => b.id === editId);
+                    if (buku) {
+                        buku.nama = nama;
+                        buku.saldo = saldo;
+                        buku.norek = norek;
+                    }
+                } else {
+                    appData.bukuKas.push({
+                        id: 'bk' + generateId(),
+                        nama: nama,
+                        icon: 'fa-university',
+                        saldo: saldo,
+                        norek: norek
+                    });
+                }
+                saveData();
+                closeModal();
+                refreshCurrentPage();
+                alert('Buku kas berhasil disimpan!');
+            } else if (modalMode === 'transaksi') {
+                const tanggal = document.getElementById('f_tanggal').value;
+                const bukuId = document.getElementById('f_buku').value;
+                const tipe = document.getElementById('f_tipe').value;
+                const nominal = parseInt(document.getElementById('f_nominal').value);
+                const desc = document.getElementById('f_desc').value || 'Tanpa keterangan';
+
+                if (!tanggal || !nominal || nominal <= 0) { alert('Isi dengan benar!'); return; }
+
+                if (editId) {
+                    const oldTrans = appData.transaksi.find(t => t.id === editId);
+                    if (oldTrans) {
+                        const oldBuku = appData.bukuKas.find(b => b.id === oldTrans.bukuId);
+                        if (oldBuku) {
+                            if (oldTrans.tipe === 'masuk') oldBuku.saldo -= oldTrans.nominal;
+                            else oldBuku.saldo += oldTrans.nominal;
+                        }
+                        oldTrans.tanggal = tanggal;
+                        oldTrans.bukuId = bukuId;
+                        oldTrans.tipe = tipe;
+                        oldTrans.nominal = nominal;
+                        oldTrans.desc = desc;
+                        oldTrans.kategori = desc;
+                        const newBuku = appData.bukuKas.find(b => b.id === bukuId);
+                        if (newBuku) {
+                            if (tipe === 'masuk') newBuku.saldo += nominal;
+                            else newBuku.saldo -= nominal;
+                        }
+                    }
+                } else {
+                    const buku = appData.bukuKas.find(b => b.id === bukuId);
+                    if (tipe === 'masuk') buku.saldo += nominal;
+                    else buku.saldo -= nominal;
+
+                    appData.transaksi.push({
+                        id: 't' + generateId(),
+                        tanggal: tanggal,
+                        bukuId: bukuId,
+                        tipe: tipe,
+                        nominal: nominal,
+                        kategori: desc,
+                        desc: desc
+                    });
+                }
+                saveData();
+                closeModal();
+                refreshCurrentPage();
+                alert('Transaksi berhasil disimpan!');
+            } else if (modalMode === 'utang') {
+                const nama = document.getElementById('f_nama').value.trim();
+                const nominal = parseInt(document.getElementById('f_nominal').value);
+                const jatuhTempo = document.getElementById('f_jatuhTempo').value;
+                if (!nama || !nominal || !jatuhTempo) { alert('Lengkapi data!'); return; }
+                if (editId) {
+                    const utang = appData.utang.find(u => u.id === editId);
+                    if (utang) {
+                        utang.nama = nama;
+                        utang.nominal = nominal;
+                        utang.jatuhTempo = jatuhTempo;
+                    }
+                } else {
+                    appData.utang.push({
+                        id: 'u' + generateId(),
+                        nama: nama,
+                        nominal: nominal,
+                        jatuhTempo: jatuhTempo,
+                        lunas: false
+                    });
+                }
+                saveData();
+                closeModal();
+                refreshCurrentPage();
+                alert('Utang berhasil disimpan!');
+            } else if (modalMode === 'piutang') {
+                const nama = document.getElementById('f_nama').value.trim();
+                const nominal = parseInt(document.getElementById('f_nominal').value);
+                const jatuhTempo = document.getElementById('f_jatuhTempo').value;
+                if (!nama || !nominal || !jatuhTempo) { alert('Lengkapi data!'); return; }
+                if (editId) {
+                    const piutang = appData.piutang.find(p => p.id === editId);
+                    if (piutang) {
+                        piutang.nama = nama;
+                        piutang.nominal = nominal;
+                        piutang.jatuhTempo = jatuhTempo;
+                    }
+                } else {
+                    appData.piutang.push({
+                        id: 'p' + generateId(),
+                        nama: nama,
+                        nominal: nominal,
+                        jatuhTempo: jatuhTempo,
+                        lunas: false
+                    });
+                }
+                saveData();
+                closeModal();
+                refreshCurrentPage();
+                alert('Piutang berhasil disimpan!');
+            } else if (modalMode === 'invoice') {
+                const customer = document.getElementById('f_customer').value.trim();
+                const tanggal = document.getElementById('f_tanggal').value;
+                const jatuhTempo = document.getElementById('f_jatuhTempo').value;
+                const catatan = document.getElementById('f_catatan').value.trim();
+                const itemCards = document.querySelectorAll('.invoice-item-card');
+                const items = [];
+                itemCards.forEach(card => {
+                    const nama = card.querySelector('.f_item_nama').value.trim();
+                    const qty = parseInt(card.querySelector('.f_item_qty').value) || 0;
+                    const harga = parseInt(card.querySelector('.f_item_harga').value) || 0;
+                    const diskon = parseInt(card.querySelector('.f_item_diskon').value) || 0;
+                    if (nama && qty > 0) {
+                        items.push({ nama, qty, harga, diskon });
+                    }
+                });
+                if (!customer || items.length === 0) { alert('Lengkapi data pelanggan dan minimal 1 item!'); return; }
+                if (editId) {
+                    const inv = appData.invoice.find(i => i.id === editId);
+                    if (inv) {
+                        inv.customer = customer;
+                        inv.tanggal = tanggal;
+                        inv.jatuhTempo = jatuhTempo;
+                        inv.items = items;
+                        inv.catatan = catatan;
+                    }
+                } else {
+                    const nomor = 'INV-' + new Date().getFullYear() + '-' + String(appData.invoice.length + 1).padStart(3, '0');
+                    appData.invoice.push({
+                        id: 'inv' + generateId(),
+                        nomor: nomor,
+                        customer: customer,
+                        items: items,
+                        tanggal: tanggal,
+                        jatuhTempo: jatuhTempo,
+                        status: 'unpaid',
+                        metode: '',
+                        catatan: catatan
+                    });
+                }
+                saveData();
+                closeModal();
+                refreshCurrentPage();
+                alert('Invoice berhasil disimpan!');
+            }
+        }
+
+        // =============================================
+        // CRUD - BUKU KAS
+        // =============================================
+        function editBuku(id) {
+            openModal('buku', id);
+        }
+
+        function hapusBuku(id) {
+            if (!confirm('Hapus buku kas ini? Semua transaksi terkait akan dihapus.')) return;
+            appData.bukuKas = appData.bukuKas.filter(b => b.id !== id);
+            appData.transaksi = appData.transaksi.filter(t => t.bukuId !== id);
+            saveData();
+            refreshCurrentPage();
+        }
+
+        // =============================================
+        // CRUD - TRANSAKSI
+        // =============================================
+        function editTransaksi(id) {
+            openModal('transaksi', id);
+        }
+
         function hapusTransaksi(id) {
             if (!confirm('Hapus transaksi ini? Saldo buku kas akan dikembalikan.')) return;
             const t = appData.transaksi.find(t => t.id === id);
@@ -1061,26 +1455,190 @@
                 }
                 appData.transaksi = appData.transaksi.filter(x => x.id !== id);
                 saveData();
-                closeModal();
                 refreshCurrentPage();
             }
         }
 
         // =============================================
-        // CRUD - TRANSAKSI (edit dipanggil via klik baris)
+        // CRUD - UTANG
         // =============================================
-        function editTransaksi(id) {
-            openModal('transaksi', id);
+        function bayarUtang(id) {
+            const utang = appData.utang.find(u => u.id === id);
+            if (!utang || utang.lunas) return;
+            if (!confirm(`Bayar utang ${utang.nama} sebesar ${formatRupiah(utang.nominal)}? (Uang akan diambil dari buku kas: Cash)`)) return;
+            const buku = appData.bukuKas.find(b => b.id === 'cash');
+            if (buku.saldo < utang.nominal) {
+                alert('Saldo Cash tidak mencukupi!');
+                return;
+            }
+            buku.saldo -= utang.nominal;
+            utang.lunas = true;
+            appData.transaksi.push({
+                id: 't' + generateId(),
+                tanggal: new Date().toISOString(),
+                bukuId: 'cash',
+                tipe: 'keluar',
+                nominal: utang.nominal,
+                kategori: 'Bayar Utang',
+                desc: `Bayar utang ke ${utang.nama}`
+            });
+            saveData();
+            refreshCurrentPage();
+            alert('Utang berhasil dibayar!');
         }
 
-        // ... (fungsi-fungsi lain tetap sama) ...
+        function unbayarUtang(id) {
+            const utang = appData.utang.find(u => u.id === id);
+            if (!utang || !utang.lunas) return;
+            if (!confirm(`Batalkan pembayaran utang ${utang.nama}? Saldo Cash akan dikembalikan.`)) return;
+            const buku = appData.bukuKas.find(b => b.id === 'cash');
+            buku.saldo += utang.nominal;
+            utang.lunas = false;
+            const lastPayment = appData.transaksi.filter(t => t.desc && t.desc.includes(utang.nama)).pop();
+            if (lastPayment) {
+                appData.transaksi = appData.transaksi.filter(t => t.id !== lastPayment.id);
+            }
+            saveData();
+            refreshCurrentPage();
+            alert('Status utang dikembalikan ke belum lunas!');
+        }
+
+        function editUtang(id) {
+            openModal('utang', id);
+        }
+
+        function hapusUtang(id) {
+            if (!confirm('Hapus utang ini?')) return;
+            appData.utang = appData.utang.filter(u => u.id !== id);
+            saveData();
+            refreshCurrentPage();
+        }
+
+        // =============================================
+        // CRUD - PIUTANG
+        // =============================================
+        function terimaPiutang(id) {
+            const piutang = appData.piutang.find(p => p.id === id);
+            if (!piutang || piutang.lunas) return;
+            if (!confirm(`Terima pembayaran piutang dari ${piutang.nama} sebesar ${formatRupiah(piutang.nominal)}? (Uang akan masuk ke buku kas: BRI)`)) return;
+            const buku = appData.bukuKas.find(b => b.id === 'bri');
+            buku.saldo += piutang.nominal;
+            piutang.lunas = true;
+            appData.transaksi.push({
+                id: 't' + generateId(),
+                tanggal: new Date().toISOString(),
+                bukuId: 'bri',
+                tipe: 'masuk',
+                nominal: piutang.nominal,
+                kategori: 'Terima Piutang',
+                desc: `Terima piutang dari ${piutang.nama}`
+            });
+            saveData();
+            refreshCurrentPage();
+            alert('Piutang berhasil diterima!');
+        }
+
+        function unbayarPiutang(id) {
+            const piutang = appData.piutang.find(p => p.id === id);
+            if (!piutang || !piutang.lunas) return;
+            if (!confirm(`Batalkan penerimaan piutang ${piutang.nama}? Saldo BRI akan dikurangi.`)) return;
+            const buku = appData.bukuKas.find(b => b.id === 'bri');
+            buku.saldo -= piutang.nominal;
+            piutang.lunas = false;
+            const lastPayment = appData.transaksi.filter(t => t.desc && t.desc.includes(piutang.nama)).pop();
+            if (lastPayment) {
+                appData.transaksi = appData.transaksi.filter(t => t.id !== lastPayment.id);
+            }
+            saveData();
+            refreshCurrentPage();
+            alert('Status piutang dikembalikan ke belum lunas!');
+        }
+
+        function editPiutang(id) {
+            openModal('piutang', id);
+        }
+
+        function hapusPiutang(id) {
+            if (!confirm('Hapus piutang ini?')) return;
+            appData.piutang = appData.piutang.filter(p => p.id !== id);
+            saveData();
+            refreshCurrentPage();
+        }
+
+        // =============================================
+        // CRUD - INVOICE
+        // =============================================
+        function editInvoice(id) {
+            openModal('invoice', id);
+        }
+
+        function hapusInvoice(id) {
+            if (!confirm('Hapus invoice ini?')) return;
+            appData.invoice = appData.invoice.filter(i => i.id !== id);
+            saveData();
+            refreshCurrentPage();
+        }
+
+        function bayarInvoice(id) {
+            const inv = appData.invoice.find(i => i.id === id);
+            if (!inv || inv.status === 'paid') return;
+            const total = hitungTotalInvoice(inv.items);
+            const metode = prompt(
+                'Pilih metode pembayaran:\n1. ATM (BRI)\n2. Cash\n3. E-Wallet (GoPay)\n4. QRIS Dana\n\nKetik nomor metode:',
+                '1'
+            );
+            let bukuId = '';
+            let metodeNama = '';
+            if (metode === '1') { bukuId = 'bri'; metodeNama = 'BRI'; }
+            else if (metode === '2') { bukuId = 'cash'; metodeNama = 'Cash'; }
+            else if (metode === '3') { bukuId = 'gopay'; metodeNama = 'GoPay'; }
+            else if (metode === '4') { bukuId = 'qris'; metodeNama = 'QRIS Dana'; }
+            else { alert('Metode tidak valid!'); return; }
+            const buku = appData.bukuKas.find(b => b.id === bukuId);
+            buku.saldo += total;
+            inv.status = 'paid';
+            inv.metode = metodeNama;
+            appData.transaksi.push({
+                id: 't' + generateId(),
+                tanggal: new Date().toISOString(),
+                bukuId: bukuId,
+                tipe: 'masuk',
+                nominal: total,
+                kategori: 'Pembayaran Invoice',
+                desc: `Pembayaran invoice ${inv.nomor} dari ${inv.customer} via ${metodeNama}`
+            });
+            saveData();
+            refreshCurrentPage();
+            alert(`Invoice ${inv.nomor} berhasil dibayar via ${metodeNama}!`);
+        }
+
+        function unpaidInvoice(id) {
+            const inv = appData.invoice.find(i => i.id === id);
+            if (!inv || inv.status === 'unpaid') return;
+            if (!confirm(`Kembalikan invoice ${inv.nomor} ke status Unpaid?`)) return;
+            const total = hitungTotalInvoice(inv.items);
+            const buku = appData.bukuKas.find(b => b.id === inv.metode === 'BRI' ? 'bri' : 'cash');
+            if (buku) {
+                buku.saldo -= total;
+            }
+            inv.status = 'unpaid';
+            inv.metode = '';
+            const lastPayment = appData.transaksi.filter(t => t.desc && t.desc.includes(inv.nomor)).pop();
+            if (lastPayment) {
+                appData.transaksi = appData.transaksi.filter(t => t.id !== lastPayment.id);
+            }
+            saveData();
+            refreshCurrentPage();
+            alert(`Invoice ${inv.nomor} dikembalikan ke Unpaid!`);
+        }
 
         function refreshCurrentPage() {
             const active = document.querySelector('.page.active') || document.getElementById('page-dashboard');
             if (active.id === 'page-dashboard') renderDashboard();
-            else if (active.id === 'page-buku-kas') { renderBukuKasList(); renderTransaksiTable(); }
+            else if (active.id === 'page-buku-kas') { renderBukuKasList(); renderRincianPerRekening(); }
             else if (active.id === 'page-invoice') renderInvoice();
-            else if (active.id === 'page-utang-piutang') renderUtangPiutang();
+            else if (active.id === 'page-utang') renderUtang();
+            else if (active.id === 'page-piutang') renderPiutang();
             else if (active.id === 'page-laporan') renderLaporan();
         }
 
