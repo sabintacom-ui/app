@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RIZQUNA - Aplikasi Keuangan</title>
+    <title>RIZQUNA - Supabase</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', Roboto, sans-serif; }
@@ -325,17 +325,17 @@
         </div>
     </div>
 
-    // ==================== SUPABASE CDN ====================
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- SUPABASE CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-    // ==================== KONFIGURASI SUPABASE ====================
-    const SUPABASE_URL = 'https://tfnwifktbjfpbbxkumik.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRmbndpZmt0YmpmcGJieGt1bWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MjY5NjksImV4cCI6MjA5NjAwMjk2OX0.EvPtd7Y2S9PwhV4eq1B-b7-_IlsAwHSChjhUReHFQ1M';
-    
-    // ==================== INISIALISASI YANG BENAR (HANYA SEKALI) ====================
-    const { createClient } = supabase;
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    <script>
+        // ==================== KONFIGURASI SUPABASE ====================
+        const SUPABASE_URL = 'https://tfnwifktbjfpbbxkumik.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRmbndpZmt0YmpmcGJieGt1bWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MjY5NjksImV4cCI6MjA5NjAwMjk2OX0.EvPtd7Y2S9PwhV4eq1B-b7-_IlsAwHSChjhUReHFQ1M';
+        
+        // ==================== INISIALISASI SUPABASE (HANYA SEKALI) ====================
+        const { createClient } = supabase;
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // ==================== UTILITY ====================
         function formatRupiah(angka) { return 'Rp' + angka.toLocaleString('id-ID'); }
@@ -371,7 +371,7 @@
             event.target.closest('.menu-item').classList.add('active');
         }
 
-        // ==================== RENDER ====================
+        // ==================== RENDER DASHBOARD ====================
         async function renderDashboard() {
             // Ambil data
             const { data: buku, error: e1 } = await supabase.from('buku_kas').select('*');
@@ -822,7 +822,6 @@
             const { data: utang } = await supabase.from('utang_piutang').select('*').eq('id', id);
             if (!utang || !utang[0] || utang[0].lunas) return;
             if (!confirm(`Bayar utang ${utang[0].nama} sebesar ${formatRupiah(utang[0].nominal)}?`)) return;
-            // ID Cash (Ganti dengan ID Cash yang benar dari tabel Anda)
             const cashId = '5a861172-c95b-4fab-987d-fc1b853ee39f'; 
             const { data: buku } = await supabase.from('buku_kas').select('*').eq('id', cashId);
             if (!buku || !buku[0]) { alert('Buku kas Cash tidak ditemukan!'); return; }
