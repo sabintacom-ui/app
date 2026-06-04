@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>RIZQUNA — Royal Blue</title>
+    <title>RIZQUNA — Premium</title>
     <meta name="theme-color" content="#1a5dff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -24,21 +24,21 @@
     <style>
         /* --- RESET & VARIABLES --- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background: #f8faff; display: flex; min-height: 100vh; color: #1e293b; overflow-x: hidden; }
+        body { background: #f4f7fc; display: flex; min-height: 100vh; color: #1e293b; overflow-x: hidden; }
         :root { 
             --primary: #1a5dff;
             --primary-dark: #0044cc;
             --primary-light: #e8eeff;
             --primary-gradient: linear-gradient(135deg, #1a5dff, #003cb3);
-            --shadow-sm: 0 2px 8px rgba(26, 93, 255, 0.08);
-            --shadow-md: 0 8px 24px rgba(26, 93, 255, 0.12);
-            --shadow-lg: 0 12px 40px rgba(26, 93, 255, 0.16);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
             --radius: 16px;
             --radius-sm: 10px;
             --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
-        /* --- SIDEBAR (Royal Blue Gradient) --- */
+        /* --- SIDEBAR --- */
         .sidebar {
             position: fixed;
             top: 0;
@@ -128,13 +128,13 @@
             flex: 1;
             padding: 16px;
             overflow-x: hidden;
-            background: #f8faff;
+            background: #f4f7fc;
             width: 100%;
             max-width: 100%;
             padding-bottom: calc(80px + var(--safe-bottom));
         }
 
-        /* --- BANNER (Royal Blue Card) --- */
+        /* --- BANNER --- */
         .banner {
             background: var(--primary-gradient);
             color: white; 
@@ -149,7 +149,7 @@
         .banner p { opacity: 0.9; font-size: 13px; }
         .banner i { position: absolute; right: 10px; bottom: -30px; font-size: 120px; opacity: 0.1; transform: rotate(15deg); }
 
-        /* --- STATS CARDS (Clean & Minimal) --- */
+        /* --- STATS CARDS (Full Modern - Tanpa Garis) --- */
         .stats-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -165,14 +165,11 @@
             position: relative;
             overflow: hidden;
             min-height: 80px;
-            border: 1px solid #e2e8f0;
+            border: none;
             transition: 0.2s;
         }
         .stat-card:active { transform: scale(0.98); }
-        .stat-card:nth-child(1) { border-left: 4px solid var(--primary); }
-        .stat-card:nth-child(2) { border-left: 4px solid #10b981; }
-        .stat-card:nth-child(3) { border-left: 4px solid #f59e0b; }
-        .stat-card:nth-child(4) { border-left: 4px solid #8b5cf6; }
+        .stat-card:hover { box-shadow: var(--shadow-md); }
         .stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px; }
         .stat-value { 
             font-size: 20px; 
@@ -188,14 +185,14 @@
             padding: 2px 8px; 
             border-radius: 20px; 
             font-weight: 600; 
-            background: #e2e8f0; 
+            background: #f1f5f9; 
             color: #475569;
             display: inline-block; 
         }
 
         /* --- WIDGETS --- */
         .bottom-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-        .widget-box { background: white; padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; }
+        .widget-box { background: white; padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: none; }
         .widget-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: #1e293b; }
         .widget-sub { font-size: 12px; color: #94a3b8; margin-bottom: 12px; }
         .chart-area { height: 80px; display: flex; align-items: flex-end; gap: 6px; padding: 6px 0; }
@@ -218,7 +215,7 @@
         .hidden-page { display: none; }
         .hidden-page.active { display: block; }
 
-        /* --- BUKU KAS (Cards) --- */
+        /* --- BUKU KAS --- */
         .buku-list-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -233,17 +230,17 @@
             transition: all 0.3s ease;
             position: relative;
             background: white;
-            border: 1px solid #e2e8f0;
+            border: none;
             display: flex;
             align-items: center;
             gap: 12px;
             min-height: 64px;
         }
+        .buku-card:hover { box-shadow: var(--shadow-md); }
         .buku-card.dimmed { opacity: 0.4; transform: scale(0.95); filter: grayscale(0.3); }
         .buku-card.active {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(26, 93, 255, 0.15);
-            background: white;
+            box-shadow: 0 0 0 2px rgba(26, 93, 255, 0.2);
+            background: var(--primary-light);
             opacity: 1;
             transform: scale(1.02);
         }
@@ -276,7 +273,7 @@
 
         .buku-card-add {
             background: white;
-            border: 2px dashed var(--primary) !important;
+            border: 2px dashed #cbd5e1 !important;
             box-shadow: none !important;
             cursor: pointer;
             display: flex;
@@ -285,10 +282,10 @@
             gap: 6px;
             padding: 14px;
             min-height: 64px;
-            color: var(--primary);
+            color: #64748b;
             transition: 0.2s;
         }
-        .buku-card-add:hover { background: var(--primary-light); border-color: var(--primary-dark); }
+        .buku-card-add:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
 
         /* --- TABLE --- */
         .month-group { margin-bottom: 16px; }
@@ -310,7 +307,7 @@
             font-size: 11px;
             color: #64748b;
         }
-        .table-container { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; }
+        .table-container { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: none; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th { text-align: left; padding: 10px 12px; background: #f8fafc; color: #64748b; font-weight: 600; border-bottom: 1px solid #e2e8f0; font-size: 11px; text-transform: uppercase; }
         td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
@@ -341,8 +338,6 @@
         .btn-success { background: #10b981; color: white; }
         .btn-primary { background: var(--primary-gradient); color: white; }
         .btn-primary:active { background: var(--primary-dark); }
-        .btn-outline-primary { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
-        .btn-outline-primary:hover { background: var(--primary-light); }
 
         /* --- FLOATING ACTION BUTTON --- */
         .fab {
@@ -620,9 +615,9 @@
         };
 
         // Load dari localStorage
-        if (localStorage.getItem('rizqunaRoyalBlueData')) {
+        if (localStorage.getItem('rizqunaPremiumData')) {
             try {
-                const saved = JSON.parse(localStorage.getItem('rizqunaRoyalBlueData'));
+                const saved = JSON.parse(localStorage.getItem('rizqunaPremiumData'));
                 appData = saved;
             } catch(e) {}
         } else {
@@ -648,7 +643,7 @@
         }
 
         function saveData() {
-            localStorage.setItem('rizqunaRoyalBlueData', JSON.stringify(appData));
+            localStorage.setItem('rizqunaPremiumData', JSON.stringify(appData));
         }
 
         // =============================================
@@ -699,10 +694,26 @@
             const totalInvoiceUnpaid = appData.invoice.filter(i => i.status === 'unpaid').reduce((s, i) => s + hitungTotalInvoice(i.items), 0);
 
             document.getElementById('statsGrid').innerHTML = `
-                <div class="stat-card"><div class="stat-label">Total Saldo</div><div class="stat-value">${formatRupiah(totalSaldo)}</div><span class="stat-change">+12%</span></div>
-                <div class="stat-card"><div class="stat-label">Pemasukan</div><div class="stat-value">${formatRupiah(totalPemasukan)}</div><span class="stat-change">+8%</span></div>
-                <div class="stat-card"><div class="stat-label">Pengeluaran</div><div class="stat-value">${formatRupiah(totalPengeluaran)}</div><span class="stat-change">-2%</span></div>
-                <div class="stat-card"><div class="stat-label">Invoice Unpaid</div><div class="stat-value">${formatRupiah(totalInvoiceUnpaid)}</div><span class="stat-change">0%</span></div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Saldo</div>
+                    <div class="stat-value">${formatRupiah(totalSaldo)}</div>
+                    <span class="stat-change">+12%</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Pemasukan</div>
+                    <div class="stat-value">${formatRupiah(totalPemasukan)}</div>
+                    <span class="stat-change">+8%</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Pengeluaran</div>
+                    <div class="stat-value">${formatRupiah(totalPengeluaran)}</div>
+                    <span class="stat-change">-2%</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Invoice Unpaid</div>
+                    <div class="stat-value">${formatRupiah(totalInvoiceUnpaid)}</div>
+                    <span class="stat-change">0%</span>
+                </div>
             `;
 
             const heights = [30,60,45,80,90,50,70,40];
