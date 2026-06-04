@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>RIZQUNA — Modern Blue</title>
-    <meta name="theme-color" content="#0ea5e9">
+    <title>RIZQUNA — Royal Blue</title>
+    <meta name="theme-color" content="#1a5dff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
@@ -24,21 +24,21 @@
     <style>
         /* --- RESET & VARIABLES --- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background: #f0f9ff; display: flex; min-height: 100vh; color: #1e293b; overflow-x: hidden; }
+        body { background: #f8faff; display: flex; min-height: 100vh; color: #1e293b; overflow-x: hidden; }
         :root { 
-            --primary: #0ea5e9;
-            --primary-dark: #0284c7;
-            --primary-light: #e0f2fe;
-            --primary-gradient: linear-gradient(135deg, #0ea5e9, #3b82f6);
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-            --radius: 14px;
-            --radius-sm: 8px;
+            --primary: #1a5dff;
+            --primary-dark: #0044cc;
+            --primary-light: #e8eeff;
+            --primary-gradient: linear-gradient(135deg, #1a5dff, #003cb3);
+            --shadow-sm: 0 2px 8px rgba(26, 93, 255, 0.08);
+            --shadow-md: 0 8px 24px rgba(26, 93, 255, 0.12);
+            --shadow-lg: 0 12px 40px rgba(26, 93, 255, 0.16);
+            --radius: 16px;
+            --radius-sm: 10px;
             --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
-        /* --- SIDEBAR (Blue Gradient) --- */
+        /* --- SIDEBAR (Royal Blue Gradient) --- */
         .sidebar {
             position: fixed;
             top: 0;
@@ -51,7 +51,7 @@
             z-index: 1000;
             transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: white;
-            box-shadow: 4px 0 24px rgba(14,165,233,0.3);
+            box-shadow: 4px 0 24px rgba(26, 93, 255, 0.3);
         }
         .sidebar.open { left: 0; }
         .sidebar-overlay {
@@ -60,7 +60,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(14,165,233,0.5);
+            background: rgba(26, 93, 255, 0.5);
             z-index: 999;
             display: none;
             backdrop-filter: blur(4px);
@@ -128,13 +128,13 @@
             flex: 1;
             padding: 16px;
             overflow-x: hidden;
-            background: #f0f9ff;
+            background: #f8faff;
             width: 100%;
             max-width: 100%;
             padding-bottom: calc(80px + var(--safe-bottom));
         }
 
-        /* --- BANNER (Modern Blue Gradient) --- */
+        /* --- BANNER (Royal Blue Card) --- */
         .banner {
             background: var(--primary-gradient);
             color: white; 
@@ -149,7 +149,7 @@
         .banner p { opacity: 0.9; font-size: 13px; }
         .banner i { position: absolute; right: 10px; bottom: -30px; font-size: 120px; opacity: 0.1; transform: rotate(15deg); }
 
-        /* --- STATS CARDS (Clean & Blue Accent) --- */
+        /* --- STATS CARDS (Clean & Minimal) --- */
         .stats-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -242,7 +242,7 @@
         .buku-card.dimmed { opacity: 0.4; transform: scale(0.95); filter: grayscale(0.3); }
         .buku-card.active {
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(14,165,233,0.15);
+            box-shadow: 0 0 0 2px rgba(26, 93, 255, 0.15);
             background: white;
             opacity: 1;
             transform: scale(1.02);
@@ -355,7 +355,7 @@
             background: var(--primary-gradient);
             color: white;
             border: none;
-            box-shadow: 0 4px 16px rgba(14,165,233,0.3);
+            box-shadow: 0 4px 16px rgba(26, 93, 255, 0.3);
             font-size: 24px;
             cursor: pointer;
             display: flex;
@@ -365,12 +365,12 @@
             transition: 0.2s;
         }
         .fab:active { transform: scale(0.92); }
-        .fab:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(14,165,233,0.4); }
+        .fab:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(26, 93, 255, 0.4); }
 
         /* --- MODAL --- */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(14,165,233,0.5); display: none; justify-content: center; align-items: center;
+            background: rgba(26, 93, 255, 0.5); display: none; justify-content: center; align-items: center;
             z-index: 500; backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
         }
@@ -385,7 +385,7 @@
             width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: var(--radius-sm);
             font-size: 14px; margin-bottom: 8px; background: #f8fafc; min-height: 44px;
         }
-        .modal-box input:focus, .modal-box select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
+        .modal-box input:focus, .modal-box select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(26, 93, 255, 0.15); }
         .modal-actions { display: flex; gap: 10px; margin-top: 16px; }
         .modal-actions .btn { flex: 1; }
         .btn-cancel { background: #e2e8f0; color: #475569; }
@@ -620,9 +620,9 @@
         };
 
         // Load dari localStorage
-        if (localStorage.getItem('rizqunaModernBlueData')) {
+        if (localStorage.getItem('rizqunaRoyalBlueData')) {
             try {
-                const saved = JSON.parse(localStorage.getItem('rizqunaModernBlueData'));
+                const saved = JSON.parse(localStorage.getItem('rizqunaRoyalBlueData'));
                 appData = saved;
             } catch(e) {}
         } else {
@@ -648,7 +648,7 @@
         }
 
         function saveData() {
-            localStorage.setItem('rizqunaModernBlueData', JSON.stringify(appData));
+            localStorage.setItem('rizqunaRoyalBlueData', JSON.stringify(appData));
         }
 
         // =============================================
