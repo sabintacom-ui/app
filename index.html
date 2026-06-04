@@ -52,6 +52,7 @@
             transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: #e2e8f0;
             box-shadow: 4px 0 30px rgba(0,0,0,0.2);
+            overscroll-behavior: contain;
         }
         .sidebar.open { left: 0; }
         .sidebar-overlay {
@@ -73,6 +74,7 @@
             display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: var(--radius-sm);
             margin-bottom: 4px; cursor: pointer; color: #94a3b8; transition: 0.25s; text-decoration: none; font-size: 15px; font-weight: 500;
             min-height: 48px;
+            touch-action: manipulation;
         }
         .menu-item:hover { background: rgba(255,255,255,0.08); color: white; }
         .menu-item.active { background: rgba(59,130,246,0.15); color: #60a5fa; }
@@ -95,6 +97,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            min-width: 0;
         }
         .hamburger {
             background: transparent;
@@ -110,9 +113,18 @@
             justify-content: center;
             border-radius: 8px;
             transition: 0.2s;
+            touch-action: manipulation;
+            flex-shrink: 0;
         }
         .hamburger:active { background: #f1f5f9; }
-        .page-title { font-size: 18px; font-weight: 700; color: #0f172a; }
+        .page-title { 
+            font-size: 18px; 
+            font-weight: 700; 
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         .date-badge { 
             background: #f1f5f9; 
             padding: 6px 14px; 
@@ -121,6 +133,7 @@
             color: #475569; 
             font-weight: 500;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         /* --- MAIN CONTENT --- */
@@ -293,9 +306,20 @@
             color: #475569;
         }
 
-        .table-container { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { text-align: left; padding: 10px 12px; background: #f8fafc; color: #475569; font-weight: 600; border-bottom: 1px solid #e2e8f0; font-size: 11px; text-transform: uppercase; }
+        .table-container { 
+            background: white; 
+            border-radius: var(--radius); 
+            overflow-x: auto; 
+            box-shadow: var(--shadow-sm);
+            -webkit-overflow-scrolling: touch;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 13px; 
+            min-width: 600px;
+        }
+        th { text-align: left; padding: 10px 12px; background: #f8fafc; color: #475569; font-weight: 600; border-bottom: 1px solid #e2e8f0; font-size: 11px; text-transform: uppercase; white-space: nowrap; }
         td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
         .text-green { color: #059669; }
         .text-red { color: #dc2626; }
@@ -316,6 +340,7 @@
             min-height: 44px;
             min-width: 44px;
             justify-content: center;
+            touch-action: manipulation;
         }
         .btn:active { transform: scale(0.96); }
         .btn-warning { background: #f59e0b; }
@@ -344,6 +369,7 @@
             justify-content: center;
             z-index: 200;
             transition: 0.3s;
+            touch-action: manipulation;
         }
         .fab:active { transform: scale(0.92); }
 
@@ -446,6 +472,15 @@
             .buku-list-grid { grid-template-columns: repeat(3, 1fr); }
             .invoice-row { grid-template-columns: 1fr 1fr; }
             .export-group { justify-content: flex-start; }
+            table { min-width: auto; }
+            .table-container { overflow-x: visible; }
+        }
+
+        @media (max-width: 400px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .buku-list-grid { grid-template-columns: 1fr; }
+            .stat-value { font-size: 18px; }
+            .top-header .page-title { font-size: 16px; }
         }
 
         /* --- SCROLLBAR --- */
