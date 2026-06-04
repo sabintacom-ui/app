@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>RIZQUNA — Premium</title>
-    <meta name="theme-color" content="#1a5dff">
+    <title>RIZQUNA - Premium</title>
+    <meta name="theme-color" content="#3b82f6">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
@@ -22,19 +22,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <style>
-        /* --- RESET & VARIABLES --- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background: #f4f7fc; display: flex; min-height: 100vh; color: #1e293b; overflow-x: hidden; }
+        body { background: #f0f4f8; display: flex; min-height: 100vh; color: #1a202c; overflow-x: hidden; }
         :root { 
-            --primary: #1a5dff;
-            --primary-dark: #0044cc;
-            --primary-light: #e8eeff;
-            --primary-gradient: linear-gradient(135deg, #1a5dff, #003cb3);
             --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
-            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.10);
             --radius: 16px;
             --radius-sm: 10px;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
             --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
@@ -45,13 +45,13 @@
             left: -300px;
             width: 280px;
             height: 100vh;
-            background: var(--primary-gradient);
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
             padding: 24px 16px;
             overflow-y: auto;
             z-index: 1000;
             transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: white;
-            box-shadow: 4px 0 24px rgba(26, 93, 255, 0.3);
+            color: #e2e8f0;
+            box-shadow: 4px 0 30px rgba(0,0,0,0.2);
         }
         .sidebar.open { left: 0; }
         .sidebar-overlay {
@@ -60,7 +60,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(26, 93, 255, 0.5);
+            background: rgba(0,0,0,0.6);
             z-index: 999;
             display: none;
             backdrop-filter: blur(4px);
@@ -70,13 +70,13 @@
         .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; margin-bottom: 32px; color: white; padding-left: 8px; }
         .logo i { color: #fbbf24; font-size: 22px; }
         .menu-item {
-            display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: var(--radius-sm);
-            margin-bottom: 4px; cursor: pointer; color: rgba(255,255,255,0.8); transition: 0.2s; text-decoration: none; font-size: 14px; font-weight: 500;
+            display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: var(--radius-sm);
+            margin-bottom: 4px; cursor: pointer; color: #94a3b8; transition: 0.25s; text-decoration: none; font-size: 15px; font-weight: 500;
             min-height: 48px;
         }
-        .menu-item:hover { background: rgba(255,255,255,0.15); color: white; }
-        .menu-item.active { background: rgba(255,255,255,0.25); color: white; border-left: 3px solid white; }
-        .menu-header { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.6); text-transform: uppercase; margin: 24px 0 8px 16px; letter-spacing: 1px; }
+        .menu-item:hover { background: rgba(255,255,255,0.08); color: white; }
+        .menu-item.active { background: rgba(59,130,246,0.15); color: #60a5fa; }
+        .menu-header { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; margin: 24px 0 8px 16px; letter-spacing: 1px; }
 
         /* --- HEADER --- */
         .top-header {
@@ -100,7 +100,7 @@
             background: transparent;
             border: none;
             font-size: 24px;
-            color: #1e293b;
+            color: #0f172a;
             cursor: pointer;
             padding: 8px;
             width: 44px;
@@ -114,11 +114,11 @@
         .hamburger:active { background: #f1f5f9; }
         .page-title { font-size: 18px; font-weight: 700; color: #0f172a; }
         .date-badge { 
-            background: var(--primary-light); 
+            background: #f1f5f9; 
             padding: 6px 14px; 
             border-radius: 30px; 
             font-size: 12px; 
-            color: var(--primary-dark); 
+            color: #475569; 
             font-weight: 500;
             white-space: nowrap;
         }
@@ -128,15 +128,14 @@
             flex: 1;
             padding: 16px;
             overflow-x: hidden;
-            background: #f4f7fc;
+            background: #f8fafc;
             width: 100%;
             max-width: 100%;
             padding-bottom: calc(80px + var(--safe-bottom));
         }
 
-        /* --- BANNER --- */
         .banner {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             color: white; 
             padding: 24px 20px; 
             border-radius: var(--radius); 
@@ -147,9 +146,8 @@
         }
         .banner h2 { font-size: 22px; margin-bottom: 4px; font-weight: 700; }
         .banner p { opacity: 0.9; font-size: 13px; }
-        .banner i { position: absolute; right: 10px; bottom: -30px; font-size: 120px; opacity: 0.1; transform: rotate(15deg); }
+        .banner i { position: absolute; right: 10px; bottom: -30px; font-size: 120px; opacity: 0.12; transform: rotate(15deg); }
 
-        /* --- STATS CARDS (Full Modern - Tanpa Garis) --- */
         .stats-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -159,23 +157,23 @@
         .stat-card {
             padding: 16px 18px;
             border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
-            background: white;
-            color: #1e293b;
+            box-shadow: var(--shadow-md);
+            transition: 0.3s;
+            color: white;
             position: relative;
             overflow: hidden;
-            min-height: 80px;
-            border: none;
-            transition: 0.2s;
+            min-height: 90px;
         }
-        .stat-card:active { transform: scale(0.98); }
-        .stat-card:hover { box-shadow: var(--shadow-md); }
-        .stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px; }
+        .stat-card:nth-child(1) { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .stat-card:nth-child(2) { background: linear-gradient(135deg, #10b981, #059669); }
+        .stat-card:nth-child(3) { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .stat-card:nth-child(4) { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .stat-card:active { transform: scale(0.97); }
+        .stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; opacity: 0.85; letter-spacing: 0.5px; }
         .stat-value { 
             font-size: 20px; 
             font-weight: 700; 
             margin: 4px 0; 
-            color: #1e293b;
             word-break: break-all;
             white-space: normal;
             overflow-wrap: break-word;
@@ -185,70 +183,58 @@
             padding: 2px 8px; 
             border-radius: 20px; 
             font-weight: 600; 
-            background: #f1f5f9; 
-            color: #475569;
+            background: rgba(255,255,255,0.2); 
             display: inline-block; 
         }
 
-        /* --- WIDGETS --- */
         .bottom-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-        .widget-box { background: white; padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: none; }
-        .widget-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: #1e293b; }
+        .widget-box { background: white; padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+        .widget-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: #0f172a; }
         .widget-sub { font-size: 12px; color: #94a3b8; margin-bottom: 12px; }
-        .chart-area { height: 80px; display: flex; align-items: flex-end; gap: 6px; padding: 6px 0; }
-        .bar { flex: 1; background: var(--primary); border-radius: 4px 4px 0 0; min-height: 6px; opacity: 0.8; }
-        .bar:nth-child(even) { background: var(--primary-dark); }
+        .chart-area { height: 100px; display: flex; align-items: flex-end; gap: 8px; padding: 8px 0; }
+        .bar { flex: 1; background: linear-gradient(180deg, #3b82f6, #2563eb); border-radius: 6px 6px 0 0; min-height: 10px; }
+        .bar:nth-child(even) { background: linear-gradient(180deg, #8b5cf6, #7c3aed); }
 
-        /* --- ACTIVITY --- */
-        .activity-item { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9; min-height: 52px; }
+        .activity-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; min-height: 56px; }
         .activity-item:last-child { border-bottom: none; }
         .icon-circle { 
-            width: 36px; height: 36px; border-radius: 50%; 
+            width: 40px; height: 40px; border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; 
             margin-right: 12px; color: white; flex-shrink: 0; 
         }
         .act-info { flex: 1; min-width: 0; }
-        .act-title { font-size: 14px; font-weight: 500; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .act-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .act-date { font-size: 11px; color: #94a3b8; }
         .act-amount { font-weight: 600; font-size: 14px; white-space: nowrap; }
 
         .hidden-page { display: none; }
         .hidden-page.active { display: block; }
 
-        /* --- BUKU KAS --- */
         .buku-list-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
         .buku-card {
             padding: 14px 16px;
             border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: 0.2s;
             position: relative;
-            background: white;
-            border: none;
+            color: white;
             display: flex;
             align-items: center;
             gap: 12px;
             min-height: 64px;
         }
-        .buku-card:hover { box-shadow: var(--shadow-md); }
-        .buku-card.dimmed { opacity: 0.4; transform: scale(0.95); filter: grayscale(0.3); }
-        .buku-card.active {
-            box-shadow: 0 0 0 2px rgba(26, 93, 255, 0.2);
-            background: var(--primary-light);
-            opacity: 1;
-            transform: scale(1.02);
-        }
-        .buku-card .icon { font-size: 24px; color: var(--primary); opacity: 0.7; flex-shrink: 0; }
+        .buku-card:active { transform: scale(0.97); }
+        .buku-card .icon { font-size: 24px; opacity: 0.9; flex-shrink: 0; }
         .buku-card .info { display: flex; flex-direction: column; overflow: hidden; }
-        .buku-card .nama { font-weight: 600; font-size: 13px; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .buku-card .saldo { font-size: 16px; font-weight: 700; color: #1e293b; margin-top: 2px; }
-        .buku-card .norek { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+        .buku-card .nama { font-weight: 600; font-size: 13px; opacity: 0.95; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .buku-card .saldo { font-size: 16px; font-weight: 700; margin-top: 2px; }
+        .buku-card .norek { font-size: 10px; opacity: 0.8; margin-top: 2px; }
         .buku-card .actions {
             position: absolute;
             top: 8px;
@@ -260,61 +246,61 @@
         }
         .buku-card:hover .actions { opacity: 1; }
         .buku-card .actions button {
-            background: #f1f5f9;
+            background: rgba(255,255,255,0.2);
             border: none;
             cursor: pointer;
             font-size: 11px;
-            color: #1e293b;
+            color: white;
             padding: 4px 8px;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: 0.2s;
         }
-        .buku-card .actions button:active { background: #e2e8f0; }
+        .buku-card .actions button:active { background: rgba(255,255,255,0.4); }
 
         .buku-card-add {
-            background: white;
-            border: 2px dashed #cbd5e1 !important;
+            background: white !important;
+            border: 2px dashed #3b82f6 !important;
             box-shadow: none !important;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
             padding: 14px;
             min-height: 64px;
-            color: #64748b;
-            transition: 0.2s;
+            color: #3b82f6;
+            transition: 0.3s;
         }
-        .buku-card-add:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+        .buku-card-add:active { transform: scale(0.97); }
 
-        /* --- TABLE --- */
         .month-group { margin-bottom: 16px; }
         .month-label {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
-            color: #1e293b;
-            padding: 4px 0 8px 0;
-            border-bottom: 1px solid #e2e8f0;
+            color: #0f172a;
+            padding: 6px 0 10px 0;
+            border-bottom: 2px solid #e2e8f0;
             margin-bottom: 6px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         .month-label span {
-            background: #f1f5f9;
+            background: #e2e8f0;
             padding: 2px 8px;
             border-radius: 12px;
             font-size: 11px;
-            color: #64748b;
+            color: #475569;
         }
-        .table-container { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: none; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { text-align: left; padding: 10px 12px; background: #f8fafc; color: #64748b; font-weight: 600; border-bottom: 1px solid #e2e8f0; font-size: 11px; text-transform: uppercase; }
-        td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-        .text-green { color: #10b981; }
-        .text-red { color: #ef4444; }
 
-        /* --- BUTTONS --- */
+        .table-container { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { text-align: left; padding: 10px 12px; background: #f8fafc; color: #475569; font-weight: 600; border-bottom: 1px solid #e2e8f0; font-size: 11px; text-transform: uppercase; }
+        td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+        .text-green { color: #059669; }
+        .text-red { color: #dc2626; }
+
+        /* --- BUTTONS STANDARD --- */
         .btn { 
             padding: 10px 20px; 
             border: none; 
@@ -332,11 +318,11 @@
             justify-content: center;
         }
         .btn:active { transform: scale(0.96); }
-        .btn-warning { background: #f59e0b; color: white; }
-        .btn-danger { background: #ef4444; color: white; }
+        .btn-warning { background: #f59e0b; }
+        .btn-danger { background: #ef4444; }
         .btn-sm { padding: 8px 14px; font-size: 12px; min-height: 36px; min-width: 36px; }
-        .btn-success { background: #10b981; color: white; }
-        .btn-primary { background: var(--primary-gradient); color: white; }
+        .btn-success { background: #10b981; }
+        .btn-primary { background: var(--primary); }
         .btn-primary:active { background: var(--primary-dark); }
 
         /* --- FLOATING ACTION BUTTON --- */
@@ -344,28 +330,27 @@
             position: fixed;
             bottom: 24px;
             right: 24px;
-            width: 56px;
-            height: 56px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
             border: none;
-            box-shadow: 0 4px 16px rgba(26, 93, 255, 0.3);
-            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(59,130,246,0.4);
+            font-size: 26px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 200;
-            transition: 0.2s;
+            transition: 0.3s;
         }
         .fab:active { transform: scale(0.92); }
-        .fab:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(26, 93, 255, 0.4); }
 
         /* --- MODAL --- */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(26, 93, 255, 0.5); display: none; justify-content: center; align-items: center;
+            background: rgba(15,23,42,0.6); display: none; justify-content: center; align-items: center;
             z-index: 500; backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
         }
@@ -374,20 +359,20 @@
             background: white; width: 92%; max-width: 480px; border-radius: var(--radius);
             padding: 24px; box-shadow: var(--shadow-lg); max-height: 90vh; overflow-y: auto;
         }
-        .modal-box h3 { text-align: center; font-size: 18px; color: #1e293b; font-weight: 700; margin-bottom: 16px; }
+        .modal-box h3 { text-align: center; font-size: 18px; color: #0f172a; font-weight: 700; margin-bottom: 16px; }
         .modal-box label { display: block; margin: 10px 0 4px; font-size: 14px; font-weight: 600; color: #334155; }
         .modal-box input, .modal-box select {
             width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: var(--radius-sm);
-            font-size: 14px; margin-bottom: 8px; background: #f8fafc; min-height: 44px;
+            font-size: 15px; margin-bottom: 8px; background: #f8fafc; min-height: 44px;
         }
-        .modal-box input:focus, .modal-box select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(26, 93, 255, 0.15); }
+        .modal-box input:focus, .modal-box select:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
         .modal-actions { display: flex; gap: 10px; margin-top: 16px; }
         .modal-actions .btn { flex: 1; }
         .btn-cancel { background: #e2e8f0; color: #475569; }
 
         .tag-status { font-size: 10px; padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-block; }
-        .tag-lunas { background: #d1fae5; color: #10b981; }
-        .tag-bayar { background: #fee2e2; color: #ef4444; }
+        .tag-lunas { background: #d1fae5; color: #059669; }
+        .tag-bayar { background: #fee2e2; color: #dc2626; }
         .tag-pending { background: #fef3c7; color: #d97706; }
 
         /* --- INVOICE FORM --- */
@@ -414,7 +399,7 @@
         }
         .invoice-row .full { grid-column: 1 / -1; }
         .invoice-grand-total {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, var(--success), #059669);
             color: white;
             padding: 14px;
             border-radius: var(--radius-sm);
@@ -432,7 +417,7 @@
             flex-wrap: wrap;
         }
         .btn-export {
-            background: var(--primary-gradient);
+            background: #0f172a;
             color: white;
             padding: 8px 16px;
             border: none;
@@ -446,7 +431,7 @@
             transition: 0.2s;
             min-height: 36px;
         }
-        .btn-export:hover { background: var(--primary-dark); }
+        .btn-export:hover { background: #1e293b; }
         .btn-export:active { transform: scale(0.96); }
 
         /* --- RESPONSIVE DESKTOP --- */
@@ -464,9 +449,9 @@
         }
 
         /* --- SCROLLBAR --- */
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -508,12 +493,12 @@
             <div class="stats-grid" id="statsGrid"></div>
             <div class="bottom-grid">
                 <div class="widget-box">
-                    <div class="widget-title"><i class="fas fa-chart-line" style="color:var(--primary);"></i> Arus Kas</div>
+                    <div class="widget-title"><i class="fas fa-chart-line" style="color:#3b82f6;"></i> Arus Kas</div>
                     <div class="widget-sub">Performa bulanan</div>
                     <div class="chart-area" id="chartArea"></div>
                 </div>
                 <div class="widget-box">
-                    <div class="widget-title"><i class="fas fa-bolt" style="color:var(--primary-dark);"></i> Aktivitas Terbaru</div>
+                    <div class="widget-title"><i class="fas fa-bolt" style="color:#8b5cf6;"></i> Aktivitas Terbaru</div>
                     <div class="widget-sub">Transaksi real-time</div>
                     <div id="recentActivityList"></div>
                 </div>
@@ -523,17 +508,17 @@
         <!-- BUKU KAS -->
         <div id="page-buku-kas" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#1e293b;"><i class="fas fa-wallet" style="color:var(--primary);"></i> Buku Kas</h2>
+                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-wallet" style="color:#3b82f6;"></i> Buku Kas</h2>
             </div>
             <div class="buku-list-grid" id="bukuListGrid"></div>
-            <h4 style="font-size:14px; color:#64748b; margin-top:14px;">Rincian per Rekening</h4>
+            <h4 style="font-size:14px; color:#334155; margin-top:14px;">Rincian per Rekening</h4>
             <div id="rincianPerRekening"></div>
         </div>
 
         <!-- INVOICE -->
         <div id="page-invoice" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#1e293b;"><i class="fas fa-file-invoice" style="color:var(--primary);"></i> Invoice</h2>
+                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-file-invoice" style="color:#3b82f6;"></i> Invoice</h2>
                 <button class="btn btn-primary" onclick="openModal('invoice')"><i class="fas fa-plus"></i> Buat Invoice</button>
             </div>
             <div id="invoiceList"></div>
@@ -542,7 +527,7 @@
         <!-- UTANG -->
         <div id="page-utang" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#1e293b;"><i class="fas fa-hand-holding-usd" style="color:var(--primary);"></i> Utang</h2>
+                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-hand-holding-usd" style="color:#f59e0b;"></i> Utang</h2>
                 <button class="btn btn-success" onclick="openModal('utang')"><i class="fas fa-plus"></i> Tambah Utang</button>
             </div>
             <div id="listUtang"></div>
@@ -551,7 +536,7 @@
         <!-- PIUTANG -->
         <div id="page-piutang" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#1e293b;"><i class="fas fa-hand-holding-dollar" style="color:var(--primary);"></i> Piutang</h2>
+                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-hand-holding-dollar" style="color:#10b981;"></i> Piutang</h2>
                 <button class="btn btn-primary" onclick="openModal('piutang')"><i class="fas fa-plus"></i> Tambah Piutang</button>
             </div>
             <div id="listPiutang"></div>
@@ -559,7 +544,7 @@
 
         <!-- LAPORAN -->
         <div id="page-laporan" class="hidden-page">
-            <h2 style="font-size:18px; font-weight:700; color:#1e293b; margin-bottom:14px;"><i class="fas fa-chart-pie" style="color:var(--primary);"></i> Laporan Keuangan</h2>
+            <h2 style="font-size:18px; font-weight:700; color:#0f172a; margin-bottom:14px;"><i class="fas fa-chart-pie" style="color:#3b82f6;"></i> Laporan Keuangan</h2>
             <div class="export-group">
                 <button class="btn-export" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> Export PDF</button>
                 <button class="btn-export" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Export Excel</button>
@@ -666,6 +651,12 @@
             return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
         }
 
+        const warnaBuku = ['#10b981','#3b82f6','#8b5cf6','#f59e0b','#ef4444','#ec4899','#14b8a6','#f97316'];
+
+        function getWarnaBuku(index) {
+            return warnaBuku[index % warnaBuku.length];
+        }
+
         function hitungTotalInvoice(items) {
             return items.reduce((total, item) => {
                 const sub = (item.qty * item.harga) - item.diskon;
@@ -694,26 +685,10 @@
             const totalInvoiceUnpaid = appData.invoice.filter(i => i.status === 'unpaid').reduce((s, i) => s + hitungTotalInvoice(i.items), 0);
 
             document.getElementById('statsGrid').innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-label">Total Saldo</div>
-                    <div class="stat-value">${formatRupiah(totalSaldo)}</div>
-                    <span class="stat-change">+12%</span>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Pemasukan</div>
-                    <div class="stat-value">${formatRupiah(totalPemasukan)}</div>
-                    <span class="stat-change">+8%</span>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Pengeluaran</div>
-                    <div class="stat-value">${formatRupiah(totalPengeluaran)}</div>
-                    <span class="stat-change">-2%</span>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Invoice Unpaid</div>
-                    <div class="stat-value">${formatRupiah(totalInvoiceUnpaid)}</div>
-                    <span class="stat-change">0%</span>
-                </div>
+                <div class="stat-card"><div class="stat-label">Total Saldo</div><div class="stat-value">${formatRupiah(totalSaldo)}</div><span class="stat-change">+12%</span></div>
+                <div class="stat-card"><div class="stat-label">Pemasukan</div><div class="stat-value">${formatRupiah(totalPemasukan)}</div><span class="stat-change">+8%</span></div>
+                <div class="stat-card"><div class="stat-label">Pengeluaran</div><div class="stat-value">${formatRupiah(totalPengeluaran)}</div><span class="stat-change">-2%</span></div>
+                <div class="stat-card"><div class="stat-label">Invoice Unpaid</div><div class="stat-value">${formatRupiah(totalInvoiceUnpaid)}</div><span class="stat-change">0%</span></div>
             `;
 
             const heights = [30,60,45,80,90,50,70,40];
@@ -750,7 +725,7 @@
             appData.bukuKas.forEach((b, index) => {
                 const card = document.createElement('div');
                 card.className = 'buku-card';
-                card.id = 'buku-' + b.id;
+                card.style.background = getWarnaBuku(index);
                 card.innerHTML = `
                     <div class="actions">
                         <button onclick="event.stopPropagation(); editBuku('${b.id}')" title="Edit"><i class="fas fa-edit"></i></button>
@@ -763,45 +738,28 @@
                         <div class="norek">${b.norek ? '🏦 ' + b.norek : ''}</div>
                     </div>
                 `;
-                card.onclick = () => selectBukuKas(b.id);
+                card.onclick = () => showDetailRekening(b.id);
                 grid.appendChild(card);
             });
 
             const addCard = document.createElement('div');
             addCard.className = 'buku-card buku-card-add';
+            addCard.style.background = 'white';
+            addCard.style.border = '2px dashed #3b82f6';
+            addCard.style.boxShadow = 'none';
+            addCard.style.cursor = 'pointer';
+            addCard.style.display = 'flex';
+            addCard.style.alignItems = 'center';
+            addCard.style.justifyContent = 'center';
+            addCard.style.gap = '8px';
+            addCard.style.padding = '14px';
+            addCard.style.minHeight = '64px';
             addCard.innerHTML = `
-                <i class="fas fa-plus-circle" style="font-size:22px;"></i>
-                <span style="font-size:12px; font-weight:600;">Tambah</span>
+                <div style="font-size:22px; color:#3b82f6;"><i class="fas fa-plus-circle"></i></div>
+                <div style="font-size:12px; font-weight:600; color:#3b82f6;">Tambah</div>
             `;
             addCard.onclick = () => openModal('buku');
             grid.appendChild(addCard);
-        }
-
-        let selectedBukuId = null;
-
-        function selectBukuKas(bukuId) {
-            if (selectedBukuId === bukuId) {
-                selectedBukuId = null;
-                document.querySelectorAll('.buku-card').forEach(c => {
-                    c.classList.remove('active', 'dimmed');
-                });
-                renderRincianPerRekening();
-                return;
-            }
-            selectedBukuId = bukuId;
-            document.querySelectorAll('.buku-card').forEach(c => {
-                c.classList.remove('active', 'dimmed');
-            });
-            const activeCard = document.getElementById('buku-' + bukuId);
-            if (activeCard) {
-                activeCard.classList.add('active');
-            }
-            document.querySelectorAll('.buku-card').forEach(c => {
-                if (c.id !== 'buku-' + bukuId && !c.classList.contains('buku-card-add')) {
-                    c.classList.add('dimmed');
-                }
-            });
-            renderRincianPerRekening(bukuId);
         }
 
         function renderRincianPerRekening(bukuId = null) {
@@ -817,6 +775,7 @@
                 return;
             }
 
+            // Kelompokkan per buku kas
             const groups = {};
             data.forEach(t => {
                 if (!groups[t.bukuId]) {
@@ -839,10 +798,10 @@
                 html += `
                     <div class="widget-box" style="margin-bottom:12px;">
                         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                            <div style="font-weight:600; font-size:16px; color:#1e293b;">${g.nama}</div>
+                            <div style="font-weight:600; font-size:16px; color:#0f172a;">${g.nama}</div>
                             <div style="display:flex; gap:12px; font-size:12px; flex-wrap:wrap;">
-                                <span style="color:#10b981;">Pemasukan: ${formatRupiah(g.pemasukan)}</span>
-                                <span style="color:#ef4444;">Pengeluaran: ${formatRupiah(g.pengeluaran)}</span>
+                                <span style="color:#059669;">Pemasukan: ${formatRupiah(g.pemasukan)}</span>
+                                <span style="color:#dc2626;">Pengeluaran: ${formatRupiah(g.pengeluaran)}</span>
                             </div>
                         </div>
                         <div style="margin-top:8px; font-size:12px; color:#64748b;">
@@ -852,6 +811,10 @@
                 `;
             }
             container.innerHTML = html;
+        }
+
+        function showDetailRekening(bukuId) {
+            renderRincianPerRekening(bukuId);
         }
 
         function renderUtang() {
@@ -1096,28 +1059,18 @@
             } else if (mode === 'transaksi') {
                 title.textContent = editId ? '✏️ Edit Transaksi' : '➕ Tambah Transaksi';
                 const data = editId ? appData.transaksi.find(t => t.id === editId) : null;
-                const bukuOptions = appData.bukuKas.map(b => 
-                    `<option value="${b.id}" ${data && data.bukuId === b.id ? 'selected' : ''}>${b.nama}</option>`
-                ).join('');
-                const transferOptions = appData.bukuKas.map(b => `<option value="${b.id}">${b.nama}</option>`).join('');
-
                 body.innerHTML = `
                     <label>Tanggal</label>
                     <input type="datetime-local" id="f_tanggal" value="${data ? data.tanggal : new Date().toISOString().slice(0,16)}">
                     <label>Buku Kas</label>
-                    <select id="f_buku">${bukuOptions}</select>
+                    <select id="f_buku">
+                        ${appData.bukuKas.map(b => `<option value="${b.id}" ${data && data.bukuId === b.id ? 'selected' : ''}>${b.nama}</option>`).join('')}
+                    </select>
                     <label>Tipe</label>
                     <select id="f_tipe">
                         <option value="masuk" ${data && data.tipe === 'masuk' ? 'selected' : ''}>💰 Pemasukan</option>
                         <option value="keluar" ${data && data.tipe === 'keluar' ? 'selected' : ''}>💸 Pengeluaran</option>
-                        <option value="transfer" ${data && data.tipe === 'transfer' ? 'selected' : ''}>🔄 Transfer</option>
                     </select>
-                    <div id="transferFields" style="display:${data && data.tipe === 'transfer' ? 'block' : 'none'}; margin-top:10px; border-top:1px solid #e2e8f0; padding-top:10px;">
-                        <label>Dari Buku Kas</label>
-                        <select id="f_dari_buku">${transferOptions}</select>
-                        <label>Ke Buku Kas</label>
-                        <select id="f_ke_buku">${transferOptions}</select>
-                    </div>
                     <label>Nominal (Rp)</label>
                     <input type="number" id="f_nominal" value="${data ? data.nominal : ''}" placeholder="100000">
                     <label>Kategori / Deskripsi</label>
@@ -1158,36 +1111,32 @@
             } else if (mode === 'invoice') {
                 const data = editId ? appData.invoice.find(inv => inv.id === editId) : null;
                 title.textContent = editId ? '✏️ Edit Invoice' : '📝 Buat Invoice Baru';
-                const items = (data && data.items && data.items.length > 0) ? data.items : [{ nama: '', qty: 1, harga: 0, diskon: 0 }];
-                let itemsHtml = '';
-                items.forEach((item, idx) => {
-                    itemsHtml += `
-                        <div class="invoice-item-card" data-index="${idx}">
-                            <div class="invoice-item-header">
-                                <span>Item #${idx + 1}</span>
-                                ${items.length > 1 ? `<button type="button" onclick="removeInvoiceItem(this)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>` : ''}
+                const itemsHtml = (data && data.items ? data.items : [{ nama: '', qty: 1, harga: 0, diskon: 0 }]).map((item, idx) => `
+                    <div class="invoice-item-card" data-index="${idx}">
+                        <div class="invoice-item-header">
+                            <span>Item #${idx + 1}</span>
+                            <button type="button" onclick="removeInvoiceItem(this)" class="btn btn-danger btn-sm" ${idx === 0 && (!data || data.items.length === 1) ? 'style="display:none;"' : ''}><i class="fas fa-trash"></i></button>
+                        </div>
+                        <div class="invoice-row">
+                            <div class="full">
+                                <label>Nama Produk / Jasa</label>
+                                <input type="text" class="f_item_nama" value="${item.nama || ''}" placeholder="Nama produk / jasa...">
                             </div>
-                            <div class="invoice-row">
-                                <div class="full">
-                                    <label>Nama Produk / Jasa</label>
-                                    <input type="text" class="f_item_nama" value="${item.nama || ''}" placeholder="Nama produk / jasa...">
-                                </div>
-                                <div>
-                                    <label>Jumlah</label>
-                                    <input type="number" class="f_item_qty" value="${item.qty || 1}" min="1">
-                                </div>
-                                <div>
-                                    <label>Harga @</label>
-                                    <input type="number" class="f_item_harga" value="${item.harga || 0}" placeholder="0">
-                                </div>
-                                <div>
-                                    <label>Diskon</label>
-                                    <input type="number" class="f_item_diskon" value="${item.diskon || 0}" placeholder="0">
-                                </div>
+                            <div>
+                                <label>Jumlah</label>
+                                <input type="number" class="f_item_qty" value="${item.qty || 1}" min="1">
+                            </div>
+                            <div>
+                                <label>Harga @</label>
+                                <input type="number" class="f_item_harga" value="${item.harga || 0}" placeholder="0">
+                            </div>
+                            <div>
+                                <label>Diskon</label>
+                                <input type="number" class="f_item_diskon" value="${item.diskon || 0}" placeholder="0">
                             </div>
                         </div>
-                    `;
-                });
+                    </div>
+                `).join('');
 
                 body.innerHTML = `
                     <div class="invoice-form-card">
@@ -1228,28 +1177,13 @@
                 `;
                 saveBtn.style.display = 'block';
                 setTimeout(() => {
-                    updateInvoiceTotal();
                     document.querySelectorAll('.f_item_qty, .f_item_harga, .f_item_diskon').forEach(el => {
                         el.addEventListener('input', updateInvoiceTotal);
                     });
+                    updateInvoiceTotal();
                 }, 100);
             }
             modal.classList.add('open');
-
-            if (mode === 'transaksi') {
-                const tipeSelect = document.getElementById('f_tipe');
-                const transferFields = document.getElementById('transferFields');
-                const newTipeSelect = tipeSelect.cloneNode(true);
-                tipeSelect.parentNode.replaceChild(newTipeSelect, tipeSelect);
-                
-                newTipeSelect.addEventListener('change', function() {
-                    if (this.value === 'transfer') {
-                        transferFields.style.display = 'block';
-                    } else {
-                        transferFields.style.display = 'none';
-                    }
-                });
-            }
         }
 
         function closeModal() {
@@ -1311,10 +1245,7 @@
                 const diskon = parseInt(item.querySelector('.f_item_diskon').value) || 0;
                 total += (qty * harga) - diskon;
             });
-            const grandTotalEl = document.querySelector('#invoiceGrandTotal .value');
-            if (grandTotalEl) {
-                grandTotalEl.textContent = formatRupiah(total);
-            }
+            document.querySelector('#invoiceGrandTotal .value').textContent = formatRupiah(total);
         }
 
         // =============================================
@@ -1376,47 +1307,19 @@
                         }
                     }
                 } else {
-                    if (tipe === 'transfer') {
-                        const dariBuku = document.getElementById('f_dari_buku').value;
-                        const keBuku = document.getElementById('f_ke_buku').value;
-                        if (dariBuku === keBuku) { alert('Buku asal dan tujuan tidak boleh sama!'); return; }
-                        const bukuDari = appData.bukuKas.find(b => b.id === dariBuku);
-                        const bukuKe = appData.bukuKas.find(b => b.id === keBuku);
-                        if (bukuDari.saldo < nominal) { alert('Saldo buku asal tidak mencukupi!'); return; }
-                        bukuDari.saldo -= nominal;
-                        bukuKe.saldo += nominal;
-                        appData.transaksi.push({
-                            id: 't' + generateId(),
-                            tanggal: tanggal,
-                            bukuId: dariBuku,
-                            tipe: 'keluar',
-                            nominal: nominal,
-                            kategori: 'Transfer',
-                            desc: `Transfer ke ${bukuKe.nama}`
-                        });
-                        appData.transaksi.push({
-                            id: 't' + generateId(),
-                            tanggal: tanggal,
-                            bukuId: keBuku,
-                            tipe: 'masuk',
-                            nominal: nominal,
-                            kategori: 'Transfer',
-                            desc: `Transfer dari ${bukuDari.nama}`
-                        });
-                    } else {
-                        const buku = appData.bukuKas.find(b => b.id === bukuId);
-                        if (tipe === 'masuk') buku.saldo += nominal;
-                        else buku.saldo -= nominal;
-                        appData.transaksi.push({
-                            id: 't' + generateId(),
-                            tanggal: tanggal,
-                            bukuId: bukuId,
-                            tipe: tipe,
-                            nominal: nominal,
-                            kategori: desc,
-                            desc: desc
-                        });
-                    }
+                    const buku = appData.bukuKas.find(b => b.id === bukuId);
+                    if (tipe === 'masuk') buku.saldo += nominal;
+                    else buku.saldo -= nominal;
+
+                    appData.transaksi.push({
+                        id: 't' + generateId(),
+                        tanggal: tanggal,
+                        bukuId: bukuId,
+                        tipe: tipe,
+                        nominal: nominal,
+                        kategori: desc,
+                        desc: desc
+                    });
                 }
                 saveData();
                 closeModal();
