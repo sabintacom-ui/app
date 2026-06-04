@@ -2,1686 +2,393 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>RIZQUNA - Premium</title>
-    <meta name="theme-color" content="#3b82f6">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <!-- FAVICON -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.png" type="image/png">
-    <link rel="apple-touch-icon" href="/icon-192.png">
-    
-    <link rel="manifest" href="/manifest.json">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Export Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Invoice Rizquna</title>
+    <!-- Font Awesome & Google Font -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background: #f0f4f8; display: flex; min-height: 100vh; color: #1a202c; overflow-x: hidden; }
-        :root { 
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-            --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
-            --shadow-lg: 0 16px 48px rgba(0,0,0,0.10);
-            --radius: 16px;
-            --radius-sm: 10px;
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
-
-        /* --- SIDEBAR --- */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 280px;
-            height: 100vh;
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-            padding: 24px 16px;
-            overflow-y: auto;
-            z-index: 1000;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: #e2e8f0;
-            box-shadow: 4px 0 30px rgba(0,0,0,0.2);
-            overscroll-behavior: contain;
-        }
-        .sidebar.open { left: 0; }
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 999;
-            display: none;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-        }
-        .sidebar-overlay.open { display: block; }
-        .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; margin-bottom: 32px; color: white; padding-left: 8px; }
-        .logo i { color: #fbbf24; font-size: 22px; }
-        .menu-item {
-            display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: var(--radius-sm);
-            margin-bottom: 4px; cursor: pointer; color: #94a3b8; transition: 0.25s; text-decoration: none; font-size: 15px; font-weight: 500;
-            min-height: 48px;
-            touch-action: manipulation;
-        }
-        .menu-item:hover { background: rgba(255,255,255,0.08); color: white; }
-        .menu-item.active { background: rgba(59,130,246,0.15); color: #60a5fa; }
-        .menu-header { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; margin: 24px 0 8px 16px; letter-spacing: 1px; }
-
-        /* --- HEADER --- */
-        .top-header {
+        body {
+            background: #f3f6fc;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            min-height: 60px;
+            height: 100vh;
+            overflow: hidden;
         }
-        .top-header .left {
+
+        /* ----- SIDEBAR ----- */
+        .sidebar {
+            width: 260px;
+            background: #fff;
+            height: 100%;
+            padding: 24px 16px;
+            box-shadow: 2px 0 12px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+        .sidebar .logo {
             display: flex;
             align-items: center;
             gap: 12px;
-            min-width: 0;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 32px;
+        }
+        .sidebar .logo i {
+            color: #3b82f6;
+        }
+        .sidebar .logo span {
+            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sidebar .menu-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin: 24px 0 8px 12px;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+            margin-bottom: 2px;
+        }
+        .sidebar a i {
+            width: 20px;
+            text-align: center;
+        }
+        .sidebar a:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+        .sidebar a.active {
+            background: #eef2ff;
+            color: #3b82f6;
+        }
+        .sidebar .bottom {
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 16px;
+        }
+
+        /* ----- MAIN CONTENT ----- */
+        .main-content {
+            flex: 1;
+            padding: 24px 32px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+        /* Header atas */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .topbar h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .topbar .right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .topbar .right .date {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #475569;
+        }
+        .topbar .right .profile {
+            width: 40px;
+            height: 40px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* ----- CARDS STATS ----- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+        }
+        .stat-card .label {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 6px 0 4px;
+            color: #0f172a;
+        }
+        .stat-card .change {
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .stat-card .change.up { color: #10b981; }
+        .stat-card .change.down { color: #ef4444; }
+
+        /* ----- TABEL INVOICE ----- */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0 12px;
+            flex-wrap: wrap;
+        }
+        .section-title h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .section-title a {
+            color: #3b82f6;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .table-wrapper {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th {
+            background: #f8fafc;
+            text-align: left;
+            padding: 14px 20px;
+            color: #475569;
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-paid { background: #d1fae5; color: #065f46; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-overdue { background: #fee2e2; color: #991b1b; }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 992px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; left: -280px; height: 100%; top: 0; box-shadow: 4px 0 20px rgba(0,0,0,0.1); }
+            .sidebar.open { left: 0; }
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.4);
+                z-index: 5;
+            }
+            .sidebar-overlay.active { display: block; }
+            .main-content { padding: 16px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .topbar h1 { font-size: 20px; }
+            .hamburger { display: block; }
+        }
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .topbar .right .date { display: none; }
         }
         .hamburger {
-            background: transparent;
+            display: none;
+            background: none;
             border: none;
             font-size: 24px;
             color: #0f172a;
             cursor: pointer;
-            padding: 8px;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            transition: 0.2s;
-            touch-action: manipulation;
-            flex-shrink: 0;
+            padding: 4px;
         }
-        .hamburger:active { background: #f1f5f9; }
-        .page-title { 
-            font-size: 18px; 
-            font-weight: 700; 
-            color: #0f172a;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .date-badge { 
-            background: #f1f5f9; 
-            padding: 6px 14px; 
-            border-radius: 30px; 
-            font-size: 12px; 
-            color: #475569; 
-            font-weight: 500;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        /* --- MAIN CONTENT --- */
-        .main-content {
-            flex: 1;
-            padding: 16px;
-            overflow-x: hidden;
-            background: #f8fafc;
-            width: 100%;
-            max-width: 100%;
-            padding-bottom: calc(80px + var(--safe-bottom));
-        }
-
-        .banner {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            color: white; 
-            padding: 24px 20px; 
-            border-radius: var(--radius); 
-            margin-bottom: 20px;
-            position: relative; 
-            overflow: hidden; 
-            box-shadow: var(--shadow-lg);
-        }
-        .banner h2 { font-size: 22px; margin-bottom: 4px; font-weight: 700; }
-        .banner p { opacity: 0.9; font-size: 13px; }
-        .banner i { position: absolute; right: 10px; bottom: -30px; font-size: 120px; opacity: 0.12; transform: rotate(15deg); }
-
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 12px; 
-            margin-bottom: 20px; 
-        }
-        .stat-card {
-            padding: 16px 18px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            transition: 0.3s;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            min-height: 90px;
-        }
-        .stat-card:nth-child(1) { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-        .stat-card:nth-child(2) { background: linear-gradient(135deg, #10b981, #059669); }
-        .stat-card:nth-child(3) { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .stat-card:nth-child(4) { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .stat-card:active { transform: scale(0.97); }
-        .stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; opacity: 0.85; letter-spacing: 0.5px; }
-        .stat-value { 
-            font-size: 20px; 
-            font-weight: 700; 
-            margin: 4px 0; 
-            word-break: break-all;
-            white-space: normal;
-            overflow-wrap: break-word;
-        }
-        .stat-change { 
-            font-size: 10px; 
-            padding: 2px 8px; 
-            border-radius: 20px; 
-            font-weight: 600; 
-            background: rgba(255,255,255,0.2); 
-            display: inline-block; 
-        }
-
-        .bottom-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-        .widget-box { background: white; padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
-        .widget-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: #0f172a; }
-        .widget-sub { font-size: 12px; color: #94a3b8; margin-bottom: 12px; }
-        .chart-area { height: 100px; display: flex; align-items: flex-end; gap: 8px; padding: 8px 0; }
-        .bar { flex: 1; background: linear-gradient(180deg, #3b82f6, #2563eb); border-radius: 6px 6px 0 0; min-height: 10px; }
-        .bar:nth-child(even) { background: linear-gradient(180deg, #8b5cf6, #7c3aed); }
-
-        .activity-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; min-height: 56px; }
-        .activity-item:last-child { border-bottom: none; }
-        .icon-circle { 
-            width: 40px; height: 40px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            margin-right: 12px; color: white; flex-shrink: 0; 
-        }
-        .act-info { flex: 1; min-width: 0; }
-        .act-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .act-date { font-size: 11px; color: #94a3b8; }
-        .act-amount { font-weight: 600; font-size: 14px; white-space: nowrap; }
-
-        .hidden-page { display: none; }
-        .hidden-page.active { display: block; }
-
-        .buku-list-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .buku-card {
-            padding: 14px 16px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            cursor: pointer;
-            transition: 0.2s;
-            position: relative;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-height: 64px;
-        }
-        .buku-card:active { transform: scale(0.97); }
-        .buku-card .icon { font-size: 24px; opacity: 0.9; flex-shrink: 0; }
-        .buku-card .info { display: flex; flex-direction: column; overflow: hidden; }
-        .buku-card .nama { font-weight: 600; font-size: 13px; opacity: 0.95; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .buku-card .saldo { font-size: 16px; font-weight: 700; margin-top: 2px; }
-        .buku-card .norek { font-size: 10px; opacity: 0.8; margin-top: 2px; }
-        .buku-card .actions {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            display: flex;
-            gap: 4px;
-            opacity: 0;
-            transition: 0.3s;
-        }
-        .buku-card:hover .actions { opacity: 1; }
-        .buku-card .actions button {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            cursor: pointer;
-            font-size: 11px;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: 0.2s;
-        }
-        .buku-card .actions button:active { background: rgba(255,255,255,0.4); }
-
-        .buku-card-add {
-            background: white !important;
-            border: 2px dashed #3b82f6 !important;
-            box-shadow: none !important;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 14px;
-            min-height: 64px;
-            color: #3b82f6;
-            transition: 0.3s;
-        }
-        .buku-card-add:active { transform: scale(0.97); }
-
-        .month-group { margin-bottom: 16px; }
-        .month-label {
-            font-size: 15px;
-            font-weight: 600;
-            color: #0f172a;
-            padding: 6px 0 10px 0;
-            border-bottom: 2px solid #e2e8f0;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .month-label span {
-            background: #e2e8f0;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            color: #475569;
-        }
-
-        .table-container { 
-            background: white; 
-            border-radius: var(--radius); 
-            overflow-x: auto; 
-            box-shadow: var(--shadow-sm);
-            -webkit-overflow-scrolling: touch;
-        }
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            font-size: 13px; 
-            min-width: 600px;
-        }
-        th { text-align: left; padding: 10px 12px; background: #f8fafc; color: #475569; font-weight: 600; border-bottom: 1px solid #e2e8f0; font-size: 11px; text-transform: uppercase; white-space: nowrap; }
-        td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-        .text-green { color: #059669; }
-        .text-red { color: #dc2626; }
-
-        /* --- BUTTONS STANDARD --- */
-        .btn { 
-            padding: 10px 20px; 
-            border: none; 
-            border-radius: var(--radius-sm); 
-            font-weight: 600; 
-            cursor: pointer; 
-            font-size: 14px; 
-            transition: 0.2s; 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 6px; 
-            color: white; 
-            min-height: 44px;
-            min-width: 44px;
-            justify-content: center;
-            touch-action: manipulation;
-        }
-        .btn:active { transform: scale(0.96); }
-        .btn-warning { background: #f59e0b; }
-        .btn-danger { background: #ef4444; }
-        .btn-sm { padding: 8px 14px; font-size: 12px; min-height: 36px; min-width: 36px; }
-        .btn-success { background: #10b981; }
-        .btn-primary { background: var(--primary); }
-        .btn-primary:active { background: var(--primary-dark); }
-
-        /* --- FLOATING ACTION BUTTON --- */
-        .fab {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 20px rgba(59,130,246,0.4);
-            font-size: 26px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-            transition: 0.3s;
-            touch-action: manipulation;
-        }
-        .fab:active { transform: scale(0.92); }
-
-        /* --- MODAL --- */
-        .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15,23,42,0.6); display: none; justify-content: center; align-items: center;
-            z-index: 500; backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-        }
-        .modal.open { display: flex; }
-        .modal-box {
-            background: white; width: 92%; max-width: 480px; border-radius: var(--radius);
-            padding: 24px; box-shadow: var(--shadow-lg); max-height: 90vh; overflow-y: auto;
-        }
-        .modal-box h3 { text-align: center; font-size: 18px; color: #0f172a; font-weight: 700; margin-bottom: 16px; }
-        .modal-box label { display: block; margin: 10px 0 4px; font-size: 14px; font-weight: 600; color: #334155; }
-        .modal-box input, .modal-box select {
-            width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: var(--radius-sm);
-            font-size: 15px; margin-bottom: 8px; background: #f8fafc; min-height: 44px;
-        }
-        .modal-box input:focus, .modal-box select:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .modal-actions { display: flex; gap: 10px; margin-top: 16px; }
-        .modal-actions .btn { flex: 1; }
-        .btn-cancel { background: #e2e8f0; color: #475569; }
-
-        .tag-status { font-size: 10px; padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-block; }
-        .tag-lunas { background: #d1fae5; color: #059669; }
-        .tag-bayar { background: #fee2e2; color: #dc2626; }
-        .tag-pending { background: #fef3c7; color: #d97706; }
-
-        /* --- INVOICE FORM --- */
-        .invoice-form-card {
-            background: #f8fafc;
-            border-radius: var(--radius);
-            padding: 14px;
-            margin-bottom: 14px;
-        }
-        .invoice-item-card {
-            background: white;
-            border-radius: var(--radius-sm);
-            padding: 12px;
-            margin-bottom: 8px;
-            border: 1px solid #e2e8f0;
-        }
-        .invoice-item-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 6px;
-        }
-        .invoice-item-header span { font-weight: 600; font-size: 12px; color: #475569; }
-        .invoice-row {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
-        }
-        .invoice-row .full { grid-column: 1 / -1; }
-        .invoice-grand-total {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: white;
-            padding: 14px;
-            border-radius: var(--radius-sm);
-            display: flex; justify-content: space-between; align-items: center;
-            margin-top: 10px;
-        }
-        .invoice-grand-total .label { font-size: 13px; font-weight: 600; }
-        .invoice-grand-total .value { font-size: 20px; font-weight: 700; }
-
-        /* --- EXPORT BUTTONS --- */
-        .export-group {
-            display: flex;
-            gap: 8px;
-            margin: 10px 0;
-            flex-wrap: wrap;
-        }
-        .btn-export {
-            background: #0f172a;
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.2s;
-            min-height: 36px;
-        }
-        .btn-export:hover { background: #1e293b; }
-        .btn-export:active { transform: scale(0.96); }
-
-        /* --- RESPONSIVE DESKTOP --- */
-        @media (min-width: 769px) {
-            .sidebar { left: 0 !important; position: sticky; }
-            .sidebar-overlay { display: none !important; }
-            .hamburger { display: none !important; }
-            .main-content { padding: 24px 32px; }
-            .stats-grid { grid-template-columns: repeat(4, 1fr); }
-            .stat-value { font-size: 22px; }
-            .bottom-grid { grid-template-columns: 2fr 1fr; }
-            .buku-list-grid { grid-template-columns: repeat(3, 1fr); }
-            .invoice-row { grid-template-columns: 1fr 1fr; }
-            .export-group { justify-content: flex-start; }
-            table { min-width: auto; }
-            .table-container { overflow-x: visible; }
-        }
-
-        @media (max-width: 400px) {
-            .stats-grid { grid-template-columns: 1fr; }
-            .buku-list-grid { grid-template-columns: 1fr; }
-            .stat-value { font-size: 18px; }
-            .top-header .page-title { font-size: 16px; }
-        }
-
-        /* --- SCROLLBAR --- */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 10px; }
+        .hamburger:active { opacity: 0.7; }
     </style>
 </head>
 <body>
 
-    <!-- SIDEBAR OVERLAY -->
+    <!-- Overlay untuk mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
     <!-- SIDEBAR -->
-    <div class="sidebar" id="sidebar">
-        <div class="logo"><i class="fas fa-rocket"></i> RIZQUNA</div>
-        <div class="menu-header">Menu</div>
-        <a href="#" class="menu-item active" onclick="showPage('dashboard')"><i class="fas fa-th-large"></i> Dashboard</a>
-        <a href="#" class="menu-item" onclick="showPage('buku-kas')"><i class="fas fa-book"></i> Buku Kas</a>
-        <a href="#" class="menu-item" onclick="showPage('invoice')"><i class="fas fa-file-invoice"></i> Invoice</a>
-        <a href="#" class="menu-item" onclick="showPage('utang')"><i class="fas fa-hand-holding-usd"></i> Utang</a>
-        <a href="#" class="menu-item" onclick="showPage('piutang')"><i class="fas fa-hand-holding-dollar"></i> Piutang</a>
-        <a href="#" class="menu-item" onclick="showPage('laporan')"><i class="fas fa-chart-pie"></i> Laporan</a>
-        <div class="menu-header">Akun</div>
-        <a href="#" class="menu-item"><i class="fas fa-user-cog"></i> Pengaturan</a>
-    </div>
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <i class="fas fa-file-invoice"></i>
+            <span>RIZQUNA</span>
+        </div>
+        <div class="menu-label">Utama</div>
+        <a href="#" class="active"><i class="fas fa-th-large"></i> Dashboard</a>
+        <a href="#"><i class="fas fa-file-alt"></i> Invoice</a>
+        <a href="#"><i class="fas fa-users"></i> Pelanggan</a>
+        <a href="#"><i class="fas fa-cog"></i> Pengaturan</a>
+        <div class="menu-label">Lainnya</div>
+        <a href="#"><i class="fas fa-question-circle"></i> Bantuan</a>
+        <div class="bottom">
+            <a href="#"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+        </div>
+    </aside>
 
     <!-- MAIN CONTENT -->
-    <div class="main-content">
-        <!-- HEADER -->
-        <div class="top-header">
-            <div class="left">
+    <main class="main-content">
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div style="display: flex; align-items: center; gap: 12px;">
                 <button class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-                <div class="page-title" id="pageTitle">Dashboard</div>
+                <h1>Dashboard</h1>
             </div>
-            <div class="date-badge"><i class="far fa-calendar-alt"></i> <span id="tanggalHariIni"></span></div>
-        </div>
-
-        <!-- DASHBOARD -->
-        <div id="page-dashboard">
-            <div class="banner">
-                <div><h2>Selamat Datang, Rizquna!</h2><p>Pantau kesehatan finansial Anda dengan tampilan cerdas.</p></div>
-                <i class="fas fa-rocket"></i>
-            </div>
-            <div class="stats-grid" id="statsGrid"></div>
-            <div class="bottom-grid">
-                <div class="widget-box">
-                    <div class="widget-title"><i class="fas fa-chart-line" style="color:#3b82f6;"></i> Arus Kas</div>
-                    <div class="widget-sub">Performa bulanan</div>
-                    <div class="chart-area" id="chartArea"></div>
-                </div>
-                <div class="widget-box">
-                    <div class="widget-title"><i class="fas fa-bolt" style="color:#8b5cf6;"></i> Aktivitas Terbaru</div>
-                    <div class="widget-sub">Transaksi real-time</div>
-                    <div id="recentActivityList"></div>
-                </div>
+            <div class="right">
+                <span class="date"><i class="far fa-calendar-alt"></i> 03 Juni 2026</span>
+                <div class="profile">R</div>
             </div>
         </div>
 
-        <!-- BUKU KAS -->
-        <div id="page-buku-kas" class="hidden-page">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-wallet" style="color:#3b82f6;"></i> Buku Kas</h2>
+        <!-- STATS CARDS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="label"><i class="fas fa-dollar-sign"></i> Total Pendapatan</div>
+                <div class="value">Rp 128.450.000</div>
+                <span class="change up">▲ 12,5%</span>
             </div>
-            <div class="buku-list-grid" id="bukuListGrid"></div>
-            <h4 style="font-size:14px; color:#334155; margin-top:14px;">Rincian per Rekening</h4>
-            <div id="rincianPerRekening"></div>
-        </div>
-
-        <!-- INVOICE -->
-        <div id="page-invoice" class="hidden-page">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-file-invoice" style="color:#3b82f6;"></i> Invoice</h2>
-                <button class="btn btn-primary" onclick="openModal('invoice')"><i class="fas fa-plus"></i> Buat Invoice</button>
+            <div class="stat-card">
+                <div class="label"><i class="fas fa-file-invoice"></i> Total Invoice</div>
+                <div class="value">342</div>
+                <span class="change up">▲ 8,2%</span>
             </div>
-            <div id="invoiceList"></div>
-        </div>
-
-        <!-- UTANG -->
-        <div id="page-utang" class="hidden-page">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-hand-holding-usd" style="color:#f59e0b;"></i> Utang</h2>
-                <button class="btn btn-success" onclick="openModal('utang')"><i class="fas fa-plus"></i> Tambah Utang</button>
+            <div class="stat-card">
+                <div class="label"><i class="fas fa-clock"></i> Menunggu</div>
+                <div class="value">23</div>
+                <span class="change down">▲ 2,1%</span>
             </div>
-            <div id="listUtang"></div>
-        </div>
-
-        <!-- PIUTANG -->
-        <div id="page-piutang" class="hidden-page">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-hand-holding-dollar" style="color:#10b981;"></i> Piutang</h2>
-                <button class="btn btn-primary" onclick="openModal('piutang')"><i class="fas fa-plus"></i> Tambah Piutang</button>
-            </div>
-            <div id="listPiutang"></div>
-        </div>
-
-        <!-- LAPORAN -->
-        <div id="page-laporan" class="hidden-page">
-            <h2 style="font-size:18px; font-weight:700; color:#0f172a; margin-bottom:14px;"><i class="fas fa-chart-pie" style="color:#3b82f6;"></i> Laporan Keuangan</h2>
-            <div class="export-group">
-                <button class="btn-export" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> Export PDF</button>
-                <button class="btn-export" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Export Excel</button>
-            </div>
-            <div class="stats-grid" id="laporanStats" style="margin-bottom:14px;">
-                <div class="stat-card"><div class="stat-label">Total Pemasukan</div><div class="stat-value" id="totalPemasukan">Rp0</div></div>
-                <div class="stat-card"><div class="stat-label">Total Pengeluaran</div><div class="stat-value" id="totalPengeluaran">Rp0</div></div>
-                <div class="stat-card"><div class="stat-label">Saldo Akhir</div><div class="stat-value" id="saldoAkhirLaporan">Rp0</div></div>
-                <div class="stat-card"><div class="stat-label">Total Transaksi</div><div class="stat-value" id="totalTransaksiLaporan">0</div></div>
-            </div>
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>Tanggal</th><th>Buku Kas</th><th>Kategori</th><th>Nominal</th></tr></thead>
-                    <tbody id="laporanTableBody"></tbody>
-                </table>
+            <div class="stat-card">
+                <div class="label"><i class="fas fa-exclamation-triangle"></i> Jatuh Tempo</div>
+                <div class="value">12</div>
+                <span class="change down">▼ 4,3%</span>
             </div>
         </div>
-    </div>
 
-    <!-- FLOATING ACTION BUTTON -->
-    <button class="fab" onclick="openModal('transaksi')" title="Tambah Transaksi">
-        <i class="fas fa-plus"></i>
-    </button>
-
-    <!-- MODAL -->
-    <div class="modal" id="modalTransaksi">
-        <div class="modal-box">
-            <h3 id="modalTitle">Form</h3>
-            <div id="modalBody"></div>
-            <div class="modal-actions">
-                <button class="btn btn-cancel" onclick="closeModal()">Batal</button>
-                <button class="btn btn-primary" id="modalSaveBtn" onclick="saveModal()">Simpan</button>
-            </div>
+        <!-- DAFTAR INVOICE TERBARU -->
+        <div class="section-title">
+            <h2>Invoice Terbaru</h2>
+            <a href="#">Lihat semua <i class="fas fa-arrow-right"></i></a>
         </div>
-    </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Invoice</th>
+                        <th>Pelanggan</th>
+                        <th>Tanggal</th>
+                        <th>Jatuh Tempo</th>
+                        <th>Status</th>
+                        <th>Nominal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>INV-2026-042</strong></td>
+                        <td>PT Maju Jaya</td>
+                        <td>01 Jun 2026</td>
+                        <td>15 Jun 2026</td>
+                        <td><span class="status-badge status-paid">Lunas</span></td>
+                        <td>Rp 12.000.000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>INV-2026-041</strong></td>
+                        <td>CV Sejahtera</td>
+                        <td>30 Mei 2026</td>
+                        <td>10 Jun 2026</td>
+                        <td><span class="status-badge status-pending">Menunggu</span></td>
+                        <td>Rp 8.450.000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>INV-2026-040</strong></td>
+                        <td>Andi Customer</td>
+                        <td>28 Mei 2026</td>
+                        <td>05 Jun 2026</td>
+                        <td><span class="status-badge status-overdue">Jatuh Tempo</span></td>
+                        <td>Rp 2.300.000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>INV-2026-039</strong></td>
+                        <td>PT Makmur Jaya</td>
+                        <td>25 Mei 2026</td>
+                        <td>08 Jun 2026</td>
+                        <td><span class="status-badge status-paid">Lunas</span></td>
+                        <td>Rp 4.750.000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
+        <!-- FOOTER / TAMBAHAN INFO -->
+        <div style="margin-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; color: #64748b; font-size: 13px;">
+            <span>© 2026 RIZQUNA. All rights reserved.</span>
+            <span><i class="fas fa-sync-alt"></i> Terakhir diperbarui: 3 menit lalu</span>
+        </div>
+    </main>
+
+    <!-- SCRIPT SEDERHANA -->
     <script>
-        // =============================================
-        // DATA & STATE
-        // =============================================
-        let appData = {
-            bukuKas: [
-                { id: 'cash', nama: 'Cash', icon: 'fa-money-bill-wave', saldo: 2300000, norek: '-' },
-                { id: 'bri', nama: 'BRI', icon: 'fa-university', saldo: 5000000, norek: '1234-5678-9012-3456' },
-                { id: 'jenius', nama: 'Jenius', icon: 'fa-mobile-alt', saldo: 2500000, norek: '9876-5432-1098-7654' },
-                { id: 'gopay', nama: 'GoPay', icon: 'fa-shopping-bag', saldo: 1500000, norek: '0812-3456-7890' },
-                { id: 'qris', nama: 'QRIS Dana', icon: 'fa-qrcode', saldo: 800000, norek: 'DANA-123456' }
-            ],
-            transaksi: [],
-            utang: [],
-            piutang: [],
-            invoice: []
-        };
-
-        // Load dari localStorage
-        if (localStorage.getItem('rizqunaPremiumData')) {
-            try {
-                const saved = JSON.parse(localStorage.getItem('rizqunaPremiumData'));
-                appData = saved;
-            } catch(e) {}
-        } else {
-            appData.transaksi = [
-                { id: 't1', tanggal: '2026-06-01T09:00', bukuId: 'cash', tipe: 'masuk', nominal: 1000000, kategori: 'Penjualan Buku', desc: 'Buku Laskar Pelangi' },
-                { id: 't2', tanggal: '2026-06-01T10:30', bukuId: 'gopay', tipe: 'keluar', nominal: 50000, kategori: 'Makan', desc: 'Lunch' },
-                { id: 't3', tanggal: '2026-06-02T08:00', bukuId: 'bri', tipe: 'masuk', nominal: 2000000, kategori: 'Transfer', desc: 'Bayar piutang' },
-                { id: 't4', tanggal: '2026-06-02T12:15', bukuId: 'jenius', tipe: 'keluar', nominal: 75000, kategori: 'Pulsa', desc: 'Isi ulang' },
-                { id: 't5', tanggal: '2026-06-03T07:20', bukuId: 'qris', tipe: 'masuk', nominal: 450000, kategori: 'QRIS', desc: 'Pembayaran QRIS' }
-            ];
-            appData.utang = [
-                { id: 'u1', nama: 'Toko Maju', nominal: 500000, jatuhTempo: '2026-07-01', lunas: false },
-                { id: 'u2', nama: 'PT Sejahtera', nominal: 2000000, jatuhTempo: '2026-06-20', lunas: false }
-            ];
-            appData.piutang = [
-                { id: 'p1', nama: 'Andi Customer', nominal: 750000, jatuhTempo: '2026-06-15', lunas: false }
-            ];
-            appData.invoice = [
-                { id: 'inv1', nomor: 'INV-2026-001', customer: 'PT Maju Jaya', items: [{ nama: 'Jasa Desain', qty: 1, harga: 3000000, diskon: 0 }], jatuhTempo: '2026-06-30', status: 'unpaid', metode: '', catatan: '' },
-                { id: 'inv2', nomor: 'INV-2026-002', customer: 'CV Sejahtera', items: [{ nama: 'Pengadaan Barang', qty: 5, harga: 300000, diskon: 0 }], jatuhTempo: '2026-06-15', status: 'paid', metode: 'BRI', catatan: '' }
-            ];
-            saveData();
-        }
-
-        function saveData() {
-            localStorage.setItem('rizqunaPremiumData', JSON.stringify(appData));
-        }
-
-        // =============================================
-        // UTILITY
-        // =============================================
-        function formatRupiah(angka) {
-            return 'Rp' + angka.toLocaleString('id-ID');
-        }
-
-        function hitungTotalSaldo() {
-            return appData.bukuKas.reduce((sum, b) => sum + b.saldo, 0);
-        }
-
-        function getBukuName(id) {
-            const b = appData.bukuKas.find(b => b.id === id);
-            return b ? b.nama : '-';
-        }
-
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-        }
-
-        const warnaBuku = ['#10b981','#3b82f6','#8b5cf6','#f59e0b','#ef4444','#ec4899','#14b8a6','#f97316'];
-
-        function getWarnaBuku(index) {
-            return warnaBuku[index % warnaBuku.length];
-        }
-
-        function hitungTotalInvoice(items) {
-            return items.reduce((total, item) => {
-                const sub = (item.qty * item.harga) - item.diskon;
-                return total + sub;
-            }, 0);
-        }
-
-        // =============================================
-        // SIDEBAR TOGGLE
-        // =============================================
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
             sidebar.classList.toggle('open');
-            overlay.classList.toggle('open');
+            overlay.classList.toggle('active');
         }
-
-        // =============================================
-        // RENDER
-        // =============================================
-        function renderDashboard() {
-            const totalSaldo = hitungTotalSaldo();
-            const totalPemasukan = appData.transaksi.filter(t => t.tipe === 'masuk').reduce((s, t) => s + t.nominal, 0);
-            const totalPengeluaran = appData.transaksi.filter(t => t.tipe === 'keluar').reduce((s, t) => s + t.nominal, 0);
-            const totalUtang = appData.utang.filter(u => !u.lunas).reduce((s, u) => s + u.nominal, 0);
-            const totalInvoiceUnpaid = appData.invoice.filter(i => i.status === 'unpaid').reduce((s, i) => s + hitungTotalInvoice(i.items), 0);
-
-            document.getElementById('statsGrid').innerHTML = `
-                <div class="stat-card"><div class="stat-label">Total Saldo</div><div class="stat-value">${formatRupiah(totalSaldo)}</div><span class="stat-change">+12%</span></div>
-                <div class="stat-card"><div class="stat-label">Pemasukan</div><div class="stat-value">${formatRupiah(totalPemasukan)}</div><span class="stat-change">+8%</span></div>
-                <div class="stat-card"><div class="stat-label">Pengeluaran</div><div class="stat-value">${formatRupiah(totalPengeluaran)}</div><span class="stat-change">-2%</span></div>
-                <div class="stat-card"><div class="stat-label">Invoice Unpaid</div><div class="stat-value">${formatRupiah(totalInvoiceUnpaid)}</div><span class="stat-change">0%</span></div>
-            `;
-
-            const heights = [30,60,45,80,90,50,70,40];
-            document.getElementById('chartArea').innerHTML = heights.map(h => `<div class="bar" style="height:${h}%;"></div>`).join('');
-
-            const sorted = [...appData.transaksi].sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal)).slice(0,6);
-            const container = document.getElementById('recentActivityList');
-            if (sorted.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:16px;">Belum ada transaksi</div>';
-            } else {
-                container.innerHTML = sorted.map(t => {
-                    const isIncome = t.tipe === 'masuk';
-                    return `
-                        <div class="activity-item">
-                            <div class="icon-circle" style="background:${isIncome ? '#10b981' : '#ef4444'};">
-                                <i class="fas ${isIncome ? 'fa-arrow-up' : 'fa-arrow-down'}"></i>
-                            </div>
-                            <div class="act-info">
-                                <div class="act-title">${t.desc || t.kategori}</div>
-                                <div class="act-date">${getBukuName(t.bukuId)} • ${new Date(t.tanggal).toLocaleString('id-ID')}</div>
-                            </div>
-                            <div class="act-amount" style="color:${isIncome ? '#10b981' : '#ef4444'};">
-                                ${isIncome ? '+' : '-'}${formatRupiah(t.nominal)}
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
-        }
-
-        function renderBukuKasList() {
-            const grid = document.getElementById('bukuListGrid');
-            grid.innerHTML = '';
-            appData.bukuKas.forEach((b, index) => {
-                const card = document.createElement('div');
-                card.className = 'buku-card';
-                card.style.background = getWarnaBuku(index);
-                card.innerHTML = `
-                    <div class="actions">
-                        <button onclick="event.stopPropagation(); editBuku('${b.id}')" title="Edit"><i class="fas fa-edit"></i></button>
-                        <button onclick="event.stopPropagation(); hapusBuku('${b.id}')" title="Hapus"><i class="fas fa-trash"></i></button>
-                    </div>
-                    <div class="icon"><i class="fas ${b.icon}"></i></div>
-                    <div class="info">
-                        <div class="nama">${b.nama}</div>
-                        <div class="saldo">${formatRupiah(b.saldo)}</div>
-                        <div class="norek">${b.norek ? '🏦 ' + b.norek : ''}</div>
-                    </div>
-                `;
-                card.onclick = () => showDetailRekening(b.id);
-                grid.appendChild(card);
-            });
-
-            const addCard = document.createElement('div');
-            addCard.className = 'buku-card buku-card-add';
-            addCard.style.background = 'white';
-            addCard.style.border = '2px dashed #3b82f6';
-            addCard.style.boxShadow = 'none';
-            addCard.style.cursor = 'pointer';
-            addCard.style.display = 'flex';
-            addCard.style.alignItems = 'center';
-            addCard.style.justifyContent = 'center';
-            addCard.style.gap = '8px';
-            addCard.style.padding = '14px';
-            addCard.style.minHeight = '64px';
-            addCard.innerHTML = `
-                <div style="font-size:22px; color:#3b82f6;"><i class="fas fa-plus-circle"></i></div>
-                <div style="font-size:12px; font-weight:600; color:#3b82f6;">Tambah</div>
-            `;
-            addCard.onclick = () => openModal('buku');
-            grid.appendChild(addCard);
-        }
-
-        function renderRincianPerRekening(bukuId = null) {
-            const container = document.getElementById('rincianPerRekening');
-            let data = [...appData.transaksi];
-            if (bukuId) {
-                data = data.filter(t => t.bukuId === bukuId);
-            }
-            data.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-
-            if (data.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:16px;">Belum ada transaksi</div>';
-                return;
-            }
-
-            // Kelompokkan per buku kas
-            const groups = {};
-            data.forEach(t => {
-                if (!groups[t.bukuId]) {
-                    groups[t.bukuId] = {
-                        nama: getBukuName(t.bukuId),
-                        pemasukan: 0,
-                        pengeluaran: 0,
-                        transfer: 0,
-                        items: []
-                    };
-                }
-                if (t.tipe === 'masuk') groups[t.bukuId].pemasukan += t.nominal;
-                else if (t.tipe === 'keluar') groups[t.bukuId].pengeluaran += t.nominal;
-                groups[t.bukuId].items.push(t);
-            });
-
-            let html = '';
-            for (const key in groups) {
-                const g = groups[key];
-                html += `
-                    <div class="widget-box" style="margin-bottom:12px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                            <div style="font-weight:600; font-size:16px; color:#0f172a;">${g.nama}</div>
-                            <div style="display:flex; gap:12px; font-size:12px; flex-wrap:wrap;">
-                                <span style="color:#059669;">Pemasukan: ${formatRupiah(g.pemasukan)}</span>
-                                <span style="color:#dc2626;">Pengeluaran: ${formatRupiah(g.pengeluaran)}</span>
-                            </div>
-                        </div>
-                        <div style="margin-top:8px; font-size:12px; color:#64748b;">
-                            Total transaksi: ${g.items.length} | Saldo: ${formatRupiah(g.pemasukan - g.pengeluaran)}
-                        </div>
-                    </div>
-                `;
-            }
-            container.innerHTML = html;
-        }
-
-        function showDetailRekening(bukuId) {
-            renderRincianPerRekening(bukuId);
-        }
-
-        function renderUtang() {
-            const listUtang = document.getElementById('listUtang');
-            if (appData.utang.length === 0) {
-                listUtang.innerHTML = '<div style="color:#94a3b8;text-align:center;padding:10px;">Belum ada utang</div>';
-            } else {
-                listUtang.innerHTML = appData.utang.map(u => `
-                    <div class="activity-item">
-                        <div class="act-info">
-                            <div class="act-title">${u.nama}</div>
-                            <div class="act-date">Jatuh tempo: ${new Date(u.jatuhTempo).toLocaleDateString('id-ID')}</div>
-                        </div>
-                        <div style="text-align:right;">
-                            <div style="font-weight:bold;">${formatRupiah(u.nominal)}</div>
-                            <span class="tag-status ${u.lunas ? 'tag-lunas' : 'tag-bayar'}">${u.lunas ? 'Lunas' : 'Belum Lunas'}</span>
-                            <div style="margin-top:4px; display:flex; gap:4px; justify-content:flex-end;">
-                                ${!u.lunas ? `<button onclick="bayarUtang('${u.id}')" class="btn btn-success btn-sm">Bayar</button>` : `<button onclick="unbayarUtang('${u.id}')" class="btn btn-warning btn-sm">Batal Lunas</button>`}
-                                <button onclick="editUtang('${u.id}')" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                <button onclick="hapusUtang('${u.id}')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function renderPiutang() {
-            const listPiutang = document.getElementById('listPiutang');
-            if (appData.piutang.length === 0) {
-                listPiutang.innerHTML = '<div style="color:#94a3b8;text-align:center;padding:10px;">Belum ada piutang</div>';
-            } else {
-                listPiutang.innerHTML = appData.piutang.map(p => `
-                    <div class="activity-item">
-                        <div class="act-info">
-                            <div class="act-title">${p.nama}</div>
-                            <div class="act-date">Jatuh tempo: ${new Date(p.jatuhTempo).toLocaleDateString('id-ID')}</div>
-                        </div>
-                        <div style="text-align:right;">
-                            <div style="font-weight:bold;">${formatRupiah(p.nominal)}</div>
-                            <span class="tag-status ${p.lunas ? 'tag-lunas' : 'tag-bayar'}">${p.lunas ? 'Lunas' : 'Belum Lunas'}</span>
-                            <div style="margin-top:4px; display:flex; gap:4px; justify-content:flex-end;">
-                                ${!p.lunas ? `<button onclick="terimaPiutang('${p.id}')" class="btn btn-success btn-sm">Terima</button>` : `<button onclick="unbayarPiutang('${p.id}')" class="btn btn-warning btn-sm">Batal Lunas</button>`}
-                                <button onclick="editPiutang('${p.id}')" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                <button onclick="hapusPiutang('${p.id}')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function renderInvoice() {
-            const container = document.getElementById('invoiceList');
-            if (appData.invoice.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:16px;">Belum ada invoice</div>';
-                return;
-            }
-            container.innerHTML = appData.invoice.map(inv => {
-                const total = hitungTotalInvoice(inv.items);
-                return `
-                    <div class="widget-box" style="margin-bottom:10px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
-                            <div>
-                                <div style="font-weight:700; font-size:15px;">${inv.nomor}</div>
-                                <div style="font-size:13px; color:#475569;">${inv.customer}</div>
-                                <div style="font-size:12px; color:#64748b;">Jatuh tempo: ${new Date(inv.jatuhTempo).toLocaleDateString('id-ID')}</div>
-                            </div>
-                            <div style="text-align:right;">
-                                <div style="font-weight:700; font-size:17px;">${formatRupiah(total)}</div>
-                                <span class="tag-status ${inv.status === 'paid' ? 'tag-lunas' : 'tag-pending'}">
-                                    ${inv.status === 'paid' ? '✅ Lunas' : '⏳ Belum Bayar'}
-                                </span>
-                                ${inv.status === 'paid' ? `<div style="font-size:11px; color:#64748b;">Via: ${inv.metode}</div>` : ''}
-                            </div>
-                        </div>
-                        ${inv.items.length > 0 ? `
-                            <div style="margin-top:6px; font-size:12px; color:#64748b;">
-                                ${inv.items.map(item => `${item.nama} (${item.qty}x @${formatRupiah(item.harga)})`).join(', ')}
-                            </div>
-                        ` : ''}
-                        ${inv.status === 'unpaid' ? `
-                            <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap;">
-                                <button class="btn btn-success btn-sm" onclick="bayarInvoice('${inv.id}')"><i class="fas fa-credit-card"></i> Bayar</button>
-                                <button class="btn btn-warning btn-sm" onclick="editInvoice('${inv.id}')"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger btn-sm" onclick="hapusInvoice('${inv.id}')"><i class="fas fa-trash"></i></button>
-                            </div>
-                        ` : `
-                            <div style="margin-top:8px; display:flex; gap:6px;">
-                                <button class="btn btn-warning btn-sm" onclick="unpaidInvoice('${inv.id}')"><i class="fas fa-undo"></i> Kembalikan ke Unpaid</button>
-                                <button class="btn btn-danger btn-sm" onclick="hapusInvoice('${inv.id}')"><i class="fas fa-trash"></i></button>
-                            </div>
-                        `}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderLaporan() {
-            const totalPemasukan = appData.transaksi.filter(t => t.tipe === 'masuk').reduce((s, t) => s + t.nominal, 0);
-            const totalPengeluaran = appData.transaksi.filter(t => t.tipe === 'keluar').reduce((s, t) => s + t.nominal, 0);
-            const saldoAkhir = hitungTotalSaldo();
-
-            document.getElementById('totalPemasukan').textContent = formatRupiah(totalPemasukan);
-            document.getElementById('totalPengeluaran').textContent = formatRupiah(totalPengeluaran);
-            document.getElementById('saldoAkhirLaporan').textContent = formatRupiah(saldoAkhir);
-            document.getElementById('totalTransaksiLaporan').textContent = appData.transaksi.length;
-
-            const sorted = [...appData.transaksi].sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-            const tbody = document.getElementById('laporanTableBody');
-            if (sorted.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:16px;">Belum ada transaksi</td></tr>`;
-                return;
-            }
-            tbody.innerHTML = sorted.map(t => {
-                const isIncome = t.tipe === 'masuk';
-                return `
-                    <tr>
-                        <td>${new Date(t.tanggal).toLocaleString('id-ID')}</td>
-                        <td>${getBukuName(t.bukuId)}</td>
-                        <td>${t.kategori}</td>
-                        <td class="${isIncome ? 'text-green' : 'text-red'}">
-                            ${isIncome ? '+' : '-'} ${formatRupiah(t.nominal)}
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        // =============================================
-        // EXPORT FUNCTIONS
-        // =============================================
-        function exportPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const sorted = [...appData.transaksi].sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-            
-            doc.text('Laporan Keuangan RIZQUNA', 14, 20);
-            doc.text('Tanggal: ' + new Date().toLocaleDateString('id-ID'), 14, 30);
-            
-            const data = sorted.map(t => [
-                new Date(t.tanggal).toLocaleString('id-ID'),
-                getBukuName(t.bukuId),
-                t.kategori,
-                (t.tipe === 'masuk' ? '+' : '-') + formatRupiah(t.nominal)
-            ]);
-            
-            doc.autoTable({
-                head: [['Tanggal', 'Buku Kas', 'Kategori', 'Nominal']],
-                body: data,
-                startY: 40
-            });
-            
-            doc.save('laporan-keuangan-rizquna.pdf');
-        }
-
-        function exportExcel() {
-            const sorted = [...appData.transaksi].sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-            const data = sorted.map(t => ({
-                Tanggal: new Date(t.tanggal).toLocaleString('id-ID'),
-                'Buku Kas': getBukuName(t.bukuId),
-                Kategori: t.kategori,
-                Nominal: (t.tipe === 'masuk' ? '+' : '-') + formatRupiah(t.nominal)
-            }));
-            
-            const ws = XLSX.utils.json_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Laporan');
-            XLSX.writeFile(wb, 'laporan-keuangan-rizquna.xlsx');
-        }
-
-        // =============================================
-        // NAVIGASI
-        // =============================================
-        function showPage(pageId) {
-            document.querySelectorAll('.hidden-page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-dashboard').style.display = 'none';
-
-            if (pageId === 'dashboard') {
-                document.getElementById('page-dashboard').style.display = 'block';
-                document.getElementById('pageTitle').textContent = 'Dashboard';
-                renderDashboard();
-                if (window.innerWidth <= 768) toggleSidebar();
-            } else if (pageId === 'buku-kas') {
-                document.getElementById('page-buku-kas').classList.add('active');
-                document.getElementById('pageTitle').textContent = 'Buku Kas';
-                renderBukuKasList();
-                renderRincianPerRekening();
-                if (window.innerWidth <= 768) toggleSidebar();
-            } else if (pageId === 'invoice') {
-                document.getElementById('page-invoice').classList.add('active');
-                document.getElementById('pageTitle').textContent = 'Invoice';
-                renderInvoice();
-                if (window.innerWidth <= 768) toggleSidebar();
-            } else if (pageId === 'utang') {
-                document.getElementById('page-utang').classList.add('active');
-                document.getElementById('pageTitle').textContent = 'Utang';
-                renderUtang();
-                if (window.innerWidth <= 768) toggleSidebar();
-            } else if (pageId === 'piutang') {
-                document.getElementById('page-piutang').classList.add('active');
-                document.getElementById('pageTitle').textContent = 'Piutang';
-                renderPiutang();
-                if (window.innerWidth <= 768) toggleSidebar();
-            } else if (pageId === 'laporan') {
-                document.getElementById('page-laporan').classList.add('active');
-                document.getElementById('pageTitle').textContent = 'Laporan';
-                renderLaporan();
-                if (window.innerWidth <= 768) toggleSidebar();
-            }
-
-            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-            event.target.closest('.menu-item').classList.add('active');
-        }
-
-        // =============================================
-        // MODAL SYSTEM
-        // =============================================
-        let modalMode = '';
-        let editId = null;
-
-        function openModal(mode, id = null) {
-            modalMode = mode;
-            editId = id;
-            const modal = document.getElementById('modalTransaksi');
-            const title = document.getElementById('modalTitle');
-            const body = document.getElementById('modalBody');
-            const saveBtn = document.getElementById('modalSaveBtn');
-
-            if (mode === 'buku') {
-                title.textContent = editId ? '✏️ Edit Buku Kas' : '➕ Tambah Buku Kas';
-                const data = editId ? appData.bukuKas.find(b => b.id === editId) : null;
-                body.innerHTML = `
-                    <label>Nama Buku Kas</label>
-                    <input type="text" id="f_nama_buku" value="${data ? data.nama : ''}" placeholder="Contoh: Bank Mandiri">
-                    <label>Saldo Awal (Rp)</label>
-                    <input type="number" id="f_saldo_buku" value="${data ? data.saldo : 0}" placeholder="0">
-                    <label>No Rekening (Opsional)</label>
-                    <input type="text" id="f_norek" value="${data ? data.norek : ''}" placeholder="Contoh: 1234-5678-9012-3456">
-                `;
-                saveBtn.style.display = 'block';
-            } else if (mode === 'transaksi') {
-                title.textContent = editId ? '✏️ Edit Transaksi' : '➕ Tambah Transaksi';
-                const data = editId ? appData.transaksi.find(t => t.id === editId) : null;
-                body.innerHTML = `
-                    <label>Tanggal</label>
-                    <input type="datetime-local" id="f_tanggal" value="${data ? data.tanggal : new Date().toISOString().slice(0,16)}">
-                    <label>Buku Kas</label>
-                    <select id="f_buku">
-                        ${appData.bukuKas.map(b => `<option value="${b.id}" ${data && data.bukuId === b.id ? 'selected' : ''}>${b.nama}</option>`).join('')}
-                    </select>
-                    <label>Tipe</label>
-                    <select id="f_tipe">
-                        <option value="masuk" ${data && data.tipe === 'masuk' ? 'selected' : ''}>💰 Pemasukan</option>
-                        <option value="keluar" ${data && data.tipe === 'keluar' ? 'selected' : ''}>💸 Pengeluaran</option>
-                    </select>
-                    <label>Nominal (Rp)</label>
-                    <input type="number" id="f_nominal" value="${data ? data.nominal : ''}" placeholder="100000">
-                    <label>Kategori / Deskripsi</label>
-                    <input type="text" id="f_desc" value="${data ? data.desc || data.kategori : ''}" placeholder="Makan, Gaji, dll">
-                `;
-                if (editId) {
-                    body.innerHTML += `
-                        <div style="margin-top:10px; text-align:center;">
-                            <button type="button" class="btn btn-danger" onclick="hapusTransaksi('${editId}')" style="width:100%;">Hapus Transaksi</button>
-                        </div>
-                    `;
-                }
-                saveBtn.style.display = 'block';
-            } else if (mode === 'utang') {
-                title.textContent = editId ? '✏️ Edit Utang' : '📝 Tambah Utang';
-                const data = editId ? appData.utang.find(u => u.id === editId) : null;
-                body.innerHTML = `
-                    <label>Nama Kreditor</label>
-                    <input type="text" id="f_nama" value="${data ? data.nama : ''}" placeholder="Nama orang/company">
-                    <label>Nominal Utang (Rp)</label>
-                    <input type="number" id="f_nominal" value="${data ? data.nominal : ''}" placeholder="500000">
-                    <label>Jatuh Tempo</label>
-                    <input type="date" id="f_jatuhTempo" value="${data ? data.jatuhTempo : ''}">
-                `;
-                saveBtn.style.display = 'block';
-            } else if (mode === 'piutang') {
-                title.textContent = editId ? '✏️ Edit Piutang' : '📝 Tambah Piutang';
-                const data = editId ? appData.piutang.find(p => p.id === editId) : null;
-                body.innerHTML = `
-                    <label>Nama Debitur</label>
-                    <input type="text" id="f_nama" value="${data ? data.nama : ''}" placeholder="Nama customer">
-                    <label>Nominal Piutang (Rp)</label>
-                    <input type="number" id="f_nominal" value="${data ? data.nominal : ''}" placeholder="750000">
-                    <label>Jatuh Tempo</label>
-                    <input type="date" id="f_jatuhTempo" value="${data ? data.jatuhTempo : ''}">
-                `;
-                saveBtn.style.display = 'block';
-            } else if (mode === 'invoice') {
-                const data = editId ? appData.invoice.find(inv => inv.id === editId) : null;
-                title.textContent = editId ? '✏️ Edit Invoice' : '📝 Buat Invoice Baru';
-                const itemsHtml = (data && data.items ? data.items : [{ nama: '', qty: 1, harga: 0, diskon: 0 }]).map((item, idx) => `
-                    <div class="invoice-item-card" data-index="${idx}">
-                        <div class="invoice-item-header">
-                            <span>Item #${idx + 1}</span>
-                            <button type="button" onclick="removeInvoiceItem(this)" class="btn btn-danger btn-sm" ${idx === 0 && (!data || data.items.length === 1) ? 'style="display:none;"' : ''}><i class="fas fa-trash"></i></button>
-                        </div>
-                        <div class="invoice-row">
-                            <div class="full">
-                                <label>Nama Produk / Jasa</label>
-                                <input type="text" class="f_item_nama" value="${item.nama || ''}" placeholder="Nama produk / jasa...">
-                            </div>
-                            <div>
-                                <label>Jumlah</label>
-                                <input type="number" class="f_item_qty" value="${item.qty || 1}" min="1">
-                            </div>
-                            <div>
-                                <label>Harga @</label>
-                                <input type="number" class="f_item_harga" value="${item.harga || 0}" placeholder="0">
-                            </div>
-                            <div>
-                                <label>Diskon</label>
-                                <input type="number" class="f_item_diskon" value="${item.diskon || 0}" placeholder="0">
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-
-                body.innerHTML = `
-                    <div class="invoice-form-card">
-                        <div>
-                            <label><i class="fas fa-user"></i> Nama Pelanggan</label>
-                            <input type="text" id="f_customer" value="${data ? data.customer : ''}" placeholder="Ketik atau pilih pelanggan...">
-                        </div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
-                            <div>
-                                <label><i class="far fa-calendar"></i> Tgl. Order</label>
-                                <input type="date" id="f_tanggal" value="${data ? data.tanggal || new Date().toISOString().slice(0,10) : new Date().toISOString().slice(0,10)}">
-                            </div>
-                            <div>
-                                <label><i class="far fa-clock"></i> Jatuh Tempo</label>
-                                <input type="date" id="f_jatuhTempo" value="${data ? data.jatuhTempo : ''}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="margin:14px 0;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                            <span style="font-weight:600; font-size:13px; color:#475569;">DETAIL PESANAN</span>
-                            <button type="button" class="btn btn-success btn-sm" onclick="addInvoiceItem()"><i class="fas fa-plus"></i> Tambah Item</button>
-                        </div>
-                        <div id="invoiceItemsContainer">
-                            ${itemsHtml}
-                        </div>
-                        <div class="invoice-grand-total" id="invoiceGrandTotal">
-                            <span class="label">GRAND TOTAL</span>
-                            <span class="value">Rp 0</span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label><i class="far fa-file-alt"></i> Catatan (opsional)</label>
-                        <input type="text" id="f_catatan" value="${data ? data.catatan : ''}" placeholder="Catatan internal...">
-                    </div>
-                `;
-                saveBtn.style.display = 'block';
-                setTimeout(() => {
-                    document.querySelectorAll('.f_item_qty, .f_item_harga, .f_item_diskon').forEach(el => {
-                        el.addEventListener('input', updateInvoiceTotal);
-                    });
-                    updateInvoiceTotal();
-                }, 100);
-            }
-            modal.classList.add('open');
-        }
-
-        function closeModal() {
-            document.getElementById('modalTransaksi').classList.remove('open');
-            editId = null;
-        }
-
-        function addInvoiceItem() {
-            const container = document.getElementById('invoiceItemsContainer');
-            const idx = container.children.length;
-            const div = document.createElement('div');
-            div.className = 'invoice-item-card';
-            div.dataset.index = idx;
-            div.innerHTML = `
-                <div class="invoice-item-header">
-                    <span>Item #${idx + 1}</span>
-                    <button type="button" onclick="removeInvoiceItem(this)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                </div>
-                <div class="invoice-row">
-                    <div class="full">
-                        <label>Nama Produk / Jasa</label>
-                        <input type="text" class="f_item_nama" placeholder="Nama produk / jasa...">
-                    </div>
-                    <div>
-                        <label>Jumlah</label>
-                        <input type="number" class="f_item_qty" value="1" min="1">
-                    </div>
-                    <div>
-                        <label>Harga @</label>
-                        <input type="number" class="f_item_harga" value="0" placeholder="0">
-                    </div>
-                    <div>
-                        <label>Diskon</label>
-                        <input type="number" class="f_item_diskon" value="0" placeholder="0">
-                    </div>
-                </div>
-            `;
-            container.appendChild(div);
-            div.querySelectorAll('.f_item_qty, .f_item_harga, .f_item_diskon').forEach(el => {
-                el.addEventListener('input', updateInvoiceTotal);
-            });
-            updateInvoiceTotal();
-        }
-
-        function removeInvoiceItem(btn) {
-            const card = btn.closest('.invoice-item-card');
-            if (document.getElementById('invoiceItemsContainer').children.length > 1) {
-                card.remove();
-                updateInvoiceTotal();
-            }
-        }
-
-        function updateInvoiceTotal() {
-            const items = document.querySelectorAll('.invoice-item-card');
-            let total = 0;
-            items.forEach(item => {
-                const qty = parseInt(item.querySelector('.f_item_qty').value) || 0;
-                const harga = parseInt(item.querySelector('.f_item_harga').value) || 0;
-                const diskon = parseInt(item.querySelector('.f_item_diskon').value) || 0;
-                total += (qty * harga) - diskon;
-            });
-            document.querySelector('#invoiceGrandTotal .value').textContent = formatRupiah(total);
-        }
-
-        // =============================================
-        // SAVE MODAL
-        // =============================================
-        function saveModal() {
-            if (modalMode === 'buku') {
-                const nama = document.getElementById('f_nama_buku').value.trim();
-                const saldo = parseInt(document.getElementById('f_saldo_buku').value) || 0;
-                const norek = document.getElementById('f_norek').value.trim() || '-';
-                if (!nama) { alert('Nama buku kas wajib diisi!'); return; }
-                if (editId) {
-                    const buku = appData.bukuKas.find(b => b.id === editId);
-                    if (buku) {
-                        buku.nama = nama;
-                        buku.saldo = saldo;
-                        buku.norek = norek;
-                    }
-                } else {
-                    appData.bukuKas.push({
-                        id: 'bk' + generateId(),
-                        nama: nama,
-                        icon: 'fa-university',
-                        saldo: saldo,
-                        norek: norek
-                    });
-                }
-                saveData();
-                closeModal();
-                refreshCurrentPage();
-                alert('Buku kas berhasil disimpan!');
-            } else if (modalMode === 'transaksi') {
-                const tanggal = document.getElementById('f_tanggal').value;
-                const bukuId = document.getElementById('f_buku').value;
-                const tipe = document.getElementById('f_tipe').value;
-                const nominal = parseInt(document.getElementById('f_nominal').value);
-                const desc = document.getElementById('f_desc').value || 'Tanpa keterangan';
-
-                if (!tanggal || !nominal || nominal <= 0) { alert('Isi dengan benar!'); return; }
-
-                if (editId) {
-                    const oldTrans = appData.transaksi.find(t => t.id === editId);
-                    if (oldTrans) {
-                        const oldBuku = appData.bukuKas.find(b => b.id === oldTrans.bukuId);
-                        if (oldBuku) {
-                            if (oldTrans.tipe === 'masuk') oldBuku.saldo -= oldTrans.nominal;
-                            else oldBuku.saldo += oldTrans.nominal;
-                        }
-                        oldTrans.tanggal = tanggal;
-                        oldTrans.bukuId = bukuId;
-                        oldTrans.tipe = tipe;
-                        oldTrans.nominal = nominal;
-                        oldTrans.desc = desc;
-                        oldTrans.kategori = desc;
-                        const newBuku = appData.bukuKas.find(b => b.id === bukuId);
-                        if (newBuku) {
-                            if (tipe === 'masuk') newBuku.saldo += nominal;
-                            else newBuku.saldo -= nominal;
-                        }
-                    }
-                } else {
-                    const buku = appData.bukuKas.find(b => b.id === bukuId);
-                    if (tipe === 'masuk') buku.saldo += nominal;
-                    else buku.saldo -= nominal;
-
-                    appData.transaksi.push({
-                        id: 't' + generateId(),
-                        tanggal: tanggal,
-                        bukuId: bukuId,
-                        tipe: tipe,
-                        nominal: nominal,
-                        kategori: desc,
-                        desc: desc
-                    });
-                }
-                saveData();
-                closeModal();
-                refreshCurrentPage();
-                alert('Transaksi berhasil disimpan!');
-            } else if (modalMode === 'utang') {
-                const nama = document.getElementById('f_nama').value.trim();
-                const nominal = parseInt(document.getElementById('f_nominal').value);
-                const jatuhTempo = document.getElementById('f_jatuhTempo').value;
-                if (!nama || !nominal || !jatuhTempo) { alert('Lengkapi data!'); return; }
-                if (editId) {
-                    const utang = appData.utang.find(u => u.id === editId);
-                    if (utang) {
-                        utang.nama = nama;
-                        utang.nominal = nominal;
-                        utang.jatuhTempo = jatuhTempo;
-                    }
-                } else {
-                    appData.utang.push({
-                        id: 'u' + generateId(),
-                        nama: nama,
-                        nominal: nominal,
-                        jatuhTempo: jatuhTempo,
-                        lunas: false
-                    });
-                }
-                saveData();
-                closeModal();
-                refreshCurrentPage();
-                alert('Utang berhasil disimpan!');
-            } else if (modalMode === 'piutang') {
-                const nama = document.getElementById('f_nama').value.trim();
-                const nominal = parseInt(document.getElementById('f_nominal').value);
-                const jatuhTempo = document.getElementById('f_jatuhTempo').value;
-                if (!nama || !nominal || !jatuhTempo) { alert('Lengkapi data!'); return; }
-                if (editId) {
-                    const piutang = appData.piutang.find(p => p.id === editId);
-                    if (piutang) {
-                        piutang.nama = nama;
-                        piutang.nominal = nominal;
-                        piutang.jatuhTempo = jatuhTempo;
-                    }
-                } else {
-                    appData.piutang.push({
-                        id: 'p' + generateId(),
-                        nama: nama,
-                        nominal: nominal,
-                        jatuhTempo: jatuhTempo,
-                        lunas: false
-                    });
-                }
-                saveData();
-                closeModal();
-                refreshCurrentPage();
-                alert('Piutang berhasil disimpan!');
-            } else if (modalMode === 'invoice') {
-                const customer = document.getElementById('f_customer').value.trim();
-                const tanggal = document.getElementById('f_tanggal').value;
-                const jatuhTempo = document.getElementById('f_jatuhTempo').value;
-                const catatan = document.getElementById('f_catatan').value.trim();
-                const itemCards = document.querySelectorAll('.invoice-item-card');
-                const items = [];
-                itemCards.forEach(card => {
-                    const nama = card.querySelector('.f_item_nama').value.trim();
-                    const qty = parseInt(card.querySelector('.f_item_qty').value) || 0;
-                    const harga = parseInt(card.querySelector('.f_item_harga').value) || 0;
-                    const diskon = parseInt(card.querySelector('.f_item_diskon').value) || 0;
-                    if (nama && qty > 0) {
-                        items.push({ nama, qty, harga, diskon });
-                    }
-                });
-                if (!customer || items.length === 0) { alert('Lengkapi data pelanggan dan minimal 1 item!'); return; }
-                if (editId) {
-                    const inv = appData.invoice.find(i => i.id === editId);
-                    if (inv) {
-                        inv.customer = customer;
-                        inv.tanggal = tanggal;
-                        inv.jatuhTempo = jatuhTempo;
-                        inv.items = items;
-                        inv.catatan = catatan;
-                    }
-                } else {
-                    const nomor = 'INV-' + new Date().getFullYear() + '-' + String(appData.invoice.length + 1).padStart(3, '0');
-                    appData.invoice.push({
-                        id: 'inv' + generateId(),
-                        nomor: nomor,
-                        customer: customer,
-                        items: items,
-                        tanggal: tanggal,
-                        jatuhTempo: jatuhTempo,
-                        status: 'unpaid',
-                        metode: '',
-                        catatan: catatan
-                    });
-                }
-                saveData();
-                closeModal();
-                refreshCurrentPage();
-                alert('Invoice berhasil disimpan!');
-            }
-        }
-
-        // =============================================
-        // CRUD - BUKU KAS
-        // =============================================
-        function editBuku(id) {
-            openModal('buku', id);
-        }
-
-        function hapusBuku(id) {
-            if (!confirm('Hapus buku kas ini? Semua transaksi terkait akan dihapus.')) return;
-            appData.bukuKas = appData.bukuKas.filter(b => b.id !== id);
-            appData.transaksi = appData.transaksi.filter(t => t.bukuId !== id);
-            saveData();
-            refreshCurrentPage();
-        }
-
-        // =============================================
-        // CRUD - TRANSAKSI
-        // =============================================
-        function editTransaksi(id) {
-            openModal('transaksi', id);
-        }
-
-        function hapusTransaksi(id) {
-            if (!confirm('Hapus transaksi ini? Saldo buku kas akan dikembalikan.')) return;
-            const t = appData.transaksi.find(t => t.id === id);
-            if (t) {
-                const buku = appData.bukuKas.find(b => b.id === t.bukuId);
-                if (buku) {
-                    if (t.tipe === 'masuk') buku.saldo -= t.nominal;
-                    else buku.saldo += t.nominal;
-                }
-                appData.transaksi = appData.transaksi.filter(x => x.id !== id);
-                saveData();
-                refreshCurrentPage();
-            }
-        }
-
-        // =============================================
-        // CRUD - UTANG
-        // =============================================
-        function bayarUtang(id) {
-            const utang = appData.utang.find(u => u.id === id);
-            if (!utang || utang.lunas) return;
-            if (!confirm(`Bayar utang ${utang.nama} sebesar ${formatRupiah(utang.nominal)}? (Uang akan diambil dari buku kas: Cash)`)) return;
-            const buku = appData.bukuKas.find(b => b.id === 'cash');
-            if (buku.saldo < utang.nominal) {
-                alert('Saldo Cash tidak mencukupi!');
-                return;
-            }
-            buku.saldo -= utang.nominal;
-            utang.lunas = true;
-            appData.transaksi.push({
-                id: 't' + generateId(),
-                tanggal: new Date().toISOString(),
-                bukuId: 'cash',
-                tipe: 'keluar',
-                nominal: utang.nominal,
-                kategori: 'Bayar Utang',
-                desc: `Bayar utang ke ${utang.nama}`
-            });
-            saveData();
-            refreshCurrentPage();
-            alert('Utang berhasil dibayar!');
-        }
-
-        function unbayarUtang(id) {
-            const utang = appData.utang.find(u => u.id === id);
-            if (!utang || !utang.lunas) return;
-            if (!confirm(`Batalkan pembayaran utang ${utang.nama}? Saldo Cash akan dikembalikan.`)) return;
-            const buku = appData.bukuKas.find(b => b.id === 'cash');
-            buku.saldo += utang.nominal;
-            utang.lunas = false;
-            const lastPayment = appData.transaksi.filter(t => t.desc && t.desc.includes(utang.nama)).pop();
-            if (lastPayment) {
-                appData.transaksi = appData.transaksi.filter(t => t.id !== lastPayment.id);
-            }
-            saveData();
-            refreshCurrentPage();
-            alert('Status utang dikembalikan ke belum lunas!');
-        }
-
-        function editUtang(id) {
-            openModal('utang', id);
-        }
-
-        function hapusUtang(id) {
-            if (!confirm('Hapus utang ini?')) return;
-            appData.utang = appData.utang.filter(u => u.id !== id);
-            saveData();
-            refreshCurrentPage();
-        }
-
-        // =============================================
-        // CRUD - PIUTANG
-        // =============================================
-        function terimaPiutang(id) {
-            const piutang = appData.piutang.find(p => p.id === id);
-            if (!piutang || piutang.lunas) return;
-            if (!confirm(`Terima pembayaran piutang dari ${piutang.nama} sebesar ${formatRupiah(piutang.nominal)}? (Uang akan masuk ke buku kas: BRI)`)) return;
-            const buku = appData.bukuKas.find(b => b.id === 'bri');
-            buku.saldo += piutang.nominal;
-            piutang.lunas = true;
-            appData.transaksi.push({
-                id: 't' + generateId(),
-                tanggal: new Date().toISOString(),
-                bukuId: 'bri',
-                tipe: 'masuk',
-                nominal: piutang.nominal,
-                kategori: 'Terima Piutang',
-                desc: `Terima piutang dari ${piutang.nama}`
-            });
-            saveData();
-            refreshCurrentPage();
-            alert('Piutang berhasil diterima!');
-        }
-
-        function unbayarPiutang(id) {
-            const piutang = appData.piutang.find(p => p.id === id);
-            if (!piutang || !piutang.lunas) return;
-            if (!confirm(`Batalkan penerimaan piutang ${piutang.nama}? Saldo BRI akan dikurangi.`)) return;
-            const buku = appData.bukuKas.find(b => b.id === 'bri');
-            buku.saldo -= piutang.nominal;
-            piutang.lunas = false;
-            const lastPayment = appData.transaksi.filter(t => t.desc && t.desc.includes(piutang.nama)).pop();
-            if (lastPayment) {
-                appData.transaksi = appData.transaksi.filter(t => t.id !== lastPayment.id);
-            }
-            saveData();
-            refreshCurrentPage();
-            alert('Status piutang dikembalikan ke belum lunas!');
-        }
-
-        function editPiutang(id) {
-            openModal('piutang', id);
-        }
-
-        function hapusPiutang(id) {
-            if (!confirm('Hapus piutang ini?')) return;
-            appData.piutang = appData.piutang.filter(p => p.id !== id);
-            saveData();
-            refreshCurrentPage();
-        }
-
-        // =============================================
-        // CRUD - INVOICE
-        // =============================================
-        function editInvoice(id) {
-            openModal('invoice', id);
-        }
-
-        function hapusInvoice(id) {
-            if (!confirm('Hapus invoice ini?')) return;
-            appData.invoice = appData.invoice.filter(i => i.id !== id);
-            saveData();
-            refreshCurrentPage();
-        }
-
-        function bayarInvoice(id) {
-            const inv = appData.invoice.find(i => i.id === id);
-            if (!inv || inv.status === 'paid') return;
-            const total = hitungTotalInvoice(inv.items);
-            const metode = prompt(
-                'Pilih metode pembayaran:\n1. ATM (BRI)\n2. Cash\n3. E-Wallet (GoPay)\n4. QRIS Dana\n\nKetik nomor metode:',
-                '1'
-            );
-            let bukuId = '';
-            let metodeNama = '';
-            if (metode === '1') { bukuId = 'bri'; metodeNama = 'BRI'; }
-            else if (metode === '2') { bukuId = 'cash'; metodeNama = 'Cash'; }
-            else if (metode === '3') { bukuId = 'gopay'; metodeNama = 'GoPay'; }
-            else if (metode === '4') { bukuId = 'qris'; metodeNama = 'QRIS Dana'; }
-            else { alert('Metode tidak valid!'); return; }
-            const buku = appData.bukuKas.find(b => b.id === bukuId);
-            buku.saldo += total;
-            inv.status = 'paid';
-            inv.metode = metodeNama;
-            appData.transaksi.push({
-                id: 't' + generateId(),
-                tanggal: new Date().toISOString(),
-                bukuId: bukuId,
-                tipe: 'masuk',
-                nominal: total,
-                kategori: 'Pembayaran Invoice',
-                desc: `Pembayaran invoice ${inv.nomor} dari ${inv.customer} via ${metodeNama}`
-            });
-            saveData();
-            refreshCurrentPage();
-            alert(`Invoice ${inv.nomor} berhasil dibayar via ${metodeNama}!`);
-        }
-
-        function unpaidInvoice(id) {
-            const inv = appData.invoice.find(i => i.id === id);
-            if (!inv || inv.status === 'unpaid') return;
-            if (!confirm(`Kembalikan invoice ${inv.nomor} ke status Unpaid?`)) return;
-            const total = hitungTotalInvoice(inv.items);
-            const buku = appData.bukuKas.find(b => b.id === inv.metode === 'BRI' ? 'bri' : 'cash');
-            if (buku) {
-                buku.saldo -= total;
-            }
-            inv.status = 'unpaid';
-            inv.metode = '';
-            const lastPayment = appData.transaksi.filter(t => t.desc && t.desc.includes(inv.nomor)).pop();
-            if (lastPayment) {
-                appData.transaksi = appData.transaksi.filter(t => t.id !== lastPayment.id);
-            }
-            saveData();
-            refreshCurrentPage();
-            alert(`Invoice ${inv.nomor} dikembalikan ke Unpaid!`);
-        }
-
-        function refreshCurrentPage() {
-            const active = document.querySelector('.page.active') || document.getElementById('page-dashboard');
-            if (active.id === 'page-dashboard') renderDashboard();
-            else if (active.id === 'page-buku-kas') { renderBukuKasList(); renderRincianPerRekening(); }
-            else if (active.id === 'page-invoice') renderInvoice();
-            else if (active.id === 'page-utang') renderUtang();
-            else if (active.id === 'page-piutang') renderPiutang();
-            else if (active.id === 'page-laporan') renderLaporan();
-        }
-
-        // =============================================
-        // INISIALISASI
-        // =============================================
-        document.getElementById('tanggalHariIni').textContent = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-        renderDashboard();
     </script>
 </body>
 </html>
