@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>RIZQUNA - Premium</title>
-    <meta name="theme-color" content="#3b82f6">
+    <title>RIZQUNA — DeepSeek Edition</title>
+    <meta name="theme-color" content="#0a1a2b">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
@@ -22,36 +22,38 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <style>
+        /* --- RESET & VARIABLES --- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background: #f0f4f8; display: flex; min-height: 100vh; color: #1a202c; overflow-x: hidden; }
+        body { background: #f7f9fc; display: flex; min-height: 100vh; color: #1e293b; overflow-x: hidden; }
         :root { 
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-            --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
-            --shadow-lg: 0 16px 48px rgba(0,0,0,0.10);
-            --radius: 16px;
-            --radius-sm: 10px;
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
+            --deep-bg: #0a1a2b;
+            --deep-bg-secondary: #0f2338;
+            --deep-accent: #0ea5e9;
+            --deep-accent-hover: #0284c7;
+            --deep-text: #e2e8f0;
+            --deep-text-muted: #94a3b8;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.10);
+            --radius: 14px;
+            --radius-sm: 8px;
             --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
-        /* --- SIDEBAR --- */
+        /* --- SIDEBAR (DeepSeek Dark) --- */
         .sidebar {
             position: fixed;
             top: 0;
             left: -300px;
             width: 280px;
             height: 100vh;
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            background: var(--deep-bg);
             padding: 24px 16px;
             overflow-y: auto;
             z-index: 1000;
             transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: #e2e8f0;
-            box-shadow: 4px 0 30px rgba(0,0,0,0.2);
+            color: var(--deep-text);
+            box-shadow: 4px 0 24px rgba(0,0,0,0.2);
         }
         .sidebar.open { left: 0; }
         .sidebar-overlay {
@@ -60,7 +62,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: rgba(10,26,43,0.6);
             z-index: 999;
             display: none;
             backdrop-filter: blur(4px);
@@ -68,14 +70,14 @@
         }
         .sidebar-overlay.open { display: block; }
         .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; margin-bottom: 32px; color: white; padding-left: 8px; }
-        .logo i { color: #fbbf24; font-size: 22px; }
+        .logo i { color: var(--deep-accent); font-size: 22px; }
         .menu-item {
-            display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: var(--radius-sm);
-            margin-bottom: 4px; cursor: pointer; color: #94a3b8; transition: 0.25s; text-decoration: none; font-size: 15px; font-weight: 500;
+            display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: var(--radius-sm);
+            margin-bottom: 4px; cursor: pointer; color: var(--deep-text-muted); transition: 0.2s; text-decoration: none; font-size: 14px; font-weight: 500;
             min-height: 48px;
         }
-        .menu-item:hover { background: rgba(255,255,255,0.08); color: white; }
-        .menu-item.active { background: rgba(59,130,246,0.15); color: #60a5fa; }
+        .menu-item:hover { background: rgba(255,255,255,0.06); color: white; }
+        .menu-item.active { background: rgba(14,165,233,0.15); color: var(--deep-accent); border-left: 3px solid var(--deep-accent); }
         .menu-header { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; margin: 24px 0 8px 16px; letter-spacing: 1px; }
 
         /* --- HEADER --- */
@@ -100,7 +102,7 @@
             background: transparent;
             border: none;
             font-size: 24px;
-            color: #0f172a;
+            color: #1e293b;
             cursor: pointer;
             padding: 8px;
             width: 44px;
@@ -134,8 +136,9 @@
             padding-bottom: calc(80px + var(--safe-bottom));
         }
 
+        /* --- BANNER (Deep Gradient) --- */
         .banner {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            background: linear-gradient(135deg, var(--deep-bg), var(--deep-bg-secondary));
             color: white; 
             padding: 24px 20px; 
             border-radius: var(--radius); 
@@ -145,9 +148,10 @@
             box-shadow: var(--shadow-lg);
         }
         .banner h2 { font-size: 22px; margin-bottom: 4px; font-weight: 700; }
-        .banner p { opacity: 0.9; font-size: 13px; }
-        .banner i { position: absolute; right: 10px; bottom: -30px; font-size: 120px; opacity: 0.12; transform: rotate(15deg); }
+        .banner p { opacity: 0.8; font-size: 13px; }
+        .banner i { position: absolute; right: 10px; bottom: -30px; font-size: 120px; opacity: 0.05; transform: rotate(15deg); }
 
+        /* --- STATS CARDS (Clean & Minimal) --- */
         .stats-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -157,23 +161,26 @@
         .stat-card {
             padding: 16px 18px;
             border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            transition: 0.3s;
-            color: white;
+            box-shadow: var(--shadow-sm);
+            background: white;
+            color: #1e293b;
             position: relative;
             overflow: hidden;
-            min-height: 90px;
+            min-height: 80px;
+            border: 1px solid #e2e8f0;
+            transition: 0.2s;
         }
-        .stat-card:nth-child(1) { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-        .stat-card:nth-child(2) { background: linear-gradient(135deg, #10b981, #059669); }
-        .stat-card:nth-child(3) { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .stat-card:nth-child(4) { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .stat-card:active { transform: scale(0.97); }
-        .stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; opacity: 0.85; letter-spacing: 0.5px; }
+        .stat-card:active { transform: scale(0.98); }
+        .stat-card:nth-child(1) { border-left: 4px solid var(--deep-accent); }
+        .stat-card:nth-child(2) { border-left: 4px solid #10b981; }
+        .stat-card:nth-child(3) { border-left: 4px solid #f59e0b; }
+        .stat-card:nth-child(4) { border-left: 4px solid #8b5cf6; }
+        .stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px; }
         .stat-value { 
             font-size: 20px; 
             font-weight: 700; 
             margin: 4px 0; 
+            color: #1e293b;
             word-break: break-all;
             white-space: normal;
             overflow-wrap: break-word;
@@ -183,58 +190,70 @@
             padding: 2px 8px; 
             border-radius: 20px; 
             font-weight: 600; 
-            background: rgba(255,255,255,0.2); 
+            background: #e2e8f0; 
+            color: #475569;
             display: inline-block; 
         }
 
+        /* --- WIDGETS --- */
         .bottom-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-        .widget-box { background: white; padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
-        .widget-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: #0f172a; }
+        .widget-box { background: white; padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; }
+        .widget-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: #1e293b; }
         .widget-sub { font-size: 12px; color: #94a3b8; margin-bottom: 12px; }
-        .chart-area { height: 100px; display: flex; align-items: flex-end; gap: 8px; padding: 8px 0; }
-        .bar { flex: 1; background: linear-gradient(180deg, #3b82f6, #2563eb); border-radius: 6px 6px 0 0; min-height: 10px; }
-        .bar:nth-child(even) { background: linear-gradient(180deg, #8b5cf6, #7c3aed); }
+        .chart-area { height: 80px; display: flex; align-items: flex-end; gap: 6px; padding: 6px 0; }
+        .bar { flex: 1; background: var(--deep-accent); border-radius: 4px 4px 0 0; min-height: 6px; opacity: 0.8; }
+        .bar:nth-child(even) { background: var(--deep-bg); }
 
-        .activity-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; min-height: 56px; }
+        /* --- ACTIVITY --- */
+        .activity-item { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9; min-height: 52px; }
         .activity-item:last-child { border-bottom: none; }
         .icon-circle { 
-            width: 40px; height: 40px; border-radius: 50%; 
+            width: 36px; height: 36px; border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; 
             margin-right: 12px; color: white; flex-shrink: 0; 
         }
         .act-info { flex: 1; min-width: 0; }
-        .act-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .act-title { font-size: 14px; font-weight: 500; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .act-date { font-size: 11px; color: #94a3b8; }
         .act-amount { font-weight: 600; font-size: 14px; white-space: nowrap; }
 
         .hidden-page { display: none; }
         .hidden-page.active { display: block; }
 
+        /* --- BUKU KAS (Cards) --- */
         .buku-list-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         .buku-card {
             padding: 14px 16px;
             border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.3s ease;
             position: relative;
-            color: white;
+            background: white;
+            border: 1px solid #e2e8f0;
             display: flex;
             align-items: center;
             gap: 12px;
             min-height: 64px;
         }
-        .buku-card:active { transform: scale(0.97); }
-        .buku-card .icon { font-size: 24px; opacity: 0.9; flex-shrink: 0; }
+        .buku-card.dimmed { opacity: 0.4; transform: scale(0.95); filter: grayscale(0.3); }
+        .buku-card.active {
+            border-color: var(--deep-accent);
+            box-shadow: 0 0 0 2px rgba(14,165,233,0.15);
+            background: white;
+            opacity: 1;
+            transform: scale(1.02);
+        }
+        .buku-card .icon { font-size: 24px; color: #1e293b; opacity: 0.7; flex-shrink: 0; }
         .buku-card .info { display: flex; flex-direction: column; overflow: hidden; }
-        .buku-card .nama { font-weight: 600; font-size: 13px; opacity: 0.95; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .buku-card .saldo { font-size: 16px; font-weight: 700; margin-top: 2px; }
-        .buku-card .norek { font-size: 10px; opacity: 0.8; margin-top: 2px; }
+        .buku-card .nama { font-weight: 600; font-size: 13px; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .buku-card .saldo { font-size: 16px; font-weight: 700; color: #1e293b; margin-top: 2px; }
+        .buku-card .norek { font-size: 10px; color: #94a3b8; margin-top: 2px; }
         .buku-card .actions {
             position: absolute;
             top: 8px;
@@ -246,61 +265,61 @@
         }
         .buku-card:hover .actions { opacity: 1; }
         .buku-card .actions button {
-            background: rgba(255,255,255,0.2);
+            background: #f1f5f9;
             border: none;
             cursor: pointer;
             font-size: 11px;
-            color: white;
+            color: #1e293b;
             padding: 4px 8px;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: 0.2s;
         }
-        .buku-card .actions button:active { background: rgba(255,255,255,0.4); }
+        .buku-card .actions button:active { background: #e2e8f0; }
 
         .buku-card-add {
-            background: white !important;
-            border: 2px dashed #3b82f6 !important;
+            background: white;
+            border: 2px dashed #cbd5e1 !important;
             box-shadow: none !important;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             padding: 14px;
             min-height: 64px;
-            color: #3b82f6;
-            transition: 0.3s;
+            color: #64748b;
+            transition: 0.2s;
         }
-        .buku-card-add:active { transform: scale(0.97); }
+        .buku-card-add:hover { border-color: var(--deep-accent); color: var(--deep-accent); }
 
+        /* --- TABLE --- */
         .month-group { margin-bottom: 16px; }
         .month-label {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
-            color: #0f172a;
-            padding: 6px 0 10px 0;
-            border-bottom: 2px solid #e2e8f0;
+            color: #1e293b;
+            padding: 4px 0 8px 0;
+            border-bottom: 1px solid #e2e8f0;
             margin-bottom: 6px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         .month-label span {
-            background: #e2e8f0;
+            background: #f1f5f9;
             padding: 2px 8px;
             border-radius: 12px;
             font-size: 11px;
-            color: #475569;
+            color: #64748b;
         }
-
-        .table-container { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }
+        .table-container { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { text-align: left; padding: 10px 12px; background: #f8fafc; color: #475569; font-weight: 600; border-bottom: 1px solid #e2e8f0; font-size: 11px; text-transform: uppercase; }
+        th { text-align: left; padding: 10px 12px; background: #f8fafc; color: #64748b; font-weight: 600; border-bottom: 1px solid #e2e8f0; font-size: 11px; text-transform: uppercase; }
         td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-        .text-green { color: #059669; }
-        .text-red { color: #dc2626; }
+        .text-green { color: #10b981; }
+        .text-red { color: #ef4444; }
 
-        /* --- BUTTONS STANDARD --- */
+        /* --- BUTTONS --- */
         .btn { 
             padding: 10px 20px; 
             border: none; 
@@ -318,39 +337,42 @@
             justify-content: center;
         }
         .btn:active { transform: scale(0.96); }
-        .btn-warning { background: #f59e0b; }
-        .btn-danger { background: #ef4444; }
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn-danger { background: #ef4444; color: white; }
         .btn-sm { padding: 8px 14px; font-size: 12px; min-height: 36px; min-width: 36px; }
-        .btn-success { background: #10b981; }
-        .btn-primary { background: var(--primary); }
-        .btn-primary:active { background: var(--primary-dark); }
+        .btn-success { background: #10b981; color: white; }
+        .btn-primary { background: var(--deep-bg); color: white; }
+        .btn-primary:active { background: var(--deep-bg-secondary); }
+        .btn-accent { background: var(--deep-accent); color: white; }
+        .btn-accent:active { background: var(--deep-accent-hover); }
 
         /* --- FLOATING ACTION BUTTON --- */
         .fab {
             position: fixed;
             bottom: 24px;
             right: 24px;
-            width: 60px;
-            height: 60px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            background: var(--deep-bg);
             color: white;
             border: none;
-            box-shadow: 0 4px 20px rgba(59,130,246,0.4);
-            font-size: 26px;
+            box-shadow: 0 4px 16px rgba(10,26,43,0.3);
+            font-size: 24px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 200;
-            transition: 0.3s;
+            transition: 0.2s;
         }
         .fab:active { transform: scale(0.92); }
+        .fab:hover { background: var(--deep-bg-secondary); }
 
         /* --- MODAL --- */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15,23,42,0.6); display: none; justify-content: center; align-items: center;
+            background: rgba(10,26,43,0.6); display: none; justify-content: center; align-items: center;
             z-index: 500; backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
         }
@@ -359,20 +381,20 @@
             background: white; width: 92%; max-width: 480px; border-radius: var(--radius);
             padding: 24px; box-shadow: var(--shadow-lg); max-height: 90vh; overflow-y: auto;
         }
-        .modal-box h3 { text-align: center; font-size: 18px; color: #0f172a; font-weight: 700; margin-bottom: 16px; }
+        .modal-box h3 { text-align: center; font-size: 18px; color: #1e293b; font-weight: 700; margin-bottom: 16px; }
         .modal-box label { display: block; margin: 10px 0 4px; font-size: 14px; font-weight: 600; color: #334155; }
         .modal-box input, .modal-box select {
             width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: var(--radius-sm);
-            font-size: 15px; margin-bottom: 8px; background: #f8fafc; min-height: 44px;
+            font-size: 14px; margin-bottom: 8px; background: #f8fafc; min-height: 44px;
         }
-        .modal-box input:focus, .modal-box select:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .modal-box input:focus, .modal-box select:focus { border-color: var(--deep-accent); outline: none; box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
         .modal-actions { display: flex; gap: 10px; margin-top: 16px; }
         .modal-actions .btn { flex: 1; }
         .btn-cancel { background: #e2e8f0; color: #475569; }
 
         .tag-status { font-size: 10px; padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-block; }
-        .tag-lunas { background: #d1fae5; color: #059669; }
-        .tag-bayar { background: #fee2e2; color: #dc2626; }
+        .tag-lunas { background: #d1fae5; color: #10b981; }
+        .tag-bayar { background: #fee2e2; color: #ef4444; }
         .tag-pending { background: #fef3c7; color: #d97706; }
 
         /* --- INVOICE FORM --- */
@@ -399,7 +421,7 @@
         }
         .invoice-row .full { grid-column: 1 / -1; }
         .invoice-grand-total {
-            background: linear-gradient(135deg, var(--success), #059669);
+            background: var(--deep-bg);
             color: white;
             padding: 14px;
             border-radius: var(--radius-sm);
@@ -417,7 +439,7 @@
             flex-wrap: wrap;
         }
         .btn-export {
-            background: #0f172a;
+            background: var(--deep-bg);
             color: white;
             padding: 8px 16px;
             border: none;
@@ -431,7 +453,7 @@
             transition: 0.2s;
             min-height: 36px;
         }
-        .btn-export:hover { background: #1e293b; }
+        .btn-export:hover { background: var(--deep-bg-secondary); }
         .btn-export:active { transform: scale(0.96); }
 
         /* --- RESPONSIVE DESKTOP --- */
@@ -449,9 +471,9 @@
         }
 
         /* --- SCROLLBAR --- */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 10px; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -493,12 +515,12 @@
             <div class="stats-grid" id="statsGrid"></div>
             <div class="bottom-grid">
                 <div class="widget-box">
-                    <div class="widget-title"><i class="fas fa-chart-line" style="color:#3b82f6;"></i> Arus Kas</div>
+                    <div class="widget-title"><i class="fas fa-chart-line" style="color:var(--deep-accent);"></i> Arus Kas</div>
                     <div class="widget-sub">Performa bulanan</div>
                     <div class="chart-area" id="chartArea"></div>
                 </div>
                 <div class="widget-box">
-                    <div class="widget-title"><i class="fas fa-bolt" style="color:#8b5cf6;"></i> Aktivitas Terbaru</div>
+                    <div class="widget-title"><i class="fas fa-bolt" style="color:var(--deep-bg);"></i> Aktivitas Terbaru</div>
                     <div class="widget-sub">Transaksi real-time</div>
                     <div id="recentActivityList"></div>
                 </div>
@@ -508,17 +530,17 @@
         <!-- BUKU KAS -->
         <div id="page-buku-kas" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-wallet" style="color:#3b82f6;"></i> Buku Kas</h2>
+                <h2 style="font-size:18px; font-weight:700; color:#1e293b;"><i class="fas fa-wallet" style="color:var(--deep-bg);"></i> Buku Kas</h2>
             </div>
             <div class="buku-list-grid" id="bukuListGrid"></div>
-            <h4 style="font-size:14px; color:#334155; margin-top:14px;">Rincian per Rekening</h4>
+            <h4 style="font-size:14px; color:#64748b; margin-top:14px;">Rincian per Rekening</h4>
             <div id="rincianPerRekening"></div>
         </div>
 
         <!-- INVOICE -->
         <div id="page-invoice" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-file-invoice" style="color:#3b82f6;"></i> Invoice</h2>
+                <h2 style="font-size:18px; font-weight:700; color:#1e293b;"><i class="fas fa-file-invoice" style="color:var(--deep-bg);"></i> Invoice</h2>
                 <button class="btn btn-primary" onclick="openModal('invoice')"><i class="fas fa-plus"></i> Buat Invoice</button>
             </div>
             <div id="invoiceList"></div>
@@ -527,7 +549,7 @@
         <!-- UTANG -->
         <div id="page-utang" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-hand-holding-usd" style="color:#f59e0b;"></i> Utang</h2>
+                <h2 style="font-size:18px; font-weight:700; color:#1e293b;"><i class="fas fa-hand-holding-usd" style="color:var(--deep-bg);"></i> Utang</h2>
                 <button class="btn btn-success" onclick="openModal('utang')"><i class="fas fa-plus"></i> Tambah Utang</button>
             </div>
             <div id="listUtang"></div>
@@ -536,7 +558,7 @@
         <!-- PIUTANG -->
         <div id="page-piutang" class="hidden-page">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                <h2 style="font-size:18px; font-weight:700; color:#0f172a;"><i class="fas fa-hand-holding-dollar" style="color:#10b981;"></i> Piutang</h2>
+                <h2 style="font-size:18px; font-weight:700; color:#1e293b;"><i class="fas fa-hand-holding-dollar" style="color:var(--deep-bg);"></i> Piutang</h2>
                 <button class="btn btn-primary" onclick="openModal('piutang')"><i class="fas fa-plus"></i> Tambah Piutang</button>
             </div>
             <div id="listPiutang"></div>
@@ -544,7 +566,7 @@
 
         <!-- LAPORAN -->
         <div id="page-laporan" class="hidden-page">
-            <h2 style="font-size:18px; font-weight:700; color:#0f172a; margin-bottom:14px;"><i class="fas fa-chart-pie" style="color:#3b82f6;"></i> Laporan Keuangan</h2>
+            <h2 style="font-size:18px; font-weight:700; color:#1e293b; margin-bottom:14px;"><i class="fas fa-chart-pie" style="color:var(--deep-bg);"></i> Laporan Keuangan</h2>
             <div class="export-group">
                 <button class="btn-export" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> Export PDF</button>
                 <button class="btn-export" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Export Excel</button>
@@ -600,9 +622,9 @@
         };
 
         // Load dari localStorage
-        if (localStorage.getItem('rizqunaPremiumData')) {
+        if (localStorage.getItem('rizqunaDeepData')) {
             try {
-                const saved = JSON.parse(localStorage.getItem('rizqunaPremiumData'));
+                const saved = JSON.parse(localStorage.getItem('rizqunaDeepData'));
                 appData = saved;
             } catch(e) {}
         } else {
@@ -628,7 +650,7 @@
         }
 
         function saveData() {
-            localStorage.setItem('rizqunaPremiumData', JSON.stringify(appData));
+            localStorage.setItem('rizqunaDeepData', JSON.stringify(appData));
         }
 
         // =============================================
@@ -649,12 +671,6 @@
 
         function generateId() {
             return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-        }
-
-        const warnaBuku = ['#10b981','#3b82f6','#8b5cf6','#f59e0b','#ef4444','#ec4899','#14b8a6','#f97316'];
-
-        function getWarnaBuku(index) {
-            return warnaBuku[index % warnaBuku.length];
         }
 
         function hitungTotalInvoice(items) {
@@ -725,7 +741,7 @@
             appData.bukuKas.forEach((b, index) => {
                 const card = document.createElement('div');
                 card.className = 'buku-card';
-                card.style.background = getWarnaBuku(index);
+                card.id = 'buku-' + b.id;
                 card.innerHTML = `
                     <div class="actions">
                         <button onclick="event.stopPropagation(); editBuku('${b.id}')" title="Edit"><i class="fas fa-edit"></i></button>
@@ -738,28 +754,45 @@
                         <div class="norek">${b.norek ? '🏦 ' + b.norek : ''}</div>
                     </div>
                 `;
-                card.onclick = () => showDetailRekening(b.id);
+                card.onclick = () => selectBukuKas(b.id);
                 grid.appendChild(card);
             });
 
             const addCard = document.createElement('div');
             addCard.className = 'buku-card buku-card-add';
-            addCard.style.background = 'white';
-            addCard.style.border = '2px dashed #3b82f6';
-            addCard.style.boxShadow = 'none';
-            addCard.style.cursor = 'pointer';
-            addCard.style.display = 'flex';
-            addCard.style.alignItems = 'center';
-            addCard.style.justifyContent = 'center';
-            addCard.style.gap = '8px';
-            addCard.style.padding = '14px';
-            addCard.style.minHeight = '64px';
             addCard.innerHTML = `
-                <div style="font-size:22px; color:#3b82f6;"><i class="fas fa-plus-circle"></i></div>
-                <div style="font-size:12px; font-weight:600; color:#3b82f6;">Tambah</div>
+                <i class="fas fa-plus-circle" style="font-size:22px;"></i>
+                <span style="font-size:12px; font-weight:600;">Tambah</span>
             `;
             addCard.onclick = () => openModal('buku');
             grid.appendChild(addCard);
+        }
+
+        let selectedBukuId = null;
+
+        function selectBukuKas(bukuId) {
+            if (selectedBukuId === bukuId) {
+                selectedBukuId = null;
+                document.querySelectorAll('.buku-card').forEach(c => {
+                    c.classList.remove('active', 'dimmed');
+                });
+                renderRincianPerRekening();
+                return;
+            }
+            selectedBukuId = bukuId;
+            document.querySelectorAll('.buku-card').forEach(c => {
+                c.classList.remove('active', 'dimmed');
+            });
+            const activeCard = document.getElementById('buku-' + bukuId);
+            if (activeCard) {
+                activeCard.classList.add('active');
+            }
+            document.querySelectorAll('.buku-card').forEach(c => {
+                if (c.id !== 'buku-' + bukuId && !c.classList.contains('buku-card-add')) {
+                    c.classList.add('dimmed');
+                }
+            });
+            renderRincianPerRekening(bukuId);
         }
 
         function renderRincianPerRekening(bukuId = null) {
@@ -775,7 +808,6 @@
                 return;
             }
 
-            // Kelompokkan per buku kas
             const groups = {};
             data.forEach(t => {
                 if (!groups[t.bukuId]) {
@@ -798,10 +830,10 @@
                 html += `
                     <div class="widget-box" style="margin-bottom:12px;">
                         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                            <div style="font-weight:600; font-size:16px; color:#0f172a;">${g.nama}</div>
+                            <div style="font-weight:600; font-size:16px; color:#1e293b;">${g.nama}</div>
                             <div style="display:flex; gap:12px; font-size:12px; flex-wrap:wrap;">
-                                <span style="color:#059669;">Pemasukan: ${formatRupiah(g.pemasukan)}</span>
-                                <span style="color:#dc2626;">Pengeluaran: ${formatRupiah(g.pengeluaran)}</span>
+                                <span style="color:#10b981;">Pemasukan: ${formatRupiah(g.pemasukan)}</span>
+                                <span style="color:#ef4444;">Pengeluaran: ${formatRupiah(g.pengeluaran)}</span>
                             </div>
                         </div>
                         <div style="margin-top:8px; font-size:12px; color:#64748b;">
@@ -811,10 +843,6 @@
                 `;
             }
             container.innerHTML = html;
-        }
-
-        function showDetailRekening(bukuId) {
-            renderRincianPerRekening(bukuId);
         }
 
         function renderUtang() {
@@ -1070,6 +1098,7 @@
                     <select id="f_tipe">
                         <option value="masuk" ${data && data.tipe === 'masuk' ? 'selected' : ''}>💰 Pemasukan</option>
                         <option value="keluar" ${data && data.tipe === 'keluar' ? 'selected' : ''}>💸 Pengeluaran</option>
+                        <option value="transfer" ${data && data.tipe === 'transfer' ? 'selected' : ''}>🔄 Transfer</option>
                     </select>
                     <label>Nominal (Rp)</label>
                     <input type="number" id="f_nominal" value="${data ? data.nominal : ''}" placeholder="100000">
@@ -1083,6 +1112,35 @@
                         </div>
                     `;
                 }
+                // Jika tipe 'transfer' dipilih, tampilkan pilihan buku asal dan tujuan
+                body.innerHTML += `
+                    <script>
+                        document.getElementById('f_tipe').addEventListener('change', function() {
+                            const transferFields = document.getElementById('transferFields');
+                            if (this.value === 'transfer') {
+                                if (!transferFields) {
+                                    const div = document.createElement('div');
+                                    div.id = 'transferFields';
+                                    div.innerHTML = `
+                                        <label>Dari Buku Kas</label>
+                                        <select id="f_dari_buku">
+                                            ${appData.bukuKas.map(b => `<option value="${b.id}">${b.nama}</option>`).join('')}
+                                        </select>
+                                        <label>Ke Buku Kas</label>
+                                        <select id="f_ke_buku">
+                                            ${appData.bukuKas.map(b => `<option value="${b.id}">${b.nama}</option>`).join('')}
+                                        </select>
+                                    `;
+                                    document.getElementById('modalBody').appendChild(div);
+                                }
+                                document.getElementById('transferFields').style.display = 'block';
+                            } else {
+                                if (transferFields) transferFields.style.display = 'none';
+                            }
+                        });
+                        document.getElementById('f_tipe').dispatchEvent(new Event('change'));
+                    </script>
+                `;
                 saveBtn.style.display = 'block';
             } else if (mode === 'utang') {
                 title.textContent = editId ? '✏️ Edit Utang' : '📝 Tambah Utang';
@@ -1307,19 +1365,48 @@
                         }
                     }
                 } else {
-                    const buku = appData.bukuKas.find(b => b.id === bukuId);
-                    if (tipe === 'masuk') buku.saldo += nominal;
-                    else buku.saldo -= nominal;
-
-                    appData.transaksi.push({
-                        id: 't' + generateId(),
-                        tanggal: tanggal,
-                        bukuId: bukuId,
-                        tipe: tipe,
-                        nominal: nominal,
-                        kategori: desc,
-                        desc: desc
-                    });
+                    if (tipe === 'transfer') {
+                        const dariBuku = document.getElementById('f_dari_buku').value;
+                        const keBuku = document.getElementById('f_ke_buku').value;
+                        if (dariBuku === keBuku) { alert('Buku asal dan tujuan tidak boleh sama!'); return; }
+                        const bukuDari = appData.bukuKas.find(b => b.id === dariBuku);
+                        const bukuKe = appData.bukuKas.find(b => b.id === keBuku);
+                        if (bukuDari.saldo < nominal) { alert('Saldo buku asal tidak mencukupi!'); return; }
+                        bukuDari.saldo -= nominal;
+                        bukuKe.saldo += nominal;
+                        // Catat dua transaksi: keluar dari sumber, masuk ke tujuan
+                        appData.transaksi.push({
+                            id: 't' + generateId(),
+                            tanggal: tanggal,
+                            bukuId: dariBuku,
+                            tipe: 'keluar',
+                            nominal: nominal,
+                            kategori: 'Transfer',
+                            desc: `Transfer ke ${bukuKe.nama}`
+                        });
+                        appData.transaksi.push({
+                            id: 't' + generateId(),
+                            tanggal: tanggal,
+                            bukuId: keBuku,
+                            tipe: 'masuk',
+                            nominal: nominal,
+                            kategori: 'Transfer',
+                            desc: `Transfer dari ${bukuDari.nama}`
+                        });
+                    } else {
+                        const buku = appData.bukuKas.find(b => b.id === bukuId);
+                        if (tipe === 'masuk') buku.saldo += nominal;
+                        else buku.saldo -= nominal;
+                        appData.transaksi.push({
+                            id: 't' + generateId(),
+                            tanggal: tanggal,
+                            bukuId: bukuId,
+                            tipe: tipe,
+                            nominal: nominal,
+                            kategori: desc,
+                            desc: desc
+                        });
+                    }
                 }
                 saveData();
                 closeModal();
